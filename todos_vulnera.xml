@@ -1,0 +1,1967 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DSExport>
+   <Header CharacterSet="CP1252" ExportingTool="IBM InfoSphere DataStage Export" ToolVersion="8" ServerName="WIN2012-VMWARE" ToolInstanceID="dstage1" Date="2021-05-04" Time="14.54.03" ServerVersion="11.7"/>
+   <Job Identifier="Job_Vulnera1" DateModified="2021-05-04" TimeModified="14.22.30">
+      <Record Identifier="ROOT" Type="JobDefn" Readonly="0">
+         <Property Name="Name">Job_Vulnera1</Property>
+         <Property Name="NextID">1</Property>
+         <Property Name="Container">V0</Property>
+         <Property Name="JobVersion">56.0.0</Property>
+         <Property Name="ControlAfterSubr">0</Property>
+         <Collection Name="Parameters" Type="Parameters">
+            <SubRecord>
+               <Property Name="Name">P_mes</Property>
+               <Property Name="Prompt">P_mes</Property>
+               <Property Name="ParamType">2</Property>
+               <Property Name="ParamLength">0</Property>
+               <Property Name="ParamScale">0</Property>
+            </SubRecord>
+         </Collection>
+         <Collection Name="MetaBag" Type="MetaProperty">
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">AdvancedRuntimeOptions</Property>
+               <Property Name="Value">#DSProjectARTOptions#</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">TraceMode</Property>
+               <Property Name="Value">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">TraceSeq</Property>
+               <Property Name="Value">1</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">TraceRecords</Property>
+               <Property Name="Value">100</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">TraceSkip</Property>
+               <Property Name="Value">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">TracePeriod</Property>
+               <Property Name="Value">1</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">RecordJobPerformanceData</Property>
+               <Property Name="Value">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">IdentList</Property>
+               <Property Name="Value">SF_Personas|Sequential_File_1|Join_6|Filter_10</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">ClientCodePage</Property>
+               <Property Name="Value">1252</Property>
+            </SubRecord>
+         </Collection>
+         <Property Name="NULLIndicatorPosition">0</Property>
+         <Property Name="OrchestrateCode" PreFormatted="1">#################################################################
+#### STAGE: SF_Personas
+## Operator
+import
+## Operator options
+-schema record
+  {final_delim=end, delim=&apos;,&apos;}
+(
+  ssn:decimal[4,0];
+  nombre:string[max=15];
+  Valhora:decimal[4,0];
+)
+-rejects continue
+-reportProgress yes
+-firstLineColumnNames
+-file  &apos;C:\\temp\\Personas.txt&apos;
+
+## General options
+[ident(&apos;SF_Personas&apos;); jobmon_ident(&apos;SF_Personas&apos;)]
+## Outputs
+0&gt; [] &apos;SF_Personas:DSLink3.v&apos;
+;
+
+#################################################################
+#### STAGE: Sequential_File_1
+## Operator
+import
+## Operator options
+-schema record
+  {final_delim=end, delim=&apos;,&apos;}
+(
+  ssn:decimal[4,0];
+  mes:decimal[2,0];
+  horas:decimal[3,0];
+)
+-rejects continue
+-reportProgress yes
+-firstLineColumnNames
+-file  &apos;C:\\temp\\horas.txt&apos;
+
+## General options
+[ident(&apos;Sequential_File_1&apos;); jobmon_ident(&apos;Sequential_File_1&apos;)]
+## Outputs
+0&gt; [] &apos;Sequential_File_1:DSLink5.v&apos;
+;
+
+#################################################################
+#### STAGE: Join_6
+## Operator
+innerjoin
+## Operator options
+-key &apos;ssn&apos;
+
+## General options
+[ident(&apos;Join_6&apos;); jobmon_ident(&apos;Join_6&apos;)]
+## Inputs
+0&lt; [] &apos;SF_Personas:DSLink3.v&apos;
+1&lt; [] &apos;Sequential_File_1:DSLink5.v&apos;
+## Outputs
+0&gt; [modify (
+keep
+  ssn,nombre,Valhora,mes,
+  horas;
+)] &apos;Join_6:DSLink8.v&apos;
+;
+
+#################################################################
+#### STAGE: Data_Set_9
+## Operator
+copy
+## General options
+[ident(&apos;Data_Set_9&apos;)]
+## Inputs
+0&lt; [] &apos;Filter_10:DSLink11.v&apos;
+## Outputs
+0&gt;| [ds] &apos;C:\\temp\\dsvulnera.ds&apos;
+;
+
+#################################################################
+#### STAGE: Filter_10
+## Operator
+filter
+## Operator options
+-where &apos;mes=[&amp;&quot;P_mes&quot;]&apos;
+
+## General options
+[ident(&apos;Filter_10&apos;); jobmon_ident(&apos;Filter_10&apos;)]
+## Inputs
+0&lt; [] &apos;Join_6:DSLink8.v&apos;
+## Outputs
+0&gt; [modify (
+  nombre:string[max=10]=nombre;
+keep
+  ssn,Valhora,mes,horas;
+)] &apos;Filter_10:DSLink11.v&apos;
+;
+
+</Property>
+         <Property Name="IsTemplate">0</Property>
+         <Property Name="NLSLocale">,,,,</Property>
+         <Property Name="JobType">3</Property>
+         <Property Name="Category">\Jobs</Property>
+         <Property Name="CenturyBreakYear">30</Property>
+         <Property Name="NextAliasID">2</Property>
+         <Property Name="ParameterFileDDName">DD00001</Property>
+         <Property Name="ReservedWordCheck">1</Property>
+         <Property Name="TransactionSize">0</Property>
+         <Property Name="ValidationStatus">0</Property>
+         <Property Name="Uploadable">0</Property>
+         <Property Name="PgmCustomizationFlag">0</Property>
+         <Property Name="JobReportFlag">0</Property>
+         <Property Name="AllowMultipleInvocations">0</Property>
+         <Property Name="Act2ActOverideDefaults">0</Property>
+         <Property Name="Act2ActEnableRowBuffer">0</Property>
+         <Property Name="Act2ActUseIPC">0</Property>
+         <Property Name="Act2ActBufferSize">0</Property>
+         <Property Name="Act2ActIPCTimeout">0</Property>
+         <Property Name="ExpressionSemanticCheckFlag">0</Property>
+         <Property Name="TraceOption">0</Property>
+         <Property Name="EnableCacheSharing">0</Property>
+         <Property Name="RuntimeColumnPropagation">0</Property>
+         <Property Name="RelStagesInJobStatus">-1</Property>
+         <Property Name="WebServiceEnabled">0</Property>
+         <Property Name="MFProcessMetaData">0</Property>
+         <Property Name="MFProcessMetaDataXMLFileExchangeMethod">0</Property>
+         <Property Name="IMSProgType">0</Property>
+         <Property Name="CopyLibPrefix">ARDT</Property>
+         <Property Name="RecordPerformanceResults">0</Property>
+      </Record>
+      <Record Identifier="V0" Type="ContainerView" Readonly="0">
+         <Property Name="Name">Job</Property>
+         <Property Name="NextID">1</Property>
+         <Property Name="IsTopLevel">0</Property>
+         <Property Name="StageList">V0S0|V0S1|V0S6|V0S9|V0S10</Property>
+         <Property Name="StageXPos">192|192|432|696|576</Property>
+         <Property Name="StageYPos">96|192|168|168|120</Property>
+         <Property Name="StageTypes">CCustomStage|CCustomStage|CCustomStage|CCustomStage|CCustomStage</Property>
+         <Property Name="NextStageID">12</Property>
+         <Property Name="SnapToGrid">1</Property>
+         <Property Name="GridLines">0</Property>
+         <Property Name="ZoomValue">100</Property>
+         <Property Name="StageXSize">48|48|48|48|48</Property>
+         <Property Name="StageYSize">48|48|48|48|48</Property>
+         <Property Name="ContainerViewSizing">0026 0026 0738 0250 0000 0001 0000 0080</Property>
+         <Property Name="StageNames">SF_Personas|Sequential_File_1|Join_6|Data_Set_9|Filter_10</Property>
+         <Property Name="StageTypeIDs">PxSequentialFile|PxSequentialFile|PxJoin|PxDataSet|PxFilter</Property>
+         <Property Name="LinkNames">DSLink3|DSLink5|DSLink8| |DSLink11</Property>
+         <Property Name="LinkHasMetaDatas">True|True|True| |True</Property>
+         <Property Name="LinkTypes">1|1|1| |1</Property>
+         <Property Name="LinkNamePositionXs">336|308|486| |621</Property>
+         <Property Name="LinkNamePositionYs">141|197|179| |170</Property>
+         <Property Name="TargetStageIDs">V0S6|V0S6|V0S10| |V0S9</Property>
+         <Property Name="SourceStageEffectiveExecutionModes">1|1|2| |2</Property>
+         <Property Name="SourceStageRuntimeExecutionModes">1|1|2| |2</Property>
+         <Property Name="TargetStageEffectiveExecutionModes">2|2|2| |2</Property>
+         <Property Name="TargetStageRuntimeExecutionModes">2|2|2| |2</Property>
+         <Property Name="LinkIsSingleOperatorLookup">False|False|False| |False</Property>
+         <Property Name="LinkIsSortSequential">False|False|False| |False</Property>
+         <Property Name="LinkSortMode">0|0|0| |0</Property>
+         <Property Name="LinkPartColMode">1|1|1| |1</Property>
+         <Property Name="LinkSourcePinIDs">V0S0P1|V0S1P1|V0S6P3| |V0S10P2</Property>
+      </Record>
+      <Record Identifier="V0S0" Type="CustomStage" Readonly="0">
+         <Property Name="Name">SF_Personas</Property>
+         <Property Name="NextID">2</Property>
+         <Property Name="OutputPins">V0S0P1</Property>
+         <Property Name="StageType">PxSequentialFile</Property>
+         <Property Name="AllowColumnMapping">0</Property>
+         <Property Name="NextRecordID">0</Property>
+      </Record>
+      <Record Identifier="V0S0P1" Type="CustomOutput" Readonly="0">
+         <Property Name="Name">DSLink3</Property>
+         <Property Name="Partner">V0S6|V0S6P1</Property>
+         <Collection Name="Properties" Type="CustomProperty">
+            <SubRecord>
+               <Property Name="Name">schema</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">selection</Property>
+               <Property Name="Value">file</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">keepPartitions</Property>
+               <Property Name="Value">\(20)</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">rejects</Property>
+               <Property Name="Value">continue</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">reportProgress</Property>
+               <Property Name="Value">yes</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">firstLineColumnNames</Property>
+               <Property Name="Value">firstLineColumnNames</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">file\(20)</Property>
+               <Property Name="Value">\(2)\(2)0\(1)\(3)file \(2)C:\temp\Personas.txt\(2)0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">missingFile</Property>
+               <Property Name="Value">\(20)</Property>
+            </SubRecord>
+         </Collection>
+         <Collection Name="Columns" Type="OutputColumn">
+            <SubRecord>
+               <Property Name="Name">ssn</Property>
+               <Property Name="SqlType">2</Property>
+               <Property Name="Precision">4</Property>
+               <Property Name="Scale">0</Property>
+               <Property Name="Nullable">0</Property>
+               <Property Name="KeyPosition">0</Property>
+               <Property Name="DisplaySize">0</Property>
+               <Property Name="Group">0</Property>
+               <Property Name="SortKey">0</Property>
+               <Property Name="SortType">0</Property>
+               <Property Name="AllowCRLF">0</Property>
+               <Property Name="LevelNo">0</Property>
+               <Property Name="Occurs">0</Property>
+               <Property Name="PadNulls">0</Property>
+               <Property Name="SignOption">0</Property>
+               <Property Name="SortingOrder">0</Property>
+               <Property Name="ArrayHandling">0</Property>
+               <Property Name="SyncIndicator">0</Property>
+               <Property Name="PadChar"/>
+               <Property Name="ExtendedPrecision">0</Property>
+               <Property Name="TaggedSubrec">0</Property>
+               <Property Name="OccursVarying">0</Property>
+               <Property Name="PKeyIsCaseless">0</Property>
+               <Property Name="SCDPurpose">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">nombre</Property>
+               <Property Name="SqlType">12</Property>
+               <Property Name="Precision">15</Property>
+               <Property Name="Scale">0</Property>
+               <Property Name="Nullable">0</Property>
+               <Property Name="KeyPosition">0</Property>
+               <Property Name="DisplaySize">0</Property>
+               <Property Name="Group">0</Property>
+               <Property Name="SortKey">0</Property>
+               <Property Name="SortType">0</Property>
+               <Property Name="AllowCRLF">0</Property>
+               <Property Name="LevelNo">0</Property>
+               <Property Name="Occurs">0</Property>
+               <Property Name="PadNulls">0</Property>
+               <Property Name="SignOption">0</Property>
+               <Property Name="SortingOrder">0</Property>
+               <Property Name="ArrayHandling">0</Property>
+               <Property Name="SyncIndicator">0</Property>
+               <Property Name="PadChar"/>
+               <Property Name="ExtendedPrecision">0</Property>
+               <Property Name="TaggedSubrec">0</Property>
+               <Property Name="OccursVarying">0</Property>
+               <Property Name="PKeyIsCaseless">0</Property>
+               <Property Name="SCDPurpose">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">Valhora</Property>
+               <Property Name="SqlType">2</Property>
+               <Property Name="Precision">4</Property>
+               <Property Name="Scale">0</Property>
+               <Property Name="Nullable">0</Property>
+               <Property Name="KeyPosition">0</Property>
+               <Property Name="DisplaySize">0</Property>
+               <Property Name="Group">0</Property>
+               <Property Name="SortKey">0</Property>
+               <Property Name="SortType">0</Property>
+               <Property Name="AllowCRLF">0</Property>
+               <Property Name="LevelNo">0</Property>
+               <Property Name="Occurs">0</Property>
+               <Property Name="PadNulls">0</Property>
+               <Property Name="SignOption">0</Property>
+               <Property Name="SortingOrder">0</Property>
+               <Property Name="ArrayHandling">0</Property>
+               <Property Name="SyncIndicator">0</Property>
+               <Property Name="PadChar"/>
+               <Property Name="ExtendedPrecision">0</Property>
+               <Property Name="TaggedSubrec">0</Property>
+               <Property Name="OccursVarying">0</Property>
+               <Property Name="PKeyIsCaseless">0</Property>
+               <Property Name="SCDPurpose">0</Property>
+            </SubRecord>
+         </Collection>
+         <Collection Name="MetaBag" Type="MetaProperty">
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">SchemaFormat</Property>
+               <Property Name="Value">final_delim=end, delim=&apos;,&apos;</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">DiskWriteInc</Property>
+               <Property Name="Value">1048576</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">BufFreeRun</Property>
+               <Property Name="Value">50</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">MaxMemBufSize</Property>
+               <Property Name="Value">3145728</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">QueueUpperSize</Property>
+               <Property Name="Value">0</Property>
+            </SubRecord>
+         </Collection>
+         <Property Name="LeftTextPos">336</Property>
+         <Property Name="TopTextPos">141</Property>
+         <Property Name="LinkMinimised">0</Property>
+      </Record>
+      <Record Identifier="V0S1" Type="CustomStage" Readonly="0">
+         <Property Name="Name">Sequential_File_1</Property>
+         <Property Name="NextID">2</Property>
+         <Property Name="OutputPins">V0S1P1</Property>
+         <Property Name="StageType">PxSequentialFile</Property>
+         <Property Name="AllowColumnMapping">0</Property>
+         <Property Name="NextRecordID">0</Property>
+      </Record>
+      <Record Identifier="V0S10" Type="CustomStage" Readonly="0">
+         <Property Name="Name">Filter_10</Property>
+         <Property Name="NextID">3</Property>
+         <Property Name="InputPins">V0S10P1</Property>
+         <Property Name="OutputPins">V0S10P2</Property>
+         <Property Name="StageType">PxFilter</Property>
+         <Property Name="AllowColumnMapping">0</Property>
+         <Collection Name="Properties" Type="CustomProperty">
+            <SubRecord>
+               <Property Name="Name">where</Property>
+               <Property Name="Value">\(2)\(2)0\(1)\(3)where\(2)mes=#P_mes#\(2)0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">first</Property>
+               <Property Name="Value">\(20)</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">reject</Property>
+               <Property Name="Value">\(20)</Property>
+            </SubRecord>
+         </Collection>
+         <Property Name="NextRecordID">0</Property>
+      </Record>
+      <Record Identifier="V0S10P1" Type="CustomInput" Readonly="0">
+         <Property Name="Name">DSLink8</Property>
+         <Property Name="Partner">V0S6|V0S6P3</Property>
+         <Property Name="LinkType">1</Property>
+         <Property Name="ConditionNotMet">fail</Property>
+         <Property Name="LookupFail">fail</Property>
+         <Collection Name="MetaBag" Type="MetaProperty">
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">RTColumnProp</Property>
+               <Property Name="Value">0</Property>
+            </SubRecord>
+         </Collection>
+         <Property Name="TransactionSize">0</Property>
+         <Property Name="TXNBehaviour">0</Property>
+         <Property Name="EnableTxGroup">0</Property>
+         <Property Name="LinkMinimised">0</Property>
+      </Record>
+      <Record Identifier="V0S10P2" Type="CustomOutput" Readonly="0">
+         <Property Name="Name">DSLink11</Property>
+         <Property Name="Partner">V0S9|V0S9P2</Property>
+         <Collection Name="Columns" Type="OutputColumn">
+            <SubRecord>
+               <Property Name="Name">ssn</Property>
+               <Property Name="SqlType">2</Property>
+               <Property Name="Precision">4</Property>
+               <Property Name="Scale">0</Property>
+               <Property Name="Nullable">0</Property>
+               <Property Name="KeyPosition">0</Property>
+               <Property Name="DisplaySize">0</Property>
+               <Property Name="Derivation">DSLink8.ssn</Property>
+               <Property Name="Group">0</Property>
+               <Property Name="ParsedDerivation">DSLink8.ssn</Property>
+               <Property Name="SourceColumn">DSLink8.ssn</Property>
+               <Property Name="SortKey">0</Property>
+               <Property Name="SortType">0</Property>
+               <Property Name="AllowCRLF">0</Property>
+               <Property Name="LevelNo">0</Property>
+               <Property Name="Occurs">0</Property>
+               <Property Name="PadNulls">0</Property>
+               <Property Name="SignOption">0</Property>
+               <Property Name="SortingOrder">0</Property>
+               <Property Name="ArrayHandling">0</Property>
+               <Property Name="SyncIndicator">0</Property>
+               <Property Name="PadChar"/>
+               <Property Name="ExtendedPrecision">0</Property>
+               <Property Name="TaggedSubrec">0</Property>
+               <Property Name="OccursVarying">0</Property>
+               <Property Name="PKeyIsCaseless">0</Property>
+               <Property Name="SCDPurpose">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">nombre</Property>
+               <Property Name="SqlType">12</Property>
+               <Property Name="Precision">10</Property>
+               <Property Name="Scale">0</Property>
+               <Property Name="Nullable">0</Property>
+               <Property Name="KeyPosition">0</Property>
+               <Property Name="DisplaySize">0</Property>
+               <Property Name="Derivation">DSLink8.nombre</Property>
+               <Property Name="Group">0</Property>
+               <Property Name="ParsedDerivation">DSLink8.nombre</Property>
+               <Property Name="SourceColumn">DSLink8.nombre</Property>
+               <Property Name="SortKey">0</Property>
+               <Property Name="SortType">0</Property>
+               <Property Name="AllowCRLF">0</Property>
+               <Property Name="LevelNo">0</Property>
+               <Property Name="Occurs">0</Property>
+               <Property Name="PadNulls">0</Property>
+               <Property Name="SignOption">0</Property>
+               <Property Name="SortingOrder">0</Property>
+               <Property Name="ArrayHandling">0</Property>
+               <Property Name="SyncIndicator">0</Property>
+               <Property Name="PadChar"/>
+               <Property Name="ExtendedPrecision">0</Property>
+               <Property Name="TaggedSubrec">0</Property>
+               <Property Name="OccursVarying">0</Property>
+               <Property Name="PKeyIsCaseless">0</Property>
+               <Property Name="SCDPurpose">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">Valhora</Property>
+               <Property Name="SqlType">2</Property>
+               <Property Name="Precision">4</Property>
+               <Property Name="Scale">0</Property>
+               <Property Name="Nullable">0</Property>
+               <Property Name="KeyPosition">0</Property>
+               <Property Name="DisplaySize">0</Property>
+               <Property Name="Derivation">DSLink8.Valhora</Property>
+               <Property Name="Group">0</Property>
+               <Property Name="ParsedDerivation">DSLink8.Valhora</Property>
+               <Property Name="SourceColumn">DSLink8.Valhora</Property>
+               <Property Name="SortKey">0</Property>
+               <Property Name="SortType">0</Property>
+               <Property Name="AllowCRLF">0</Property>
+               <Property Name="LevelNo">0</Property>
+               <Property Name="Occurs">0</Property>
+               <Property Name="PadNulls">0</Property>
+               <Property Name="SignOption">0</Property>
+               <Property Name="SortingOrder">0</Property>
+               <Property Name="ArrayHandling">0</Property>
+               <Property Name="SyncIndicator">0</Property>
+               <Property Name="PadChar"/>
+               <Property Name="ExtendedPrecision">0</Property>
+               <Property Name="TaggedSubrec">0</Property>
+               <Property Name="OccursVarying">0</Property>
+               <Property Name="PKeyIsCaseless">0</Property>
+               <Property Name="SCDPurpose">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">mes</Property>
+               <Property Name="SqlType">2</Property>
+               <Property Name="Precision">2</Property>
+               <Property Name="Scale">0</Property>
+               <Property Name="Nullable">0</Property>
+               <Property Name="KeyPosition">0</Property>
+               <Property Name="DisplaySize">0</Property>
+               <Property Name="Derivation">DSLink8.mes</Property>
+               <Property Name="Group">0</Property>
+               <Property Name="ParsedDerivation">DSLink8.mes</Property>
+               <Property Name="SourceColumn">DSLink8.mes</Property>
+               <Property Name="SortKey">0</Property>
+               <Property Name="SortType">0</Property>
+               <Property Name="AllowCRLF">0</Property>
+               <Property Name="LevelNo">0</Property>
+               <Property Name="Occurs">0</Property>
+               <Property Name="PadNulls">0</Property>
+               <Property Name="SignOption">0</Property>
+               <Property Name="SortingOrder">0</Property>
+               <Property Name="ArrayHandling">0</Property>
+               <Property Name="SyncIndicator">0</Property>
+               <Property Name="PadChar"/>
+               <Property Name="ExtendedPrecision">0</Property>
+               <Property Name="TaggedSubrec">0</Property>
+               <Property Name="OccursVarying">0</Property>
+               <Property Name="PKeyIsCaseless">0</Property>
+               <Property Name="SCDPurpose">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">horas</Property>
+               <Property Name="SqlType">2</Property>
+               <Property Name="Precision">3</Property>
+               <Property Name="Scale">0</Property>
+               <Property Name="Nullable">0</Property>
+               <Property Name="KeyPosition">0</Property>
+               <Property Name="DisplaySize">0</Property>
+               <Property Name="Derivation">DSLink8.horas</Property>
+               <Property Name="Group">0</Property>
+               <Property Name="ParsedDerivation">DSLink8.horas</Property>
+               <Property Name="SourceColumn">DSLink8.horas</Property>
+               <Property Name="SortKey">0</Property>
+               <Property Name="SortType">0</Property>
+               <Property Name="AllowCRLF">0</Property>
+               <Property Name="LevelNo">0</Property>
+               <Property Name="Occurs">0</Property>
+               <Property Name="PadNulls">0</Property>
+               <Property Name="SignOption">0</Property>
+               <Property Name="SortingOrder">0</Property>
+               <Property Name="ArrayHandling">0</Property>
+               <Property Name="SyncIndicator">0</Property>
+               <Property Name="PadChar"/>
+               <Property Name="ExtendedPrecision">0</Property>
+               <Property Name="TaggedSubrec">0</Property>
+               <Property Name="OccursVarying">0</Property>
+               <Property Name="PKeyIsCaseless">0</Property>
+               <Property Name="SCDPurpose">0</Property>
+            </SubRecord>
+         </Collection>
+         <Collection Name="MetaBag" Type="MetaProperty">
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">DiskWriteInc</Property>
+               <Property Name="Value">1048576</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">BufFreeRun</Property>
+               <Property Name="Value">50</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">MaxMemBufSize</Property>
+               <Property Name="Value">3145728</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">QueueUpperSize</Property>
+               <Property Name="Value">0</Property>
+            </SubRecord>
+         </Collection>
+         <Property Name="LeftTextPos">621</Property>
+         <Property Name="TopTextPos">170</Property>
+         <Property Name="LinkMinimised">0</Property>
+      </Record>
+      <Record Identifier="V0S1P1" Type="CustomOutput" Readonly="0">
+         <Property Name="Name">DSLink5</Property>
+         <Property Name="Partner">V0S6|V0S6P2</Property>
+         <Collection Name="Properties" Type="CustomProperty">
+            <SubRecord>
+               <Property Name="Name">schema</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">selection</Property>
+               <Property Name="Value">file</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">keepPartitions</Property>
+               <Property Name="Value">\(20)</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">rejects</Property>
+               <Property Name="Value">continue</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">reportProgress</Property>
+               <Property Name="Value">yes</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">firstLineColumnNames</Property>
+               <Property Name="Value">firstLineColumnNames</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">file\(20)</Property>
+               <Property Name="Value">\(2)\(2)0\(1)\(3)file \(2)C:\temp\horas.txt\(2)0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">missingFile</Property>
+               <Property Name="Value">\(20)</Property>
+            </SubRecord>
+         </Collection>
+         <Collection Name="Columns" Type="OutputColumn">
+            <SubRecord>
+               <Property Name="Name">ssn</Property>
+               <Property Name="SqlType">2</Property>
+               <Property Name="Precision">4</Property>
+               <Property Name="Scale">0</Property>
+               <Property Name="Nullable">0</Property>
+               <Property Name="KeyPosition">0</Property>
+               <Property Name="DisplaySize">0</Property>
+               <Property Name="Group">0</Property>
+               <Property Name="SortKey">0</Property>
+               <Property Name="SortType">0</Property>
+               <Property Name="AllowCRLF">0</Property>
+               <Property Name="LevelNo">0</Property>
+               <Property Name="Occurs">0</Property>
+               <Property Name="PadNulls">0</Property>
+               <Property Name="SignOption">0</Property>
+               <Property Name="SortingOrder">0</Property>
+               <Property Name="ArrayHandling">0</Property>
+               <Property Name="SyncIndicator">0</Property>
+               <Property Name="PadChar"/>
+               <Property Name="ExtendedPrecision">0</Property>
+               <Property Name="TaggedSubrec">0</Property>
+               <Property Name="OccursVarying">0</Property>
+               <Property Name="PKeyIsCaseless">0</Property>
+               <Property Name="SCDPurpose">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">mes</Property>
+               <Property Name="SqlType">2</Property>
+               <Property Name="Precision">2</Property>
+               <Property Name="Scale">0</Property>
+               <Property Name="Nullable">0</Property>
+               <Property Name="KeyPosition">0</Property>
+               <Property Name="DisplaySize">0</Property>
+               <Property Name="Group">0</Property>
+               <Property Name="SortKey">0</Property>
+               <Property Name="SortType">0</Property>
+               <Property Name="AllowCRLF">0</Property>
+               <Property Name="LevelNo">0</Property>
+               <Property Name="Occurs">0</Property>
+               <Property Name="PadNulls">0</Property>
+               <Property Name="SignOption">0</Property>
+               <Property Name="SortingOrder">0</Property>
+               <Property Name="ArrayHandling">0</Property>
+               <Property Name="SyncIndicator">0</Property>
+               <Property Name="PadChar"/>
+               <Property Name="ExtendedPrecision">0</Property>
+               <Property Name="TaggedSubrec">0</Property>
+               <Property Name="OccursVarying">0</Property>
+               <Property Name="PKeyIsCaseless">0</Property>
+               <Property Name="SCDPurpose">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">horas</Property>
+               <Property Name="SqlType">2</Property>
+               <Property Name="Precision">3</Property>
+               <Property Name="Scale">0</Property>
+               <Property Name="Nullable">0</Property>
+               <Property Name="KeyPosition">0</Property>
+               <Property Name="DisplaySize">0</Property>
+               <Property Name="Group">0</Property>
+               <Property Name="SortKey">0</Property>
+               <Property Name="SortType">0</Property>
+               <Property Name="AllowCRLF">0</Property>
+               <Property Name="LevelNo">0</Property>
+               <Property Name="Occurs">0</Property>
+               <Property Name="PadNulls">0</Property>
+               <Property Name="SignOption">0</Property>
+               <Property Name="SortingOrder">0</Property>
+               <Property Name="ArrayHandling">0</Property>
+               <Property Name="SyncIndicator">0</Property>
+               <Property Name="PadChar"/>
+               <Property Name="ExtendedPrecision">0</Property>
+               <Property Name="TaggedSubrec">0</Property>
+               <Property Name="OccursVarying">0</Property>
+               <Property Name="PKeyIsCaseless">0</Property>
+               <Property Name="SCDPurpose">0</Property>
+            </SubRecord>
+         </Collection>
+         <Collection Name="MetaBag" Type="MetaProperty">
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">SchemaFormat</Property>
+               <Property Name="Value">final_delim=end, delim=&apos;,&apos;</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">DiskWriteInc</Property>
+               <Property Name="Value">1048576</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">BufFreeRun</Property>
+               <Property Name="Value">50</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">MaxMemBufSize</Property>
+               <Property Name="Value">3145728</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">QueueUpperSize</Property>
+               <Property Name="Value">0</Property>
+            </SubRecord>
+         </Collection>
+         <Property Name="LeftTextPos">308</Property>
+         <Property Name="TopTextPos">197</Property>
+         <Property Name="LinkMinimised">0</Property>
+      </Record>
+      <Record Identifier="V0S6" Type="CustomStage" Readonly="0">
+         <Property Name="Name">Join_6</Property>
+         <Property Name="NextID">4</Property>
+         <Property Name="InputPins">V0S6P1|V0S6P2</Property>
+         <Property Name="OutputPins">V0S6P3</Property>
+         <Property Name="StageType">PxJoin</Property>
+         <Property Name="AllowColumnMapping">0</Property>
+         <Collection Name="Properties" Type="CustomProperty">
+            <SubRecord>
+               <Property Name="Name">operator</Property>
+               <Property Name="Value">innerjoin</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">key</Property>
+               <Property Name="Value">\(2)\(2)0\(1)\(3)key\(2)ssn\(2)0</Property>
+            </SubRecord>
+         </Collection>
+         <Property Name="NextRecordID">0</Property>
+      </Record>
+      <Record Identifier="V0S6P1" Type="CustomInput" Readonly="0">
+         <Property Name="Name">DSLink3</Property>
+         <Property Name="Partner">V0S0|V0S0P1</Property>
+         <Property Name="LinkType">1</Property>
+         <Property Name="ConditionNotMet">fail</Property>
+         <Property Name="LookupFail">fail</Property>
+         <Collection Name="MetaBag" Type="MetaProperty">
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">RTColumnProp</Property>
+               <Property Name="Value">0</Property>
+            </SubRecord>
+         </Collection>
+         <Property Name="TransactionSize">0</Property>
+         <Property Name="TXNBehaviour">0</Property>
+         <Property Name="EnableTxGroup">0</Property>
+         <Property Name="LinkMinimised">0</Property>
+      </Record>
+      <Record Identifier="V0S6P2" Type="CustomInput" Readonly="0">
+         <Property Name="Name">DSLink5</Property>
+         <Property Name="Partner">V0S1|V0S1P1</Property>
+         <Property Name="LinkType">1</Property>
+         <Property Name="ConditionNotMet">fail</Property>
+         <Property Name="LookupFail">fail</Property>
+         <Collection Name="MetaBag" Type="MetaProperty">
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">RTColumnProp</Property>
+               <Property Name="Value">0</Property>
+            </SubRecord>
+         </Collection>
+         <Property Name="TransactionSize">0</Property>
+         <Property Name="TXNBehaviour">0</Property>
+         <Property Name="EnableTxGroup">0</Property>
+         <Property Name="LinkMinimised">0</Property>
+      </Record>
+      <Record Identifier="V0S6P3" Type="CustomOutput" Readonly="0">
+         <Property Name="Name">DSLink8</Property>
+         <Property Name="Partner">V0S10|V0S10P1</Property>
+         <Collection Name="Columns" Type="OutputColumn">
+            <SubRecord>
+               <Property Name="Name">ssn</Property>
+               <Property Name="SqlType">2</Property>
+               <Property Name="Precision">4</Property>
+               <Property Name="Scale">0</Property>
+               <Property Name="Nullable">0</Property>
+               <Property Name="KeyPosition">0</Property>
+               <Property Name="DisplaySize">0</Property>
+               <Property Name="Derivation">DSLink3.ssn</Property>
+               <Property Name="Group">0</Property>
+               <Property Name="ParsedDerivation">DSLink3.ssn</Property>
+               <Property Name="SourceColumn">DSLink3.ssn</Property>
+               <Property Name="SortKey">0</Property>
+               <Property Name="SortType">0</Property>
+               <Property Name="AllowCRLF">0</Property>
+               <Property Name="LevelNo">0</Property>
+               <Property Name="Occurs">0</Property>
+               <Property Name="PadNulls">0</Property>
+               <Property Name="SignOption">0</Property>
+               <Property Name="SortingOrder">0</Property>
+               <Property Name="ArrayHandling">0</Property>
+               <Property Name="SyncIndicator">0</Property>
+               <Property Name="PadChar"/>
+               <Property Name="ExtendedPrecision">0</Property>
+               <Property Name="TaggedSubrec">0</Property>
+               <Property Name="OccursVarying">0</Property>
+               <Property Name="PKeyIsCaseless">0</Property>
+               <Property Name="SCDPurpose">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">nombre</Property>
+               <Property Name="SqlType">12</Property>
+               <Property Name="Precision">15</Property>
+               <Property Name="Scale">0</Property>
+               <Property Name="Nullable">0</Property>
+               <Property Name="KeyPosition">0</Property>
+               <Property Name="DisplaySize">0</Property>
+               <Property Name="Derivation">DSLink3.nombre</Property>
+               <Property Name="Group">0</Property>
+               <Property Name="ParsedDerivation">DSLink3.nombre</Property>
+               <Property Name="SourceColumn">DSLink3.nombre</Property>
+               <Property Name="SortKey">0</Property>
+               <Property Name="SortType">0</Property>
+               <Property Name="AllowCRLF">0</Property>
+               <Property Name="LevelNo">0</Property>
+               <Property Name="Occurs">0</Property>
+               <Property Name="PadNulls">0</Property>
+               <Property Name="SignOption">0</Property>
+               <Property Name="SortingOrder">0</Property>
+               <Property Name="ArrayHandling">0</Property>
+               <Property Name="SyncIndicator">0</Property>
+               <Property Name="PadChar"/>
+               <Property Name="ExtendedPrecision">0</Property>
+               <Property Name="TaggedSubrec">0</Property>
+               <Property Name="OccursVarying">0</Property>
+               <Property Name="PKeyIsCaseless">0</Property>
+               <Property Name="SCDPurpose">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">Valhora</Property>
+               <Property Name="SqlType">2</Property>
+               <Property Name="Precision">4</Property>
+               <Property Name="Scale">0</Property>
+               <Property Name="Nullable">0</Property>
+               <Property Name="KeyPosition">0</Property>
+               <Property Name="DisplaySize">0</Property>
+               <Property Name="Derivation">DSLink3.Valhora</Property>
+               <Property Name="Group">0</Property>
+               <Property Name="ParsedDerivation">DSLink3.Valhora</Property>
+               <Property Name="SourceColumn">DSLink3.Valhora</Property>
+               <Property Name="SortKey">0</Property>
+               <Property Name="SortType">0</Property>
+               <Property Name="AllowCRLF">0</Property>
+               <Property Name="LevelNo">0</Property>
+               <Property Name="Occurs">0</Property>
+               <Property Name="PadNulls">0</Property>
+               <Property Name="SignOption">0</Property>
+               <Property Name="SortingOrder">0</Property>
+               <Property Name="ArrayHandling">0</Property>
+               <Property Name="SyncIndicator">0</Property>
+               <Property Name="PadChar"/>
+               <Property Name="ExtendedPrecision">0</Property>
+               <Property Name="TaggedSubrec">0</Property>
+               <Property Name="OccursVarying">0</Property>
+               <Property Name="PKeyIsCaseless">0</Property>
+               <Property Name="SCDPurpose">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">mes</Property>
+               <Property Name="SqlType">2</Property>
+               <Property Name="Precision">2</Property>
+               <Property Name="Scale">0</Property>
+               <Property Name="Nullable">0</Property>
+               <Property Name="KeyPosition">0</Property>
+               <Property Name="DisplaySize">0</Property>
+               <Property Name="Derivation">DSLink5.mes</Property>
+               <Property Name="Group">0</Property>
+               <Property Name="ParsedDerivation">DSLink5.mes</Property>
+               <Property Name="SourceColumn">DSLink5.mes</Property>
+               <Property Name="SortKey">0</Property>
+               <Property Name="SortType">0</Property>
+               <Property Name="AllowCRLF">0</Property>
+               <Property Name="LevelNo">0</Property>
+               <Property Name="Occurs">0</Property>
+               <Property Name="PadNulls">0</Property>
+               <Property Name="SignOption">0</Property>
+               <Property Name="SortingOrder">0</Property>
+               <Property Name="ArrayHandling">0</Property>
+               <Property Name="SyncIndicator">0</Property>
+               <Property Name="PadChar"/>
+               <Property Name="ExtendedPrecision">0</Property>
+               <Property Name="TaggedSubrec">0</Property>
+               <Property Name="OccursVarying">0</Property>
+               <Property Name="PKeyIsCaseless">0</Property>
+               <Property Name="SCDPurpose">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">horas</Property>
+               <Property Name="SqlType">2</Property>
+               <Property Name="Precision">3</Property>
+               <Property Name="Scale">0</Property>
+               <Property Name="Nullable">0</Property>
+               <Property Name="KeyPosition">0</Property>
+               <Property Name="DisplaySize">0</Property>
+               <Property Name="Derivation">DSLink5.horas</Property>
+               <Property Name="Group">0</Property>
+               <Property Name="ParsedDerivation">DSLink5.horas</Property>
+               <Property Name="SourceColumn">DSLink5.horas</Property>
+               <Property Name="SortKey">0</Property>
+               <Property Name="SortType">0</Property>
+               <Property Name="AllowCRLF">0</Property>
+               <Property Name="LevelNo">0</Property>
+               <Property Name="Occurs">0</Property>
+               <Property Name="PadNulls">0</Property>
+               <Property Name="SignOption">0</Property>
+               <Property Name="SortingOrder">0</Property>
+               <Property Name="ArrayHandling">0</Property>
+               <Property Name="SyncIndicator">0</Property>
+               <Property Name="PadChar"/>
+               <Property Name="ExtendedPrecision">0</Property>
+               <Property Name="TaggedSubrec">0</Property>
+               <Property Name="OccursVarying">0</Property>
+               <Property Name="PKeyIsCaseless">0</Property>
+               <Property Name="SCDPurpose">0</Property>
+            </SubRecord>
+         </Collection>
+         <Collection Name="MetaBag" Type="MetaProperty">
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">DiskWriteInc</Property>
+               <Property Name="Value">1048576</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">BufFreeRun</Property>
+               <Property Name="Value">50</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">MaxMemBufSize</Property>
+               <Property Name="Value">3145728</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">QueueUpperSize</Property>
+               <Property Name="Value">0</Property>
+            </SubRecord>
+         </Collection>
+         <Property Name="LeftTextPos">486</Property>
+         <Property Name="TopTextPos">179</Property>
+         <Property Name="LinkMinimised">0</Property>
+      </Record>
+      <Record Identifier="V0S9" Type="CustomStage" Readonly="0">
+         <Property Name="Name">Data_Set_9</Property>
+         <Property Name="NextID">3</Property>
+         <Property Name="InputPins">V0S9P2</Property>
+         <Property Name="StageType">PxDataSet</Property>
+         <Property Name="AllowColumnMapping">0</Property>
+         <Property Name="NextRecordID">0</Property>
+      </Record>
+      <Record Identifier="V0S9P2" Type="CustomInput" Readonly="0">
+         <Property Name="Name">DSLink11</Property>
+         <Property Name="Partner">V0S10|V0S10P2</Property>
+         <Property Name="LinkType">1</Property>
+         <Property Name="ConditionNotMet">fail</Property>
+         <Property Name="LookupFail">fail</Property>
+         <Collection Name="Properties" Type="CustomProperty">
+            <SubRecord>
+               <Property Name="Name">dataset</Property>
+               <Property Name="Value">C:\temp\dsvulnera.ds</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">datasetmode</Property>
+               <Property Name="Value">&gt;| [ds</Property>
+            </SubRecord>
+         </Collection>
+         <Collection Name="MetaBag" Type="MetaProperty">
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">RTColumnProp</Property>
+               <Property Name="Value">0</Property>
+            </SubRecord>
+         </Collection>
+         <Property Name="TransactionSize">0</Property>
+         <Property Name="TXNBehaviour">0</Property>
+         <Property Name="EnableTxGroup">0</Property>
+         <Property Name="LinkMinimised">0</Property>
+      </Record>
+   </Job>
+   <Job Identifier="Job_Vulnera2" DateModified="2021-05-04" TimeModified="14.44.36">
+      <Record Identifier="ROOT" Type="JobDefn" Readonly="0">
+         <Property Name="Name">Job_Vulnera2</Property>
+         <Property Name="NextID">1</Property>
+         <Property Name="Container">V0</Property>
+         <Property Name="JobVersion">56.0.0</Property>
+         <Property Name="ControlAfterSubr">0</Property>
+         <Collection Name="Parameters" Type="Parameters">
+            <SubRecord>
+               <Property Name="Name">P_mes</Property>
+               <Property Name="Prompt">P_mes</Property>
+               <Property Name="Default">0</Property>
+               <Property Name="ParamType">2</Property>
+               <Property Name="ParamLength">0</Property>
+               <Property Name="ParamScale">0</Property>
+            </SubRecord>
+         </Collection>
+         <Collection Name="MetaBag" Type="MetaProperty">
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">AdvancedRuntimeOptions</Property>
+               <Property Name="Value">#DSProjectARTOptions#</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">TraceMode</Property>
+               <Property Name="Value">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">TraceSeq</Property>
+               <Property Name="Value">1</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">TraceRecords</Property>
+               <Property Name="Value">100</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">TraceSkip</Property>
+               <Property Name="Value">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">TracePeriod</Property>
+               <Property Name="Value">1</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">RecordJobPerformanceData</Property>
+               <Property Name="Value">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">IdentList</Property>
+               <Property Name="Value">Transformer_15|Sequential_File_18</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">ClientCodePage</Property>
+               <Property Name="Value">1252</Property>
+            </SubRecord>
+         </Collection>
+         <Property Name="NULLIndicatorPosition">0</Property>
+         <Property Name="OrchestrateCode" PreFormatted="1">#################################################################
+#### STAGE: Data_Set_9
+## Operator
+copy
+## General options
+[ident(&apos;Data_Set_9&apos;)]
+## Inputs
+0&lt; [ds] &apos;C:\\temp\\dsvulnera.ds&apos;
+## Outputs
+0&gt; [modify (
+  ssn:not_nullable decimal[4,0]=ssn;
+  nombre:not_nullable string[max=15]=nombre;
+  Valhora:not_nullable decimal[4,0]=Valhora;
+  mes:not_nullable decimal[2,0]=mes;
+  horas:not_nullable decimal[3,0]=horas;
+keep
+  ssn,nombre,Valhora,mes,
+  horas;
+)] &apos;Data_Set_9:DSLink11.v&apos;
+;
+
+#################################################################
+#### STAGE: Transformer_15
+## Operator
+transform
+## Operator options
+-flag run
+-name &apos;V0S15_Job_Vulnera2_Transformer_15&apos;
+
+## General options
+[ident(&apos;Transformer_15&apos;); jobmon_ident(&apos;Transformer_15&apos;)]
+## Inputs
+0&lt; [] &apos;Data_Set_9:DSLink11.v&apos;
+## Outputs
+0&gt; [] &apos;Transformer_15:DSLink17.v&apos;
+;
+
+#################################################################
+#### STAGE: Sequential_File_18
+## Operator
+export
+## Operator options
+-schema record
+  {final_delim=end, delim=&apos;,&apos;}
+(
+  nombre:string[max=11];
+  Valhora:decimal[5,0];
+)
+-file &apos;C:\\temp\\Vulnera.txt&apos;
+-overwrite
+-rejects continue
+
+## General options
+[ident(&apos;Sequential_File_18&apos;); jobmon_ident(&apos;Sequential_File_18&apos;)]
+## Inputs
+0&lt; [] &apos;Transformer_15:DSLink17.v&apos;
+;
+
+</Property>
+         <Property Name="IsTemplate">0</Property>
+         <Property Name="NLSLocale">,,,,</Property>
+         <Property Name="JobType">3</Property>
+         <Property Name="Category">\Jobs</Property>
+         <Property Name="CenturyBreakYear">30</Property>
+         <Property Name="NextAliasID">2</Property>
+         <Property Name="ParameterFileDDName">DD00001</Property>
+         <Property Name="ReservedWordCheck">1</Property>
+         <Property Name="TransactionSize">0</Property>
+         <Property Name="ValidationStatus">0</Property>
+         <Property Name="Uploadable">0</Property>
+         <Property Name="PgmCustomizationFlag">0</Property>
+         <Property Name="JobReportFlag">0</Property>
+         <Property Name="AllowMultipleInvocations">0</Property>
+         <Property Name="Act2ActOverideDefaults">0</Property>
+         <Property Name="Act2ActEnableRowBuffer">0</Property>
+         <Property Name="Act2ActUseIPC">0</Property>
+         <Property Name="Act2ActBufferSize">0</Property>
+         <Property Name="Act2ActIPCTimeout">0</Property>
+         <Property Name="ExpressionSemanticCheckFlag">0</Property>
+         <Property Name="TraceOption">0</Property>
+         <Property Name="EnableCacheSharing">0</Property>
+         <Property Name="RuntimeColumnPropagation">0</Property>
+         <Property Name="RelStagesInJobStatus">-1</Property>
+         <Property Name="WebServiceEnabled">0</Property>
+         <Property Name="MFProcessMetaData">0</Property>
+         <Property Name="MFProcessMetaDataXMLFileExchangeMethod">0</Property>
+         <Property Name="IMSProgType">0</Property>
+         <Property Name="CopyLibPrefix">ARDT</Property>
+         <Property Name="RecordPerformanceResults">0</Property>
+      </Record>
+      <Record Identifier="V0" Type="ContainerView" Readonly="0">
+         <Property Name="Name">Job</Property>
+         <Property Name="NextID">1</Property>
+         <Property Name="IsTopLevel">0</Property>
+         <Property Name="StageList">V0S9|V0S15|V0S18</Property>
+         <Property Name="StageXPos">48|288|528</Property>
+         <Property Name="StageYPos">168|168|168</Property>
+         <Property Name="StageTypes">CCustomStage|CTransformerStage|CCustomStage</Property>
+         <Property Name="NextStageID">19</Property>
+         <Property Name="SnapToGrid">1</Property>
+         <Property Name="GridLines">0</Property>
+         <Property Name="ZoomValue">100</Property>
+         <Property Name="StageXSize">48|48|48</Property>
+         <Property Name="StageYSize">48|48|48</Property>
+         <Property Name="ContainerViewSizing">0026 0026 0738 0250 0000 0001 0000 0080</Property>
+         <Property Name="StageNames">Data_Set_9|Transformer_15|Sequential_File_18</Property>
+         <Property Name="StageTypeIDs">PxDataSet|CTransformerStage|PxSequentialFile</Property>
+         <Property Name="LinkNames">DSLink11|DSLink17|\(20)</Property>
+         <Property Name="LinkHasMetaDatas">True|True|\(20)</Property>
+         <Property Name="LinkTypes">1|1|\(20)</Property>
+         <Property Name="LinkNamePositionXs">157|406|\(20)</Property>
+         <Property Name="LinkNamePositionYs">177|175|\(20)</Property>
+         <Property Name="TargetStageIDs">V0S15|V0S18|\(20)</Property>
+         <Property Name="SourceStageEffectiveExecutionModes">2|2|\(20)</Property>
+         <Property Name="SourceStageRuntimeExecutionModes">2|2|\(20)</Property>
+         <Property Name="TargetStageEffectiveExecutionModes">2|1|\(20)</Property>
+         <Property Name="TargetStageRuntimeExecutionModes">2|1|\(20)</Property>
+         <Property Name="LinkIsSingleOperatorLookup">False|False|\(20)</Property>
+         <Property Name="LinkIsSortSequential">False|False|\(20)</Property>
+         <Property Name="LinkSortMode">0|0|\(20)</Property>
+         <Property Name="LinkPartColMode">1|1|\(20)</Property>
+         <Property Name="LinkSourcePinIDs">V0S9P3|V0S15P2|\(20)</Property>
+      </Record>
+      <Record Identifier="V0S15" Type="TransformerStage" Readonly="0">
+         <Property Name="Name">Transformer_15</Property>
+         <Property Name="NextID">3</Property>
+         <Property Name="InputPins">V0S15P1</Property>
+         <Property Name="OutputPins">V0S15P2</Property>
+         <Collection Name="MetaBag" Type="MetaProperty">
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">TrxGenCode</Property>
+               <Property Name="Value" PreFormatted="1">//
+// Generated file to implement the V0S15_Job_Vulnera2_Transformer_15 transform operator.
+//
+
+// define our input/output link names
+inputname 0 DSLink11;
+outputname 0 DSLink17;
+
+initialize {
+ // define our control variables
+ int8 RowRejected0;
+ int8 NullSetVar0;
+
+ // declare our intermediate variables for this section (1)
+ decimal InterVar0_0;
+ decimal InterVar0_1;
+
+ // initialise constant values which require conversion
+ InterVar0_0 = 4567;
+ InterVar0_1 = 10;
+}
+
+mainloop {
+
+ // initialise the rejected row variable
+ RowRejected0 = 1;
+
+ // evaluate columns (no constraints) for link: DSLink17
+ DSLink17.nombre = DSLink11.nombre;
+ if ((DSLink11.ssn == InterVar0_0)) {
+  DSLink17.Valhora = ((DSLink11.horas * DSLink11.Valhora) * InterVar0_1);
+ } else {
+  DSLink17.Valhora = (DSLink11.horas * DSLink11.Valhora);
+ }
+ //;
+ writerecord 0;
+ RowRejected0 = 0;
+}
+
+finish {
+}
+</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">TrxGenCache</Property>
+               <Property Name="Value">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">TrxGenWarnings</Property>
+               <Property Name="Value" PreFormatted="1">Transformer_15
+   WARNING: Error in output column derivation expression for column Valhora in link DSLink17. 
+       - potential data or precision loss converting from int32 to decimal
+</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">TrxClassName</Property>
+               <Property Name="Value">V0S15_Job_Vulnera2_Transformer_15</Property>
+            </SubRecord>
+         </Collection>
+         <Property Name="ValidationStatus">0</Property>
+         <Property Name="StageType">CTransformerStage</Property>
+         <Property Name="BlockSize">0</Property>
+         <Property Name="StageVarsMinimised">0</Property>
+         <Property Name="LoopVarsMaximised">0</Property>
+         <Property Name="MaxLoopIterations">0</Property>
+      </Record>
+      <Record Identifier="V0S15P1" Type="TrxInput" Readonly="0">
+         <Property Name="Name">DSLink11</Property>
+         <Property Name="Partner">V0S9|V0S9P3</Property>
+         <Property Name="LinkType">1</Property>
+         <Collection Name="MetaBag" Type="MetaProperty">
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">RTColumnProp</Property>
+               <Property Name="Value">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">Schema</Property>
+               <Property Name="Value" PreFormatted="1">record
+(
+  ssn:decimal[4,0];
+  nombre:string[max=15];
+  Valhora:decimal[4,0];
+  mes:decimal[2,0];
+  horas:decimal[3,0];
+)</Property>
+            </SubRecord>
+         </Collection>
+         <Property Name="MultiRow">0</Property>
+         <Property Name="LinkMinimised">0</Property>
+      </Record>
+      <Record Identifier="V0S15P2" Type="TrxOutput" Readonly="0">
+         <Property Name="Name">DSLink17</Property>
+         <Property Name="Partner">V0S18|V0S18P1</Property>
+         <Property Name="Reject">0</Property>
+         <Property Name="ErrorPin">0</Property>
+         <Property Name="RowLimit">0</Property>
+         <Collection Name="Columns" Type="OutputColumn">
+            <SubRecord>
+               <Property Name="Name">nombre</Property>
+               <Property Name="SqlType">12</Property>
+               <Property Name="Precision">11</Property>
+               <Property Name="Scale">0</Property>
+               <Property Name="Nullable">0</Property>
+               <Property Name="KeyPosition">0</Property>
+               <Property Name="DisplaySize">0</Property>
+               <Property Name="Derivation">DSLink11.nombre</Property>
+               <Property Name="Group">0</Property>
+               <Property Name="ParsedDerivation">DSLink11.nombre</Property>
+               <Property Name="SourceColumn">DSLink11.nombre</Property>
+               <Property Name="SortKey">0</Property>
+               <Property Name="SortType">0</Property>
+               <Property Name="AllowCRLF">0</Property>
+               <Property Name="LevelNo">0</Property>
+               <Property Name="Occurs">0</Property>
+               <Property Name="PadNulls">0</Property>
+               <Property Name="SignOption">0</Property>
+               <Property Name="SortingOrder">0</Property>
+               <Property Name="ArrayHandling">0</Property>
+               <Property Name="SyncIndicator">0</Property>
+               <Property Name="PadChar"/>
+               <Property Name="ExtendedPrecision">0</Property>
+               <Property Name="TaggedSubrec">0</Property>
+               <Property Name="OccursVarying">0</Property>
+               <Property Name="PKeyIsCaseless">0</Property>
+               <Property Name="SCDPurpose">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">Valhora</Property>
+               <Property Name="SqlType">2</Property>
+               <Property Name="Precision">5</Property>
+               <Property Name="Scale">0</Property>
+               <Property Name="Nullable">0</Property>
+               <Property Name="KeyPosition">0</Property>
+               <Property Name="DisplaySize">0</Property>
+               <Property Name="Derivation">If DSLink11.ssn = 4567 Then DSLink11.horas* DSLink11.Valhora*10 Else DSLink11.horas* DSLink11.Valhora\(20)</Property>
+               <Property Name="Group">0</Property>
+               <Property Name="ParsedDerivation">\(20)If DSLink11.ssn = 4567 Then DSLink11.horas * DSLink11.Valhora * 10 Else DSLink11.horas * DSLink11.Valhora</Property>
+               <Property Name="SourceColumn">DSLink11.ssn;DSLink11.horas;DSLink11.Valhora</Property>
+               <Property Name="SortKey">0</Property>
+               <Property Name="SortType">0</Property>
+               <Property Name="AllowCRLF">0</Property>
+               <Property Name="LevelNo">0</Property>
+               <Property Name="Occurs">0</Property>
+               <Property Name="PadNulls">0</Property>
+               <Property Name="SignOption">0</Property>
+               <Property Name="SortingOrder">0</Property>
+               <Property Name="ArrayHandling">0</Property>
+               <Property Name="SyncIndicator">0</Property>
+               <Property Name="PadChar"/>
+               <Property Name="ExtendedPrecision">0</Property>
+               <Property Name="TaggedSubrec">0</Property>
+               <Property Name="OccursVarying">0</Property>
+               <Property Name="PKeyIsCaseless">0</Property>
+               <Property Name="SCDPurpose">0</Property>
+            </SubRecord>
+         </Collection>
+         <Collection Name="MetaBag" Type="MetaProperty">
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">DiskWriteInc</Property>
+               <Property Name="Value">1048576</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">BufFreeRun</Property>
+               <Property Name="Value">50</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">MaxMemBufSize</Property>
+               <Property Name="Value">3145728</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">QueueUpperSize</Property>
+               <Property Name="Value">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">Schema</Property>
+               <Property Name="Value" PreFormatted="1">record
+(
+  nombre:string[max=11];
+  Valhora:decimal[5,0];
+)</Property>
+            </SubRecord>
+         </Collection>
+         <Property Name="LeftTextPos">406</Property>
+         <Property Name="TopTextPos">175</Property>
+         <Property Name="LinkMinimised">0</Property>
+      </Record>
+      <Record Identifier="V0S18" Type="CustomStage" Readonly="0">
+         <Property Name="Name">Sequential_File_18</Property>
+         <Property Name="NextID">2</Property>
+         <Property Name="InputPins">V0S18P1</Property>
+         <Property Name="StageType">PxSequentialFile</Property>
+         <Property Name="AllowColumnMapping">0</Property>
+         <Property Name="NextRecordID">0</Property>
+      </Record>
+      <Record Identifier="V0S18P1" Type="CustomInput" Readonly="0">
+         <Property Name="Name">DSLink17</Property>
+         <Property Name="Partner">V0S15|V0S15P2</Property>
+         <Property Name="LinkType">1</Property>
+         <Property Name="ConditionNotMet">fail</Property>
+         <Property Name="LookupFail">fail</Property>
+         <Collection Name="Properties" Type="CustomProperty">
+            <SubRecord>
+               <Property Name="Name">schema</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">file</Property>
+               <Property Name="Value">\(2)\(2)0\(1)\(3)file\(2)C:\temp\Vulnera.txt\(2)0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">append\overwrite</Property>
+               <Property Name="Value">overwrite</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">nocleanup</Property>
+               <Property Name="Value">\(20)</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">rejects</Property>
+               <Property Name="Value">continue</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">firstLineColumnNames</Property>
+               <Property Name="Value">\(20)</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">writemethod</Property>
+               <Property Name="Value">\(2)\(2)0\(1)\(3)writemethod\(2) \(2)0</Property>
+            </SubRecord>
+         </Collection>
+         <Collection Name="MetaBag" Type="MetaProperty">
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">RTColumnProp</Property>
+               <Property Name="Value">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">SchemaFormat</Property>
+               <Property Name="Value">final_delim=end, delim=&apos;,&apos;</Property>
+            </SubRecord>
+         </Collection>
+         <Property Name="TransactionSize">0</Property>
+         <Property Name="TXNBehaviour">0</Property>
+         <Property Name="EnableTxGroup">0</Property>
+         <Property Name="LinkMinimised">0</Property>
+      </Record>
+      <Record Identifier="V0S9" Type="CustomStage" Readonly="0">
+         <Property Name="Name">Data_Set_9</Property>
+         <Property Name="NextID">4</Property>
+         <Property Name="OutputPins">V0S9P3</Property>
+         <Property Name="StageType">PxDataSet</Property>
+         <Property Name="AllowColumnMapping">0</Property>
+         <Property Name="NextRecordID">0</Property>
+      </Record>
+      <Record Identifier="V0S9P3" Type="CustomOutput" Readonly="0">
+         <Property Name="Name">DSLink11</Property>
+         <Property Name="Partner">V0S15|V0S15P1</Property>
+         <Collection Name="Properties" Type="CustomProperty">
+            <SubRecord>
+               <Property Name="Name">dataset</Property>
+               <Property Name="Value">C:\temp\dsvulnera.ds</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">missingcolmode</Property>
+               <Property Name="Value">\(20)</Property>
+            </SubRecord>
+         </Collection>
+         <Collection Name="Columns" Type="OutputColumn">
+            <SubRecord>
+               <Property Name="Name">ssn</Property>
+               <Property Name="SqlType">2</Property>
+               <Property Name="Precision">4</Property>
+               <Property Name="Scale">0</Property>
+               <Property Name="Nullable">0</Property>
+               <Property Name="KeyPosition">0</Property>
+               <Property Name="DisplaySize">0</Property>
+               <Property Name="Group">0</Property>
+               <Property Name="SortKey">0</Property>
+               <Property Name="SortType">0</Property>
+               <Property Name="AllowCRLF">0</Property>
+               <Property Name="LevelNo">0</Property>
+               <Property Name="Occurs">0</Property>
+               <Property Name="PadNulls">0</Property>
+               <Property Name="SignOption">0</Property>
+               <Property Name="SortingOrder">0</Property>
+               <Property Name="ArrayHandling">0</Property>
+               <Property Name="SyncIndicator">0</Property>
+               <Property Name="PadChar"/>
+               <Property Name="ExtendedPrecision">0</Property>
+               <Property Name="TaggedSubrec">0</Property>
+               <Property Name="OccursVarying">0</Property>
+               <Property Name="PKeyIsCaseless">0</Property>
+               <Property Name="SCDPurpose">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">nombre</Property>
+               <Property Name="SqlType">12</Property>
+               <Property Name="Precision">15</Property>
+               <Property Name="Scale">0</Property>
+               <Property Name="Nullable">0</Property>
+               <Property Name="KeyPosition">0</Property>
+               <Property Name="DisplaySize">0</Property>
+               <Property Name="Group">0</Property>
+               <Property Name="SortKey">0</Property>
+               <Property Name="SortType">0</Property>
+               <Property Name="AllowCRLF">0</Property>
+               <Property Name="LevelNo">0</Property>
+               <Property Name="Occurs">0</Property>
+               <Property Name="PadNulls">0</Property>
+               <Property Name="SignOption">0</Property>
+               <Property Name="SortingOrder">0</Property>
+               <Property Name="ArrayHandling">0</Property>
+               <Property Name="SyncIndicator">0</Property>
+               <Property Name="PadChar"/>
+               <Property Name="ExtendedPrecision">0</Property>
+               <Property Name="TaggedSubrec">0</Property>
+               <Property Name="OccursVarying">0</Property>
+               <Property Name="PKeyIsCaseless">0</Property>
+               <Property Name="SCDPurpose">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">Valhora</Property>
+               <Property Name="SqlType">2</Property>
+               <Property Name="Precision">4</Property>
+               <Property Name="Scale">0</Property>
+               <Property Name="Nullable">0</Property>
+               <Property Name="KeyPosition">0</Property>
+               <Property Name="DisplaySize">0</Property>
+               <Property Name="Group">0</Property>
+               <Property Name="SortKey">0</Property>
+               <Property Name="SortType">0</Property>
+               <Property Name="AllowCRLF">0</Property>
+               <Property Name="LevelNo">0</Property>
+               <Property Name="Occurs">0</Property>
+               <Property Name="PadNulls">0</Property>
+               <Property Name="SignOption">0</Property>
+               <Property Name="SortingOrder">0</Property>
+               <Property Name="ArrayHandling">0</Property>
+               <Property Name="SyncIndicator">0</Property>
+               <Property Name="PadChar"/>
+               <Property Name="ExtendedPrecision">0</Property>
+               <Property Name="TaggedSubrec">0</Property>
+               <Property Name="OccursVarying">0</Property>
+               <Property Name="PKeyIsCaseless">0</Property>
+               <Property Name="SCDPurpose">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">mes</Property>
+               <Property Name="SqlType">2</Property>
+               <Property Name="Precision">2</Property>
+               <Property Name="Scale">0</Property>
+               <Property Name="Nullable">0</Property>
+               <Property Name="KeyPosition">0</Property>
+               <Property Name="DisplaySize">0</Property>
+               <Property Name="Group">0</Property>
+               <Property Name="SortKey">0</Property>
+               <Property Name="SortType">0</Property>
+               <Property Name="AllowCRLF">0</Property>
+               <Property Name="LevelNo">0</Property>
+               <Property Name="Occurs">0</Property>
+               <Property Name="PadNulls">0</Property>
+               <Property Name="SignOption">0</Property>
+               <Property Name="SortingOrder">0</Property>
+               <Property Name="ArrayHandling">0</Property>
+               <Property Name="SyncIndicator">0</Property>
+               <Property Name="PadChar"/>
+               <Property Name="ExtendedPrecision">0</Property>
+               <Property Name="TaggedSubrec">0</Property>
+               <Property Name="OccursVarying">0</Property>
+               <Property Name="PKeyIsCaseless">0</Property>
+               <Property Name="SCDPurpose">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">horas</Property>
+               <Property Name="SqlType">2</Property>
+               <Property Name="Precision">3</Property>
+               <Property Name="Scale">0</Property>
+               <Property Name="Nullable">0</Property>
+               <Property Name="KeyPosition">0</Property>
+               <Property Name="DisplaySize">0</Property>
+               <Property Name="Group">0</Property>
+               <Property Name="SortKey">0</Property>
+               <Property Name="SortType">0</Property>
+               <Property Name="AllowCRLF">0</Property>
+               <Property Name="LevelNo">0</Property>
+               <Property Name="Occurs">0</Property>
+               <Property Name="PadNulls">0</Property>
+               <Property Name="SignOption">0</Property>
+               <Property Name="SortingOrder">0</Property>
+               <Property Name="ArrayHandling">0</Property>
+               <Property Name="SyncIndicator">0</Property>
+               <Property Name="PadChar"/>
+               <Property Name="ExtendedPrecision">0</Property>
+               <Property Name="TaggedSubrec">0</Property>
+               <Property Name="OccursVarying">0</Property>
+               <Property Name="PKeyIsCaseless">0</Property>
+               <Property Name="SCDPurpose">0</Property>
+            </SubRecord>
+         </Collection>
+         <Collection Name="MetaBag" Type="MetaProperty">
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">DiskWriteInc</Property>
+               <Property Name="Value">1048576</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">BufFreeRun</Property>
+               <Property Name="Value">50</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">MaxMemBufSize</Property>
+               <Property Name="Value">3145728</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">QueueUpperSize</Property>
+               <Property Name="Value">0</Property>
+            </SubRecord>
+         </Collection>
+         <Property Name="LeftTextPos">157</Property>
+         <Property Name="TopTextPos">177</Property>
+         <Property Name="LinkMinimised">0</Property>
+      </Record>
+   </Job>
+   <Job Identifier="Seq_Vulnera" DateModified="2021-05-04" TimeModified="14.44.45">
+      <Record Identifier="ROOT" Type="JobDefn" Readonly="0">
+         <Property Name="Name">Seq_Vulnera</Property>
+         <Property Name="NextID">1</Property>
+         <Property Name="Container">V0</Property>
+         <Property Name="JobVersion">56.0.0</Property>
+         <Property Name="JobControlCode" PreFormatted="1">* Tokens were replaced below as follows:
+* IdV0S0%%Result2%%0 &lt;= Job_Activity_0.$UserStatus
+* IdV0S0%%Result1%%1 &lt;= Job_Activity_0.$JobStatus
+* IdV0S0%%Name%%2 &lt;= Job_Activity_0.$JobName
+* IdV0S1%%Result2%%3 &lt;= Job_Activity_1.$UserStatus
+* IdV0S1%%Result1%%4 &lt;= Job_Activity_1.$JobStatus
+* IdV0S1%%Name%%5 &lt;= Job_Activity_1.$JobName
+*
+*** [Generated at 2021-05-04 14:44:45 - 11.7.0.0]
+   $INCLUDE DSINCLUDE DSJ_XFUNCS.H
+   EQU Time$$ Lit &quot;Oconv(Time(), &apos;MTS:&apos;):&apos;: &apos;&quot;
+****************************************
+* Graphical Sequencer generated code for Job Seq_Vulnera
+****************************************
+   
+   handle$list = &quot;&quot;
+   id$list = &quot;&quot;
+   abort$list = &quot;&quot;
+   b$Abandoning = @False
+   summary$restarting = @False
+*** Sequence start point
+   summary$ = DSMakeMsg(&quot;DSTAGE_JSG_M_0048\Summary of sequence run&quot;, &quot;&quot;)
+   If summary$restarting Then
+      summary$&lt;1,-1&gt; = Time$$:Convert(@VM, &quot; &quot;, DSMakeMsg(&quot;DSTAGE_JSG_M_0049\Sequence restarted after failure&quot;, &quot;&quot;))
+   End Else
+      summary$&lt;1,-1&gt; = Time$$:Convert(@VM, &quot; &quot;, DSMakeMsg(&quot;DSTAGE_JSG_M_0051\Sequence started&quot;, &quot;&quot;))
+   End
+   GoTo L$V0S0$START
+L$RETURN$1:
+   GoTo L$WAITFORJOB
+**************************************************
+L$V0S0$START:
+*** Activity &quot;Job_Activity_0&quot;: Initialize job
+   h$V0S0 = DSAttachJob(&quot;Job_Vulnera1&quot;, DSJ.ERRNONE)
+   If (Not(h$V0S0)) Then
+      msg$ = DSMakeMsg(&quot;DSTAGE_JSG_M_0001\Error calling DSAttachJob(%1)&lt;L&gt;%2&quot;, &quot;Job_Vulnera1&quot;:@FM:DSGetLastErrorMsg())
+      msg$id = &quot;@Job_Activity_0&quot;; GoTo L$ERROR
+   End
+   If DSGetJobInfo(h$V0S0, DSJ.JOBMULTIINVOKABLE) Then
+      jb$V0S0 = &quot;Job_Vulnera1&quot;:&apos;.&apos;:&quot;Job_Activity_0&quot;
+   End Else
+      jb$V0S0 = &quot;Job_Vulnera1&quot;
+   End
+   dummy$ = DSDetachJob(h$V0S0)
+   summary$&lt;1,-1&gt; = Time$$:Convert(@VM, &quot; &quot;, DSMakeMsg(&quot;DSTAGE_JSG_M_0057\%1 (JOB %2) started&quot;, &quot;Job_Activity_0&quot;:@FM:jb$V0S0))
+   h$V0S0 = DSAttachJob(jb$V0S0, DSJ.ERRNONE)
+   If (Not(h$V0S0)) Then
+      msg$ = DSMakeMsg(&quot;DSTAGE_JSG_M_0001\Error calling DSAttachJob(%1)&lt;L&gt;%2&quot;, jb$V0S0:@FM:DSGetLastErrorMsg())
+      msg$id = &quot;@Job_Activity_0&quot;; GoTo L$ERROR
+   End
+   h$V0S0 = DSPrepareJob(h$V0S0)
+   If (Not(h$V0S0)) Then
+      msg$ = DSMakeMsg(&quot;DSTAGE_JSG_M_0012\Error calling DSPrepareJob(%1)&lt;L&gt;%2&quot;, jb$V0S0:@FM:DSGetLastErrorMsg())
+      msg$id = &quot;@Job_Activity_0&quot;; GoTo L$ERROR
+   End
+L$V0S0$PREPARED:
+   p$V0S0$1 = (mes)
+   err$code = DSSetParam(h$V0S0, &quot;P_mes&quot;, p$V0S0$1)
+   If (err$code &lt;&gt; DSJE.NOERROR) Then
+      msg$ = DSMakeMsg(&quot;DSTAGE_JSG_M_0002\Error calling DSSetParam(%1), code=%2[E]&quot;, &quot;P_mes&quot;:@FM:err$code)
+      msg$id = &quot;@Job_Activity_0&quot;; GoTo L$ERROR
+   End
+   err$code = DSRunJob(h$V0S0, DSJ.RUNNORMAL)
+   If (err$code &lt;&gt; DSJE.NOERROR) Then
+      msg$ = DSMakeMsg(&quot;DSTAGE_JSG_M_0003\Error calling DSRunJob(%1), code=%2[E]&quot;, jb$V0S0:@FM:err$code)
+      msg$id = &quot;@Job_Activity_0&quot;; GoTo L$ERROR
+   End
+   handle$list&lt;-1&gt; = h$V0S0
+   id$list&lt;-1&gt; = &quot;V0S0&quot;
+   GoTo L$RETURN$1
+**************************************************
+L$V0S0$FINISHED:
+   job$V0S0$status = DSGetJobInfo(h$V0S0, DSJ.JOBSTATUS)
+   job$V0S0$userstatus = DSGetJobInfo(h$V0S0, DSJ.USERSTATUS)
+   summary$&lt;1,-1&gt; = Time$$:Convert(@VM, &quot; &quot;, DSMakeMsg(&quot;DSTAGE_JSG_M_0063\%1 (JOB %2) finished, status=%3[E]&quot;, &quot;Job_Activity_0&quot;:@FM:jb$V0S0:@FM:job$V0S0$status))
+   IdV0S0%%Result2%%0 = job$V0S0$userstatus
+   IdV0S0%%Result1%%1 = job$V0S0$status
+   IdV0S0%%Name%%2 = jb$V0S0
+   dummy$ = DSDetachJob(h$V0S0)
+   If b$Abandoning Then GoTo L$WAITFORJOB
+   GoTo L$V0S1$START
+L$V0S0$RETURN$1:
+   GoTo L$WAITFORJOB
+**************************************************
+L$V0S1$START:
+*** Activity &quot;Job_Activity_1&quot;: Initialize job
+   h$V0S1 = DSAttachJob(&quot;Job_Vulnera2&quot;, DSJ.ERRNONE)
+   If (Not(h$V0S1)) Then
+      msg$ = DSMakeMsg(&quot;DSTAGE_JSG_M_0001\Error calling DSAttachJob(%1)&lt;L&gt;%2&quot;, &quot;Job_Vulnera2&quot;:@FM:DSGetLastErrorMsg())
+      msg$id = &quot;@Job_Activity_1&quot;; GoTo L$ERROR
+   End
+   If DSGetJobInfo(h$V0S1, DSJ.JOBMULTIINVOKABLE) Then
+      jb$V0S1 = &quot;Job_Vulnera2&quot;:&apos;.&apos;:&quot;Job_Activity_1&quot;
+   End Else
+      jb$V0S1 = &quot;Job_Vulnera2&quot;
+   End
+   dummy$ = DSDetachJob(h$V0S1)
+   summary$&lt;1,-1&gt; = Time$$:Convert(@VM, &quot; &quot;, DSMakeMsg(&quot;DSTAGE_JSG_M_0057\%1 (JOB %2) started&quot;, &quot;Job_Activity_1&quot;:@FM:jb$V0S1))
+   h$V0S1 = DSAttachJob(jb$V0S1, DSJ.ERRNONE)
+   If (Not(h$V0S1)) Then
+      msg$ = DSMakeMsg(&quot;DSTAGE_JSG_M_0001\Error calling DSAttachJob(%1)&lt;L&gt;%2&quot;, jb$V0S1:@FM:DSGetLastErrorMsg())
+      msg$id = &quot;@Job_Activity_1&quot;; GoTo L$ERROR
+   End
+   err$code = DSRunJob(h$V0S1, DSJ.RUNNORMAL)
+   If (err$code &lt;&gt; DSJE.NOERROR) Then
+      msg$ = DSMakeMsg(&quot;DSTAGE_JSG_M_0003\Error calling DSRunJob(%1), code=%2[E]&quot;, jb$V0S1:@FM:err$code)
+      msg$id = &quot;@Job_Activity_1&quot;; GoTo L$ERROR
+   End
+   handle$list&lt;-1&gt; = h$V0S1
+   id$list&lt;-1&gt; = &quot;V0S1&quot;
+   GoTo L$V0S0$RETURN$1
+**************************************************
+L$V0S1$FINISHED:
+   job$V0S1$status = DSGetJobInfo(h$V0S1, DSJ.JOBSTATUS)
+   job$V0S1$userstatus = DSGetJobInfo(h$V0S1, DSJ.USERSTATUS)
+   summary$&lt;1,-1&gt; = Time$$:Convert(@VM, &quot; &quot;, DSMakeMsg(&quot;DSTAGE_JSG_M_0063\%1 (JOB %2) finished, status=%3[E]&quot;, &quot;Job_Activity_1&quot;:@FM:jb$V0S1:@FM:job$V0S1$status))
+   IdV0S1%%Result2%%3 = job$V0S1$userstatus
+   IdV0S1%%Result1%%4 = job$V0S1$status
+   IdV0S1%%Name%%5 = jb$V0S1
+   dummy$ = DSDetachJob(h$V0S1)
+   GoTo L$WAITFORJOB
+**************************************************
+L$WAITFORJOB:
+   If handle$list = &quot;&quot; Then GoTo L$FINISH
+   handle$ = DSWaitForJob(handle$list)
+   If handle$ = 0 Then handle$ = handle$list&lt;1&gt;
+   Locate handle$ In handle$list Setting index$ Then
+      id$ = id$list&lt;index$&gt;
+      Del id$list&lt;index$&gt;; Del handle$list&lt;index$&gt;
+      b$Abandoning = abort$list&lt;index$&gt;; Del abort$list&lt;index$&gt;
+      Begin Case
+      Case id$ = &quot;V0S0&quot;
+         GoTo L$V0S0$FINISHED
+      Case id$ = &quot;V0S1&quot;
+         GoTo L$V0S1$FINISHED
+      End Case
+   End
+* Error if fall though
+   handle$list = &quot;&quot;
+   msg$ = DSMakeMsg(&quot;DSTAGE_JSG_M_0008\Error calling DSWaitForJob(), code=%1[E]&quot;, handle$)
+   msg$id = &quot;@Coordinator&quot;; GoTo L$ERROR
+**************************************************
+L$ERROR:
+   Call DSLogWarn(DSMakeMsg(&quot;DSTAGE_JSG_M_0009\Controller problem: %1&quot;, msg$), msg$id)
+   summary$&lt;1,-1&gt; = Time$$:Convert(@VM, &quot; &quot;, DSMakeMsg(&quot;DSTAGE_JSG_M_0052\Exception raised: %1&quot;, msg$id:&quot;, &quot;:msg$))
+   abort$list = Ifs(handle$list, Str(1:@FM, DCount(handle$list, @FM)), &quot;&quot;)
+   b$Abandoning = @True
+   GoTo L$WAITFORJOB
+L$ABORT:
+   summary$&lt;1,-1&gt; = Time$$:Convert(@VM, &quot; &quot;, DSMakeMsg(&quot;DSTAGE_JSG_M_0056\Sequence failed&quot;, &quot;&quot;))
+   x$masked$summary = summary$
+   Call DSMaskExecArgs(x$masked$summary, &apos;&apos;)
+   Call DSLogInfo(x$masked$summary, &quot;@Coordinator&quot;)
+   Call DSLogFatal(DSMakeMsg(&quot;DSTAGE_JSG_M_0013\Sequence job will abort due to previous unrecoverable errors&quot;, &quot;&quot;), &quot;@Coordinator&quot;)
+**************************************************
+L$FINISH:
+   If b$Abandoning Then GoTo L$ABORT
+   summary$&lt;1,-1&gt; = Time$$:Convert(@VM, &quot; &quot;, DSMakeMsg(&quot;DSTAGE_JSG_M_0054\Sequence finished OK&quot;, &quot;&quot;))
+   x$masked$summary = summary$
+   Call DSMaskExecArgs(x$masked$summary, &apos;&apos;)
+   Call DSLogInfo(x$masked$summary, &quot;@Coordinator&quot;)
+   L$EXIT: Return To L$EXIT
+ 
+</Property>
+         <Property Name="ControlAfterSubr">0</Property>
+         <Collection Name="Parameters" Type="Parameters">
+            <SubRecord>
+               <Property Name="Name">mes</Property>
+               <Property Name="Prompt">mes</Property>
+               <Property Name="ParamType">2</Property>
+               <Property Name="ParamLength">0</Property>
+               <Property Name="ParamScale">0</Property>
+            </SubRecord>
+         </Collection>
+         <Collection Name="MetaBag" Type="MetaProperty">
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">AdvancedRuntimeOptions</Property>
+               <Property Name="Value">#DSProjectARTOptions#</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">SequenceUseGridProperties</Property>
+               <Property Name="Value">0</Property>
+            </SubRecord>
+         </Collection>
+         <Property Name="NULLIndicatorPosition">0</Property>
+         <Collection Name="Dependencies" Type="JobDepend">
+            <SubRecord>
+               <Property Name="Name">Job_Vulnera1</Property>
+               <Property Name="Type">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">Job_Vulnera2</Property>
+               <Property Name="Type">0</Property>
+            </SubRecord>
+         </Collection>
+         <Property Name="IsTemplate">0</Property>
+         <Property Name="NLSLocale">,,,,</Property>
+         <Property Name="JobType">2</Property>
+         <Property Name="Category">\Jobs</Property>
+         <Property Name="CenturyBreakYear">30</Property>
+         <Property Name="NextAliasID">2</Property>
+         <Property Name="ParameterFileDDName">DD00001</Property>
+         <Property Name="ReservedWordCheck">1</Property>
+         <Property Name="TransactionSize">0</Property>
+         <Property Name="ValidationStatus">0</Property>
+         <Property Name="Uploadable">0</Property>
+         <Property Name="PgmCustomizationFlag">0</Property>
+         <Property Name="JobReportFlag">0</Property>
+         <Property Name="AllowMultipleInvocations">0</Property>
+         <Property Name="Act2ActOverideDefaults">0</Property>
+         <Property Name="Act2ActEnableRowBuffer">0</Property>
+         <Property Name="Act2ActUseIPC">0</Property>
+         <Property Name="Act2ActBufferSize">0</Property>
+         <Property Name="Act2ActIPCTimeout">0</Property>
+         <Property Name="ExpressionSemanticCheckFlag">0</Property>
+         <Property Name="TraceOption">0</Property>
+         <Property Name="EnableCacheSharing">0</Property>
+         <Property Name="RuntimeColumnPropagation">0</Property>
+         <Property Name="RelStagesInJobStatus">-1</Property>
+         <Property Name="WebServiceEnabled">0</Property>
+         <Property Name="MFProcessMetaData">0</Property>
+         <Property Name="MFProcessMetaDataXMLFileExchangeMethod">0</Property>
+         <Property Name="IMSProgType">0</Property>
+         <Property Name="CopyLibPrefix">ARDT</Property>
+         <Property Name="RecordPerformanceResults">0</Property>
+      </Record>
+      <Record Identifier="V0" Type="ContainerView" Readonly="0">
+         <Property Name="Name">Job</Property>
+         <Property Name="NextID">1</Property>
+         <Property Name="IsTopLevel">0</Property>
+         <Property Name="StageList">V0S0|V0S1</Property>
+         <Property Name="StageXPos">168|384</Property>
+         <Property Name="StageYPos">96|48</Property>
+         <Property Name="StageTypes">CJSJobActivity|CJSJobActivity</Property>
+         <Property Name="NextStageID">3</Property>
+         <Property Name="SnapToGrid">1</Property>
+         <Property Name="GridLines">0</Property>
+         <Property Name="ZoomValue">100</Property>
+         <Property Name="StageXSize">48|48</Property>
+         <Property Name="StageYSize">48|48</Property>
+         <Property Name="ContainerViewSizing">0078 0078 0790 0302 0000 0001 0000 0000</Property>
+         <Property Name="StageNames">Job_Activity_0|Job_Activity_1</Property>
+         <Property Name="StageTypeIDs">CJobActivity|CJobActivity</Property>
+         <Property Name="LinkNames">DSLink2|\(20)</Property>
+         <Property Name="LinkHasMetaDatas">False|\(20)</Property>
+         <Property Name="LinkTypes">1|\(20)</Property>
+         <Property Name="LinkNamePositionXs">288|\(20)</Property>
+         <Property Name="LinkNamePositionYs">100|\(20)</Property>
+         <Property Name="TargetStageIDs">V0S1|\(20)</Property>
+         <Property Name="SourceStageEffectiveExecutionModes">0|\(20)</Property>
+         <Property Name="SourceStageRuntimeExecutionModes">0|\(20)</Property>
+         <Property Name="TargetStageEffectiveExecutionModes">0|\(20)</Property>
+         <Property Name="TargetStageRuntimeExecutionModes">0|\(20)</Property>
+         <Property Name="LinkIsSingleOperatorLookup">False|\(20)</Property>
+         <Property Name="LinkIsSortSequential">False|\(20)</Property>
+         <Property Name="LinkSortMode">0|\(20)</Property>
+         <Property Name="LinkPartColMode">0|\(20)</Property>
+         <Property Name="LinkSourcePinIDs">V0S0P1|\(20)</Property>
+      </Record>
+      <Record Identifier="V0S0" Type="JSJobActivity" Readonly="0">
+         <Property Name="Name">Job_Activity_0</Property>
+         <Property Name="NextID">2</Property>
+         <Property Name="OutputPins">V0S0P1</Property>
+         <Property Name="JobType">0</Property>
+         <Property Name="ExecutionType">1</Property>
+         <Property Name="Jobname">Job_Vulnera1</Property>
+         <Collection Name="ParameterValues" Type="ParamValues">
+            <SubRecord>
+               <Property Name="Name">P_mes</Property>
+               <Property Name="Description">mes</Property>
+               <Property Name="ValueType">4</Property>
+               <Property Name="DisplayValue">mes</Property>
+            </SubRecord>
+         </Collection>
+         <Property Name="CheckPoint">0</Property>
+         <Property Name="StageType">CJobActivity</Property>
+      </Record>
+      <Record Identifier="V0S0P1" Type="JSActivityOutput" Readonly="0">
+         <Property Name="Name">DSLink2</Property>
+         <Property Name="Partner">V0S1|V0S1P1</Property>
+         <Property Name="ConditionType">0</Property>
+         <Property Name="LeftTextPos">288</Property>
+         <Property Name="TopTextPos">100</Property>
+         <Property Name="SourceID">V0S0</Property>
+      </Record>
+      <Record Identifier="V0S1" Type="JSJobActivity" Readonly="0">
+         <Property Name="Name">Job_Activity_1</Property>
+         <Property Name="NextID">2</Property>
+         <Property Name="InputPins">V0S1P1</Property>
+         <Property Name="JobType">0</Property>
+         <Property Name="ExecutionType">0</Property>
+         <Property Name="Jobname">Job_Vulnera2</Property>
+         <Property Name="CheckPoint">0</Property>
+         <Property Name="StageType">CJobActivity</Property>
+      </Record>
+      <Record Identifier="V0S1P1" Type="JSActivityInput" Readonly="0">
+         <Property Name="Name">DSLink2</Property>
+         <Property Name="Partner">V0S0|V0S0P1</Property>
+         <Property Name="LinkType">1</Property>
+      </Record>
+   </Job>
+</DSExport>

@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DSExport>
+   <Header CharacterSet="CP1252" ExportingTool="IBM InfoSphere DataStage Export" ToolVersion="8" ServerName="SETI-PC" ToolInstanceID="AXA_SIG" Date="2021-05-04" Time="11.55.49" ServerVersion="8.7"/>
+   <Job Identifier="JOB_EXT_AACTAEF0" DateModified="2021-05-04" TimeModified="11.54.53">
+      <Record Identifier="ROOT" Type="JobDefn" Readonly="0">
+         <Property Name="Name">JOB_EXT_AACTAEF0</Property>
+         <Property Name="NextID">15</Property>
+         <Property Name="Container">V0</Property>
+         <Property Name="JobVersion">56.0.0</Property>
+         <Property Name="ControlAfterSubr">0</Property>
+         <Collection Name="Parameters" Type="Parameters">
+            <SubRecord>
+               <Property Name="Name">PAR_DB_CONNECTOR</Property>
+               <Property Name="Prompt">PAR_DB_CONNECTOR parameters</Property>
+               <Property Name="Default">(As pre-defined)</Property>
+               <Property Name="HelpTxt">Parametros de configuraci&#xF3;n de conectores de base de datos</Property>
+               <Property Name="ParamType">13</Property>
+               <Property Name="ParamLength">0</Property>
+               <Property Name="ParamScale">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">PAR_ETL</Property>
+               <Property Name="Prompt">PAR_ETL parameters</Property>
+               <Property Name="Default">(As pre-defined)</Property>
+               <Property Name="HelpTxt">Par&#xE1;metros de rutas de archivos</Property>
+               <Property Name="ParamType">13</Property>
+               <Property Name="ParamLength">0</Property>
+               <Property Name="ParamScale">0</Property>
+            </SubRecord>
+         </Collection>
+         <Collection Name="MetaBag" Type="MetaProperty">
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">AdvancedRuntimeOptions</Property>
+               <Property Name="Value">#DSProjectARTOptions#</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">TraceMode</Property>
+               <Property Name="Value">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">TraceSeq</Property>
+               <Property Name="Value">1</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">TraceRecords</Property>
+               <Property Name="Value">100</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">TraceSkip</Property>
+               <Property Name="Value">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">TracePeriod</Property>
+               <Property Name="Value">1</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">RecordJobPerformanceData</Property>
+               <Property Name="Value">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">IdentList</Property>
+               <Property Name="Value">DB2_LOD_EXT_AACTAEF0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">ClientCodePage</Property>
+               <Property Name="Value">1252</Property>
+            </SubRecord>
+         </Collection>
+         <Property Name="NULLIndicatorPosition">0</Property>
+         <Property Name="OrchestrateCode" PreFormatted="1">#################################################################
+#### STAGE: DB2_LOD_EXT_AACTAEF0
+## Operator
+pxbridge
+## Operator options
+-Orientation link
+-XMLProperties &apos;&lt;?xml version=\&apos;1.0\&apos; encoding=\&apos;UTF-16\&apos;?&gt;&lt;Properties version=\&apos;1.1\&apos;&gt;&lt;Common&gt;&lt;Context type=\&apos;int\&apos;&gt;2&lt;/Context&gt;&lt;Variant type=\&apos;string\&apos;&gt;9.1&lt;/Variant&gt;&lt;DescriptorVersion type=\&apos;string\&apos;&gt;1.0&lt;/DescriptorVersion&gt;&lt;PartitionType type=\&apos;int\&apos;&gt;-1&lt;/PartitionType&gt;&lt;RCP type=\&apos;int\&apos;&gt;0&lt;/RCP&gt;&lt;/Common&gt;&lt;Connection&gt;&lt;Database modified=\&apos;1\&apos; type=\&apos;string\&apos;&gt;&lt;![CDATA[[&amp;&quot;PAR_ETL.DB2_DNS_SIG&quot;]]]&gt;&lt;/Database&gt;&lt;Username modified=\&apos;1\&apos; type=\&apos;string\&apos;&gt;&lt;![CDATA[[&amp;&quot;PAR_ETL.DB2_USR_SIG&quot;]]]&gt;&lt;/Username&gt;&lt;Password modified=\&apos;1\&apos; type=\&apos;string\&apos;&gt;&lt;![CDATA[[&amp;&quot;PAR_ETL.DB2_PWD_SIG&quot;]]]&gt;&lt;/Password&gt;&lt;DB2ClientLibFile modified=\&apos;1\&apos; type=\&apos;string\&apos;&gt;&lt;![CDATA[]]&gt;&lt;/DB2ClientLibFile&gt;&lt;Conductor collapsed=\&apos;1\&apos; type=\&apos;bool\&apos;&gt;&lt;![CDATA[0]]&gt;&lt;/Conductor&gt;&lt;UseDirectConnections type=\&apos;bool\&apos;&gt;&lt;![CDATA[0]]&gt;&lt;/UseDirectConnections&gt;&lt;KeepConductorConnectionAlive type=\&apos;bool\&apos;&gt;&lt;![CDATA[1]]&gt;&lt;/KeepConductorConnectionAlive&gt;&lt;/Connection&gt;&lt;Usage&gt;&lt;WriteMode type=\&apos;int\&apos;&gt;&lt;![CDATA[0]]&gt;&lt;/WriteMode&gt;&lt;GenerateSQL modified=\&apos;1\&apos; type=\&apos;bool\&apos;&gt;&lt;![CDATA[0]]&gt;&lt;/GenerateSQL&gt;&lt;TableName modified=\&apos;1\&apos; type=\&apos;string\&apos;&gt;&lt;![CDATA[[&amp;&quot;PAR_ETL.DB2_SCH_SIG_STG&quot;].EXT_AACTAEF0]]&gt;&lt;/TableName&gt;&lt;EnableQuotedIDs type=\&apos;bool\&apos;&gt;&lt;![CDATA[0]]&gt;&lt;/EnableQuotedIDs&gt;&lt;XMLColumnAsLOB type=\&apos;bool\&apos;&gt;&lt;![CDATA[0]]&gt;&lt;/XMLColumnAsLOB&gt;&lt;PrefixForExpressionColumns type=\&apos;string\&apos;&gt;&lt;![CDATA[EXPR]]&gt;&lt;/PrefixForExpressionColumns&gt;&lt;SQL&gt;&lt;InsertStatement collapsed=\&apos;1\&apos; modified=\&apos;1\&apos; type=\&apos;string\&apos;&gt;&lt;![CDATA[INSERT INTO [&amp;&quot;PAR_ETL.DB2_SCH_SIG_STG&quot;].EXT_AACTAEF0(CTACOD,CTADSC,EXTRACCION_DT) VALUES(ORCHESTRATE.CTACOD,ORCHESTRATE.CTADSC,ORCHESTRATE.EXTRACCION_DT)]]&gt;&lt;Tables collapsed=\&apos;1\&apos;&gt;&lt;Table type=\&apos;string\&apos;&gt;&lt;![CDATA[[&amp;&quot;PAR_ETL.DB2_SCH_SIG_STG&quot;].EXT_AACTAEF0]]&gt;&lt;/Table&gt;&lt;/Tables&gt;&lt;Parameters collapsed=\&apos;1\&apos;&gt;&lt;Parameter type=\&apos;string\&apos;&gt;&lt;![CDATA[CTACOD,CTACOD,EXT_AACTAEF0]]&gt;&lt;/Parameter&gt;&lt;Parameter type=\&apos;string\&apos;&gt;&lt;![CDATA[CTADSC,CTADSC,EXT_AACTAEF0]]&gt;&lt;/Parameter&gt;&lt;Parameter type=\&apos;string\&apos;&gt;&lt;![CDATA[EXTRACCION_DT,EXTRACCION_DT,EXT_AACTAEF0]]&gt;&lt;/Parameter&gt;&lt;/Parameters&gt;&lt;/InsertStatement&gt;&lt;/SQL&gt;&lt;TableAction modified=\&apos;1\&apos; type=\&apos;int\&apos;&gt;&lt;![CDATA[3]]&gt;&lt;GenerateTruncateStatement modified=\&apos;1\&apos; type=\&apos;bool\&apos;&gt;&lt;![CDATA[0]]&gt;&lt;FailOnError type=\&apos;bool\&apos;&gt;&lt;![CDATA[1]]&gt;&lt;/FailOnError&gt;&lt;TruncateStatement modified=\&apos;1\&apos; type=\&apos;string\&apos;&gt;&lt;![CDATA[DELETE FROM [&amp;&quot;PAR_ETL.DB2_SCH_SIG_STG&quot;].EXT_AACTAEF0]]&gt;&lt;/TruncateStatement&gt;&lt;/GenerateTruncateStatement&gt;&lt;/TableAction&gt;&lt;Transaction&gt;&lt;RecordCount modified=\&apos;1\&apos; type=\&apos;int\&apos;&gt;&lt;![CDATA[[&amp;&quot;PAR_DB_CONNECTOR.INS_TRANSACTION&quot;]]]&gt;&lt;/RecordCount&gt;&lt;/Transaction&gt;&lt;Session&gt;&lt;IsolationLevel type=\&apos;int\&apos;&gt;&lt;![CDATA[1]]&gt;&lt;/IsolationLevel&gt;&lt;AutocommitMode type=\&apos;int\&apos;&gt;&lt;![CDATA[0]]&gt;&lt;/AutocommitMode&gt;&lt;ArraySize modified=\&apos;1\&apos; type=\&apos;int\&apos;&gt;&lt;![CDATA[[&amp;&quot;PAR_DB_CONNECTOR.INS_ARRAY&quot;]]]&gt;&lt;/ArraySize&gt;&lt;SchemaReconciliation&gt;&lt;FailOnSizeMismatch type=\&apos;bool\&apos;&gt;&lt;![CDATA[1]]&gt;&lt;/FailOnSizeMismatch&gt;&lt;FailOnTypeMismatch type=\&apos;bool\&apos;&gt;&lt;![CDATA[1]]&gt;&lt;/FailOnTypeMismatch&gt;&lt;FailOnCodePageMismatch type=\&apos;bool\&apos;&gt;&lt;![CDATA[0]]&gt;&lt;/FailOnCodePageMismatch&gt;&lt;DropUnmatchedFields type=\&apos;bool\&apos;&gt;&lt;![CDATA[1]]&gt;&lt;/DropUnmatchedFields&gt;&lt;/SchemaReconciliation&gt;&lt;FailOnRowErrorPX type=\&apos;bool\&apos;&gt;&lt;![CDATA[1]]&gt;&lt;/FailOnRowErrorPX&gt;&lt;InsertBuffering type=\&apos;int\&apos;&gt;&lt;![CDATA[0]]&gt;&lt;AtomicArrays type=\&apos;int\&apos;&gt;&lt;![CDATA[0]]&gt;&lt;/AtomicArrays&gt;&lt;/InsertBuffering&gt;&lt;/Session&gt;&lt;Logging&gt;&lt;LogColumnValues collapsed=\&apos;1\&apos; type=\&apos;bool\&apos;&gt;&lt;![CDATA[0]]&gt;&lt;/LogColumnValues&gt;&lt;/Logging&gt;&lt;BeforeAfter collapsed=\&apos;1\&apos; type=\&apos;bool\&apos;&gt;&lt;![CDATA[0]]&gt;&lt;/BeforeAfter&gt;&lt;ReOptimization type=\&apos;int\&apos;&gt;&lt;![CDATA[2]]&gt;&lt;/ReOptimization&gt;&lt;LockWaitMode collapsed=\&apos;1\&apos; modified=\&apos;1\&apos; type=\&apos;int\&apos;&gt;&lt;![CDATA[0]]&gt;&lt;/LockWaitMode&gt;&lt;/Usage&gt;&lt;/Properties &gt;&apos;
+-connector &apos;{
+   variant=&apos;9.1&apos;, 
+   library=ccdb2, 
+   version=1.0, 
+   variantlist=&apos;V1;9.1::ccdb2&apos;, 
+   versionlist=&apos;1.0&apos;, 
+   name=DB2Connector
+}&apos;
+-target 0 &apos;{
+      DSSQLType={CTACOD=2, CTADSC=12, EXTRACCION_DT=11}, 
+      DSSQLPrecision={CTACOD=5, CTADSC=40}, 
+      DSSchema=\&apos;record
+         (
+           CTACOD\:decimal\[5\,0\]\;
+           CTADSC\:string\[max\=40\]\;
+           EXTRACCION_DT\:timestamp\[microseconds\]\;
+         )\&apos;
+}&apos;
+   
+
+## General options
+[ident(&apos;DB2_LOD_EXT_AACTAEF0&apos;); jobmon_ident(&apos;DB2_LOD_EXT_AACTAEF0&apos;)]
+## Inputs
+0&lt; [] &apos;DS_EXT_AACTAEF0:Lnk_a_DB2_LOD_EXT_AACTAEF0.v&apos;
+;
+
+#################################################################
+#### STAGE: DS_EXT_AACTAEF0
+## Operator
+copy
+## General options
+[ident(&apos;DS_EXT_AACTAEF0&apos;)]
+## Inputs
+0&lt; [ds] &apos;[&amp;&quot;PAR_ETL.PATH_DSET&quot;]/EXT_AACTAEF0.ds&apos;
+## Outputs
+0&gt; [modify (
+  CTACOD:not_nullable decimal[5,0]=CTACOD;
+  CTADSC:not_nullable string[max=40]=CTADSC;
+  EXTRACCION_DT:not_nullable timestamp[microseconds]=EXTRACCION_DT;
+keep
+  CTACOD,CTADSC,EXTRACCION_DT;
+)] &apos;DS_EXT_AACTAEF0:Lnk_a_DB2_LOD_EXT_AACTAEF0.v&apos;
+;
+
+</Property>
+         <Property Name="IsTemplate">0</Property>
+         <Property Name="NLSLocale">,,,,</Property>
+         <Property Name="JobType">3</Property>
+         <Property Name="Category">\Jobs\Arl\Ext</Property>
+         <Property Name="CenturyBreakYear">30</Property>
+         <Property Name="NextAliasID">2</Property>
+         <Property Name="ParameterFileDDName">DD00001</Property>
+         <Property Name="ReservedWordCheck">1</Property>
+         <Property Name="TransactionSize">0</Property>
+         <Property Name="ValidationStatus">0</Property>
+         <Property Name="Uploadable">0</Property>
+         <Property Name="PgmCustomizationFlag">0</Property>
+         <Property Name="JobReportFlag">0</Property>
+         <Property Name="AllowMultipleInvocations">0</Property>
+         <Property Name="Act2ActOverideDefaults">0</Property>
+         <Property Name="Act2ActEnableRowBuffer">0</Property>
+         <Property Name="Act2ActUseIPC">0</Property>
+         <Property Name="Act2ActBufferSize">0</Property>
+         <Property Name="Act2ActIPCTimeout">0</Property>
+         <Property Name="ExpressionSemanticCheckFlag">0</Property>
+         <Property Name="TraceOption">0</Property>
+         <Property Name="EnableCacheSharing">0</Property>
+         <Property Name="RuntimeColumnPropagation">0</Property>
+         <Property Name="RelStagesInJobStatus">-1</Property>
+         <Property Name="WebServiceEnabled">0</Property>
+         <Property Name="MFProcessMetaData">0</Property>
+         <Property Name="MFProcessMetaDataXMLFileExchangeMethod">0</Property>
+         <Property Name="IMSProgType">0</Property>
+         <Property Name="CopyLibPrefix">ARDT</Property>
+         <Property Name="RecordPerformanceResults">0</Property>
+      </Record>
+      <Record Identifier="V0" Type="ContainerView" Readonly="0">
+         <Property Name="Name">Job</Property>
+         <Property Name="NextID">1</Property>
+         <Property Name="IsTopLevel">0</Property>
+         <Property Name="StageList">V0S58|V14S0</Property>
+         <Property Name="StageXPos">1128|672</Property>
+         <Property Name="StageYPos">384|384</Property>
+         <Property Name="StageTypes">CCustomStage.CC_GUI|CCustomStage</Property>
+         <Property Name="NextStageID">61</Property>
+         <Property Name="SnapToGrid">1</Property>
+         <Property Name="GridLines">0</Property>
+         <Property Name="ZoomValue">100</Property>
+         <Property Name="StageXSize">48|48</Property>
+         <Property Name="StageYSize">48|48</Property>
+         <Property Name="ContainerViewSizing">0182 0182 0990 0597 0000 0001 0556 0124</Property>
+         <Property Name="StageNames">DB2_LOD_EXT_AACTAEF0|DS_EXT_AACTAEF0</Property>
+         <Property Name="StageTypeIDs">DB2ConnectorPX|PxDataSet</Property>
+         <Property Name="LinkNames">\(20)|Lnk_a_DB2_LOD_EXT_AACTAEF0</Property>
+         <Property Name="LinkHasMetaDatas">\(20)|True</Property>
+         <Property Name="LinkTypes">\(20)|1</Property>
+         <Property Name="LinkNamePositionXs">\(20)|822</Property>
+         <Property Name="LinkNamePositionYs">\(20)|414</Property>
+         <Property Name="TargetStageIDs">\(20)|V0S58</Property>
+         <Property Name="SourceStageEffectiveExecutionModes">\(20)|2</Property>
+         <Property Name="SourceStageRuntimeExecutionModes">\(20)|2</Property>
+         <Property Name="TargetStageEffectiveExecutionModes">\(20)|2</Property>
+         <Property Name="TargetStageRuntimeExecutionModes">\(20)|2</Property>
+         <Property Name="LinkIsSingleOperatorLookup">\(20)|False</Property>
+         <Property Name="LinkIsSortSequential">\(20)|False</Property>
+         <Property Name="LinkSortMode">\(20)|0</Property>
+         <Property Name="LinkPartColMode">\(20)|1</Property>
+         <Property Name="LinkSourcePinIDs">\(20)|V14S0P2</Property>
+      </Record>
+      <Record Identifier="V0S58" Type="CustomStage" Readonly="0">
+         <Property Name="Name">DB2_LOD_EXT_AACTAEF0</Property>
+         <Property Name="NextID">3</Property>
+         <Property Name="InputPins">V0S58P2</Property>
+         <Property Name="StageType">DB2ConnectorPX</Property>
+         <Property Name="AllowColumnMapping">0</Property>
+         <Collection Name="Properties" Type="CustomProperty">
+            <SubRecord>
+               <Property Name="Name">VariantName</Property>
+               <Property Name="Value">9.1</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">VariantLibrary</Property>
+               <Property Name="Value">ccdb2</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">VariantVersion</Property>
+               <Property Name="Value">1.0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">SupportedVariants</Property>
+               <Property Name="Value">V1;9.1::ccdb2</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">SupportedVariantsLibraries</Property>
+               <Property Name="Value">ccdb2</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">SupportedVariantsVersions</Property>
+               <Property Name="Value">1.0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">Orientation</Property>
+               <Property Name="Value">link</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">RejectFromLink</Property>
+               <Property Name="Value">-1</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">RejectThreshold</Property>
+               <Property Name="Value">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">RejectNumber</Property>
+               <Property Name="Value">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">RejectUsesPercentage</Property>
+               <Property Name="Value">false</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">ConnectorName</Property>
+               <Property Name="Value">DB2Connector</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">Engine</Property>
+               <Property Name="Value">EE</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">Context</Property>
+               <Property Name="Value">target</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">ConnectionString</Property>
+               <Property Name="Value">/Connection/Database</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">Username</Property>
+               <Property Name="Value">/Connection/Username</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">Password</Property>
+               <Property Name="Value">/Connection/Password</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">Instance</Property>
+               <Property Name="Value">/Connection/Instance</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">DB2ClientLibFile</Property>
+               <Property Name="Value">/Connection/DB2ClientLibFile</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">Conductor</Property>
+               <Property Name="Value">/Connection/Conductor</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">ConductorInstance</Property>
+               <Property Name="Value">/Connection/Conductor/Instance</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">ConductorDatabase</Property>
+               <Property Name="Value">/Connection/Conductor/Database</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">ConductorUsername</Property>
+               <Property Name="Value">/Connection/Conductor/Username</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">ConductorPassword</Property>
+               <Property Name="Value">/Connection/Conductor/Password</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">ConductorDB2ClientLibFile</Property>
+               <Property Name="Value">/Connection/Conductor/DB2ClientLibFile</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">XMLProperties</Property>
+               <Property Name="Value">&lt;?xml version=&apos;1.0&apos; encoding=&apos;UTF-16&apos;?&gt;&lt;Properties version=&apos;1.1&apos;&gt;&lt;Common&gt;&lt;Context type=&apos;int&apos;&gt;2&lt;/Context&gt;&lt;Variant type=&apos;string&apos;&gt;9.1&lt;/Variant&gt;&lt;DescriptorVersion type=&apos;string&apos;&gt;1.0&lt;/DescriptorVersion&gt;&lt;PartitionType type=&apos;int&apos;&gt;-1&lt;/PartitionType&gt;&lt;RCP type=&apos;int&apos;&gt;0&lt;/RCP&gt;&lt;/Common&gt;&lt;Connection&gt;&lt;Database modified=&apos;1&apos; type=&apos;string&apos;&gt;&lt;![CDATA[#PAR_ETL.DB2_DNS_SIG#]]&gt;&lt;/Database&gt;&lt;Username modified=&apos;1&apos; type=&apos;string&apos;&gt;&lt;![CDATA[#PAR_ETL.DB2_USR_SIG#]]&gt;&lt;/Username&gt;&lt;Password modified=&apos;1&apos; type=&apos;string&apos;&gt;&lt;![CDATA[#PAR_ETL.DB2_PWD_SIG#]]&gt;&lt;/Password&gt;&lt;DB2ClientLibFile modified=&apos;1&apos; type=&apos;string&apos;&gt;&lt;![CDATA[]]&gt;&lt;/DB2ClientLibFile&gt;&lt;Conductor collapsed=&apos;1&apos; type=&apos;bool&apos;&gt;&lt;![CDATA[0]]&gt;&lt;/Conductor&gt;&lt;UseDirectConnections type=&apos;bool&apos;&gt;&lt;![CDATA[0]]&gt;&lt;/UseDirectConnections&gt;&lt;KeepConductorConnectionAlive type=&apos;bool&apos;&gt;&lt;![CDATA[1]]&gt;&lt;/KeepConductorConnectionAlive&gt;&lt;/Connection&gt;&lt;Usage&gt;&lt;WriteMode type=&apos;int&apos;&gt;&lt;![CDATA[0]]&gt;&lt;/WriteMode&gt;&lt;GenerateSQL modified=&apos;1&apos; type=&apos;bool&apos;&gt;&lt;![CDATA[0]]&gt;&lt;/GenerateSQL&gt;&lt;TableName modified=&apos;1&apos; type=&apos;string&apos;&gt;&lt;![CDATA[#PAR_ETL.DB2_SCH_SIG_STG#.EXT_AACTAEF0]]&gt;&lt;/TableName&gt;&lt;EnableQuotedIDs type=&apos;bool&apos;&gt;&lt;![CDATA[0]]&gt;&lt;/EnableQuotedIDs&gt;&lt;XMLColumnAsLOB type=&apos;bool&apos;&gt;&lt;![CDATA[0]]&gt;&lt;/XMLColumnAsLOB&gt;&lt;PrefixForExpressionColumns type=&apos;string&apos;&gt;&lt;![CDATA[EXPR]]&gt;&lt;/PrefixForExpressionColumns&gt;&lt;SQL&gt;&lt;InsertStatement collapsed=&apos;1&apos; modified=&apos;1&apos; type=&apos;string&apos;&gt;&lt;![CDATA[INSERT INTO #PAR_ETL.DB2_SCH_SIG_STG#.EXT_AACTAEF0(CTACOD,CTADSC,EXTRACCION_DT) VALUES(ORCHESTRATE.CTACOD,ORCHESTRATE.CTADSC,ORCHESTRATE.EXTRACCION_DT)]]&gt;&lt;Tables collapsed=&apos;1&apos;&gt;&lt;Table type=&apos;string&apos;&gt;&lt;![CDATA[#PAR_ETL.DB2_SCH_SIG_STG#.EXT_AACTAEF0]]&gt;&lt;/Table&gt;&lt;/Tables&gt;&lt;Parameters collapsed=&apos;1&apos;&gt;&lt;Parameter type=&apos;string&apos;&gt;&lt;![CDATA[CTACOD,CTACOD,EXT_AACTAEF0]]&gt;&lt;/Parameter&gt;&lt;Parameter type=&apos;string&apos;&gt;&lt;![CDATA[CTADSC,CTADSC,EXT_AACTAEF0]]&gt;&lt;/Parameter&gt;&lt;Parameter type=&apos;string&apos;&gt;&lt;![CDATA[EXTRACCION_DT,EXTRACCION_DT,EXT_AACTAEF0]]&gt;&lt;/Parameter&gt;&lt;/Parameters&gt;&lt;/InsertStatement&gt;&lt;/SQL&gt;&lt;TableAction modified=&apos;1&apos; type=&apos;int&apos;&gt;&lt;![CDATA[3]]&gt;&lt;GenerateTruncateStatement modified=&apos;1&apos; type=&apos;bool&apos;&gt;&lt;![CDATA[0]]&gt;&lt;FailOnError type=&apos;bool&apos;&gt;&lt;![CDATA[1]]&gt;&lt;/FailOnError&gt;&lt;TruncateStatement modified=&apos;1&apos; type=&apos;string&apos;&gt;&lt;![CDATA[DELETE FROM #PAR_ETL.DB2_SCH_SIG_STG#.EXT_AACTAEF0]]&gt;&lt;/TruncateStatement&gt;&lt;/GenerateTruncateStatement&gt;&lt;/TableAction&gt;&lt;Transaction&gt;&lt;RecordCount modified=&apos;1&apos; type=&apos;int&apos;&gt;&lt;![CDATA[#PAR_DB_CONNECTOR.INS_TRANSACTION#]]&gt;&lt;/RecordCount&gt;&lt;/Transaction&gt;&lt;Session&gt;&lt;IsolationLevel type=&apos;int&apos;&gt;&lt;![CDATA[1]]&gt;&lt;/IsolationLevel&gt;&lt;AutocommitMode type=&apos;int&apos;&gt;&lt;![CDATA[0]]&gt;&lt;/AutocommitMode&gt;&lt;ArraySize modified=&apos;1&apos; type=&apos;int&apos;&gt;&lt;![CDATA[#PAR_DB_CONNECTOR.INS_ARRAY#]]&gt;&lt;/ArraySize&gt;&lt;SchemaReconciliation&gt;&lt;FailOnSizeMismatch type=&apos;bool&apos;&gt;&lt;![CDATA[1]]&gt;&lt;/FailOnSizeMismatch&gt;&lt;FailOnTypeMismatch type=&apos;bool&apos;&gt;&lt;![CDATA[1]]&gt;&lt;/FailOnTypeMismatch&gt;&lt;FailOnCodePageMismatch type=&apos;bool&apos;&gt;&lt;![CDATA[0]]&gt;&lt;/FailOnCodePageMismatch&gt;&lt;DropUnmatchedFields type=&apos;bool&apos;&gt;&lt;![CDATA[1]]&gt;&lt;/DropUnmatchedFields&gt;&lt;/SchemaReconciliation&gt;&lt;FailOnRowErrorPX type=&apos;bool&apos;&gt;&lt;![CDATA[1]]&gt;&lt;/FailOnRowErrorPX&gt;&lt;InsertBuffering type=&apos;int&apos;&gt;&lt;![CDATA[0]]&gt;&lt;AtomicArrays type=&apos;int&apos;&gt;&lt;![CDATA[0]]&gt;&lt;/AtomicArrays&gt;&lt;/InsertBuffering&gt;&lt;/Session&gt;&lt;Logging&gt;&lt;LogColumnValues collapsed=&apos;1&apos; type=&apos;bool&apos;&gt;&lt;![CDATA[0]]&gt;&lt;/LogColumnValues&gt;&lt;/Logging&gt;&lt;BeforeAfter collapsed=&apos;1&apos; type=&apos;bool&apos;&gt;&lt;![CDATA[0]]&gt;&lt;/BeforeAfter&gt;&lt;ReOptimization type=&apos;int&apos;&gt;&lt;![CDATA[2]]&gt;&lt;/ReOptimization&gt;&lt;LockWaitMode collapsed=&apos;1&apos; modified=&apos;1&apos; type=&apos;int&apos;&gt;&lt;![CDATA[0]]&gt;&lt;/LockWaitMode&gt;&lt;/Usage&gt;&lt;/Properties &gt;</Property>
+            </SubRecord>
+         </Collection>
+         <Property Name="NextRecordID">0</Property>
+      </Record>
+      <Record Identifier="V0S58P2" Type="CustomInput" Readonly="0">
+         <Property Name="Name">Lnk_a_DB2_LOD_EXT_AACTAEF0</Property>
+         <Property Name="Partner">V14S0|V14S0P2</Property>
+         <Property Name="LinkType">1</Property>
+         <Property Name="ConditionNotMet">fail</Property>
+         <Property Name="LookupFail">fail</Property>
+         <Collection Name="Properties" Type="CustomProperty">
+            <SubRecord>
+               <Property Name="Name">VariantName</Property>
+               <Property Name="Value">9.1</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">VariantLibrary</Property>
+               <Property Name="Value">ccdb2</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">VariantVersion</Property>
+               <Property Name="Value">1.0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">RejectFromLink</Property>
+               <Property Name="Value">-1</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">RejectThreshold</Property>
+               <Property Name="Value">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">RejectNumber</Property>
+               <Property Name="Value">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">RejectUsesPercentage</Property>
+               <Property Name="Value">false</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">ConnectorName</Property>
+               <Property Name="Value">DB2Connector</Property>
+            </SubRecord>
+         </Collection>
+         <Collection Name="MetaBag" Type="MetaProperty">
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">RTColumnProp</Property>
+               <Property Name="Value">0</Property>
+            </SubRecord>
+         </Collection>
+         <Property Name="TransactionSize">0</Property>
+         <Property Name="TXNBehaviour">0</Property>
+         <Property Name="EnableTxGroup">0</Property>
+         <Property Name="LinkMinimised">0</Property>
+      </Record>
+      <Record Identifier="V14S0" Type="CustomStage" Readonly="0">
+         <Property Name="Name">DS_EXT_AACTAEF0</Property>
+         <Property Name="NextID">3</Property>
+         <Property Name="OutputPins">V14S0P2</Property>
+         <Property Name="StageType">PxDataSet</Property>
+         <Property Name="AllowColumnMapping">0</Property>
+         <Property Name="NextRecordID">0</Property>
+      </Record>
+      <Record Identifier="V14S0P2" Type="CustomOutput" Readonly="0">
+         <Property Name="Name">Lnk_a_DB2_LOD_EXT_AACTAEF0</Property>
+         <Property Name="Partner">V0S58|V0S58P2</Property>
+         <Collection Name="Properties" Type="CustomProperty">
+            <SubRecord>
+               <Property Name="Name">dataset</Property>
+               <Property Name="Value">#PAR_ETL.PATH_DSET#/EXT_AACTAEF0.ds</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">missingcolmode</Property>
+               <Property Name="Value">\(20)</Property>
+            </SubRecord>
+         </Collection>
+         <Collection Name="Columns" Type="OutputColumn">
+            <SubRecord>
+               <Property Name="Name">CTACOD</Property>
+               <Property Name="SqlType">2</Property>
+               <Property Name="Precision">5</Property>
+               <Property Name="Scale">0</Property>
+               <Property Name="Nullable">0</Property>
+               <Property Name="KeyPosition">0</Property>
+               <Property Name="DisplaySize">0</Property>
+               <Property Name="Group">0</Property>
+               <Property Name="SortKey">0</Property>
+               <Property Name="SortType">0</Property>
+               <Property Name="TableDef">Saved\Lnk_a_DS_EXT_AACTAEF0\EXT_AACTAEF0</Property>
+               <Property Name="AllowCRLF">0</Property>
+               <Property Name="LevelNo">0</Property>
+               <Property Name="Occurs">0</Property>
+               <Property Name="PadNulls">0</Property>
+               <Property Name="SignOption">0</Property>
+               <Property Name="SortingOrder">0</Property>
+               <Property Name="ArrayHandling">0</Property>
+               <Property Name="SyncIndicator">0</Property>
+               <Property Name="PadChar"/>
+               <Property Name="ColumnReference">CTACOD</Property>
+               <Property Name="ExtendedPrecision">0</Property>
+               <Property Name="TaggedSubrec">0</Property>
+               <Property Name="OccursVarying">0</Property>
+               <Property Name="PKeyIsCaseless">0</Property>
+               <Property Name="SCDPurpose">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">CTADSC</Property>
+               <Property Name="SqlType">12</Property>
+               <Property Name="Precision">40</Property>
+               <Property Name="Scale">0</Property>
+               <Property Name="Nullable">0</Property>
+               <Property Name="KeyPosition">0</Property>
+               <Property Name="DisplaySize">0</Property>
+               <Property Name="Group">0</Property>
+               <Property Name="SortKey">0</Property>
+               <Property Name="SortType">0</Property>
+               <Property Name="TableDef">Saved\Lnk_a_DS_EXT_AACTAEF0\EXT_AACTAEF0</Property>
+               <Property Name="AllowCRLF">0</Property>
+               <Property Name="LevelNo">0</Property>
+               <Property Name="Occurs">0</Property>
+               <Property Name="PadNulls">0</Property>
+               <Property Name="SignOption">0</Property>
+               <Property Name="SortingOrder">0</Property>
+               <Property Name="ArrayHandling">0</Property>
+               <Property Name="SyncIndicator">0</Property>
+               <Property Name="PadChar"/>
+               <Property Name="ColumnReference">CTADSC</Property>
+               <Property Name="ExtendedPrecision">0</Property>
+               <Property Name="TaggedSubrec">0</Property>
+               <Property Name="OccursVarying">0</Property>
+               <Property Name="PKeyIsCaseless">0</Property>
+               <Property Name="SCDPurpose">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">EXTRACCION_DT</Property>
+               <Property Name="SqlType">11</Property>
+               <Property Name="Precision">0</Property>
+               <Property Name="Scale">0</Property>
+               <Property Name="Nullable">0</Property>
+               <Property Name="KeyPosition">0</Property>
+               <Property Name="DisplaySize">0</Property>
+               <Property Name="Group">0</Property>
+               <Property Name="SortKey">0</Property>
+               <Property Name="SortType">0</Property>
+               <Property Name="TableDef">Saved\Lnk_a_DS_EXT_AACTAEF0\EXT_AACTAEF0</Property>
+               <Property Name="AllowCRLF">0</Property>
+               <Property Name="LevelNo">0</Property>
+               <Property Name="Occurs">0</Property>
+               <Property Name="PadNulls">0</Property>
+               <Property Name="SignOption">0</Property>
+               <Property Name="SortingOrder">0</Property>
+               <Property Name="ArrayHandling">0</Property>
+               <Property Name="SyncIndicator">0</Property>
+               <Property Name="PadChar"/>
+               <Property Name="ColumnReference">EXTRACCION_DT</Property>
+               <Property Name="ExtendedPrecision">1</Property>
+               <Property Name="TaggedSubrec">0</Property>
+               <Property Name="OccursVarying">0</Property>
+               <Property Name="PKeyIsCaseless">0</Property>
+               <Property Name="SCDPurpose">0</Property>
+            </SubRecord>
+         </Collection>
+         <Collection Name="MetaBag" Type="MetaProperty">
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">DiskWriteInc</Property>
+               <Property Name="Value">1048576</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">BufFreeRun</Property>
+               <Property Name="Value">50</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">MaxMemBufSize</Property>
+               <Property Name="Value">3145728</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">QueueUpperSize</Property>
+               <Property Name="Value">0</Property>
+            </SubRecord>
+         </Collection>
+         <Property Name="LeftTextPos">822</Property>
+         <Property Name="TopTextPos">414</Property>
+         <Property Name="LinkMinimised">0</Property>
+      </Record>
+   </Job>
+</DSExport>

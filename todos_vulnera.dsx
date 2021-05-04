@@ -1,0 +1,2053 @@
+BEGIN HEADER
+   CharacterSet "CP1252"
+   ExportingTool "IBM InfoSphere DataStage Export"
+   ToolVersion "8"
+   ServerName "WIN2012-VMWARE"
+   ToolInstanceID "dstage1"
+   MDISVersion "1.0"
+   Date "2021-05-04"
+   Time "14.54.13"
+   ServerVersion "11.7"
+END HEADER
+BEGIN DSJOB
+   Identifier "Job_Vulnera1"
+   DateModified "2021-05-04"
+   TimeModified "14.22.30"
+   BEGIN DSRECORD
+      Identifier "ROOT"
+      OLEType "CJobDefn"
+      Readonly "0"
+      Name "Job_Vulnera1"
+      NextID "1"
+      Container "V0"
+      JobVersion "56.0.0"
+      ControlAfterSubr "0"
+      Parameters "CParameters"
+      BEGIN DSSUBRECORD
+         Name "P_mes"
+         Prompt "P_mes"
+         ParamType "2"
+         ParamLength "0"
+         ParamScale "0"
+      END DSSUBRECORD
+      MetaBag "CMetaProperty"
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "AdvancedRuntimeOptions"
+         Value "#DSProjectARTOptions#"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "TraceMode"
+         Value "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "TraceSeq"
+         Value "1"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "TraceRecords"
+         Value "100"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "TraceSkip"
+         Value "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "TracePeriod"
+         Value "1"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "RecordJobPerformanceData"
+         Value "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "IdentList"
+         Value "SF_Personas|Sequential_File_1|Join_6|Filter_10"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "ClientCodePage"
+         Value "1252"
+      END DSSUBRECORD
+      NULLIndicatorPosition "0"
+      OrchestrateCode =+=+=+=
+#################################################################
+#### STAGE: SF_Personas
+## Operator
+import
+## Operator options
+-schema record
+  {final_delim=end, delim=','}
+(
+  ssn:decimal[4,0];
+  nombre:string[max=15];
+  Valhora:decimal[4,0];
+)
+-rejects continue
+-reportProgress yes
+-firstLineColumnNames
+-file  'C:\\\\temp\\\\Personas.txt'
+
+## General options
+[ident('SF_Personas'); jobmon_ident('SF_Personas')]
+## Outputs
+0> [] 'SF_Personas:DSLink3.v'
+;
+
+#################################################################
+#### STAGE: Sequential_File_1
+## Operator
+import
+## Operator options
+-schema record
+  {final_delim=end, delim=','}
+(
+  ssn:decimal[4,0];
+  mes:decimal[2,0];
+  horas:decimal[3,0];
+)
+-rejects continue
+-reportProgress yes
+-firstLineColumnNames
+-file  'C:\\\\temp\\\\horas.txt'
+
+## General options
+[ident('Sequential_File_1'); jobmon_ident('Sequential_File_1')]
+## Outputs
+0> [] 'Sequential_File_1:DSLink5.v'
+;
+
+#################################################################
+#### STAGE: Join_6
+## Operator
+innerjoin
+## Operator options
+-key 'ssn'
+
+## General options
+[ident('Join_6'); jobmon_ident('Join_6')]
+## Inputs
+0< [] 'SF_Personas:DSLink3.v'
+1< [] 'Sequential_File_1:DSLink5.v'
+## Outputs
+0> [modify (
+keep
+  ssn,nombre,Valhora,mes,
+  horas;
+)] 'Join_6:DSLink8.v'
+;
+
+#################################################################
+#### STAGE: Data_Set_9
+## Operator
+copy
+## General options
+[ident('Data_Set_9')]
+## Inputs
+0< [] 'Filter_10:DSLink11.v'
+## Outputs
+0>| [ds] 'C:\\\\temp\\\\dsvulnera.ds'
+;
+
+#################################################################
+#### STAGE: Filter_10
+## Operator
+filter
+## Operator options
+-where 'mes=[&"P_mes"]'
+
+## General options
+[ident('Filter_10'); jobmon_ident('Filter_10')]
+## Inputs
+0< [] 'Join_6:DSLink8.v'
+## Outputs
+0> [modify (
+  nombre:string[max=10]=nombre;
+keep
+  ssn,Valhora,mes,horas;
+)] 'Filter_10:DSLink11.v'
+;
+
+
+=+=+=+=
+      IsTemplate "0"
+      NLSLocale ",,,,"
+      JobType "3"
+      Category "\\Jobs"
+      CenturyBreakYear "30"
+      NextAliasID "2"
+      ParameterFileDDName "DD00001"
+      ReservedWordCheck "1"
+      TransactionSize "0"
+      ValidationStatus "0"
+      Uploadable "0"
+      PgmCustomizationFlag "0"
+      JobReportFlag "0"
+      AllowMultipleInvocations "0"
+      Act2ActOverideDefaults "0"
+      Act2ActEnableRowBuffer "0"
+      Act2ActUseIPC "0"
+      Act2ActBufferSize "0"
+      Act2ActIPCTimeout "0"
+      ExpressionSemanticCheckFlag "0"
+      TraceOption "0"
+      EnableCacheSharing "0"
+      RuntimeColumnPropagation "0"
+      RelStagesInJobStatus "-1"
+      WebServiceEnabled "0"
+      MFProcessMetaData "0"
+      MFProcessMetaDataXMLFileExchangeMethod "0"
+      IMSProgType "0"
+      CopyLibPrefix "ARDT"
+      RecordPerformanceResults "0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0"
+      OLEType "CContainerView"
+      Readonly "0"
+      Name "Job"
+      NextID "1"
+      IsTopLevel "0"
+      StageList "V0S0|V0S1|V0S6|V0S9|V0S10"
+      StageXPos "192|192|432|696|576"
+      StageYPos "96|192|168|168|120"
+      StageTypes "CCustomStage|CCustomStage|CCustomStage|CCustomStage|CCustomStage"
+      NextStageID "12"
+      SnapToGrid "1"
+      GridLines "0"
+      ZoomValue "100"
+      StageXSize "48|48|48|48|48"
+      StageYSize "48|48|48|48|48"
+      ContainerViewSizing "0026 0026 0738 0250 0000 0001 0000 0080"
+      StageNames "SF_Personas|Sequential_File_1|Join_6|Data_Set_9|Filter_10"
+      StageTypeIDs "PxSequentialFile|PxSequentialFile|PxJoin|PxDataSet|PxFilter"
+      LinkNames "DSLink3|DSLink5|DSLink8| |DSLink11"
+      LinkHasMetaDatas "True|True|True| |True"
+      LinkTypes "1|1|1| |1"
+      LinkNamePositionXs "336|308|486| |621"
+      LinkNamePositionYs "141|197|179| |170"
+      TargetStageIDs "V0S6|V0S6|V0S10| |V0S9"
+      SourceStageEffectiveExecutionModes "1|1|2| |2"
+      SourceStageRuntimeExecutionModes "1|1|2| |2"
+      TargetStageEffectiveExecutionModes "2|2|2| |2"
+      TargetStageRuntimeExecutionModes "2|2|2| |2"
+      LinkIsSingleOperatorLookup "False|False|False| |False"
+      LinkIsSortSequential "False|False|False| |False"
+      LinkSortMode "0|0|0| |0"
+      LinkPartColMode "1|1|1| |1"
+      LinkSourcePinIDs "V0S0P1|V0S1P1|V0S6P3| |V0S10P2"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S0"
+      OLEType "CCustomStage"
+      Readonly "0"
+      Name "SF_Personas"
+      NextID "2"
+      OutputPins "V0S0P1"
+      StageType "PxSequentialFile"
+      AllowColumnMapping "0"
+      NextRecordID "0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S0P1"
+      OLEType "CCustomOutput"
+      Readonly "0"
+      Name "DSLink3"
+      Partner "V0S6|V0S6P1"
+      Properties "CCustomProperty"
+      BEGIN DSSUBRECORD
+         Name "schema"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "selection"
+         Value "file"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "keepPartitions"
+         Value " "
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "rejects"
+         Value "continue"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "reportProgress"
+         Value "yes"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "firstLineColumnNames"
+         Value "firstLineColumnNames"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "file "
+         Value "\(2)\(2)0\(1)\(3)file \(2)C:\\temp\\Personas.txt\(2)0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "missingFile"
+         Value " "
+      END DSSUBRECORD
+      Columns "COutputColumn"
+      BEGIN DSSUBRECORD
+         Name "ssn"
+         SqlType "2"
+         Precision "4"
+         Scale "0"
+         Nullable "0"
+         KeyPosition "0"
+         DisplaySize "0"
+         Group "0"
+         SortKey "0"
+         SortType "0"
+         AllowCRLF "0"
+         LevelNo "0"
+         Occurs "0"
+         PadNulls "0"
+         SignOption "0"
+         SortingOrder "0"
+         ArrayHandling "0"
+         SyncIndicator "0"
+         PadChar ""
+         ExtendedPrecision "0"
+         TaggedSubrec "0"
+         OccursVarying "0"
+         PKeyIsCaseless "0"
+         SCDPurpose "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "nombre"
+         SqlType "12"
+         Precision "15"
+         Scale "0"
+         Nullable "0"
+         KeyPosition "0"
+         DisplaySize "0"
+         Group "0"
+         SortKey "0"
+         SortType "0"
+         AllowCRLF "0"
+         LevelNo "0"
+         Occurs "0"
+         PadNulls "0"
+         SignOption "0"
+         SortingOrder "0"
+         ArrayHandling "0"
+         SyncIndicator "0"
+         PadChar ""
+         ExtendedPrecision "0"
+         TaggedSubrec "0"
+         OccursVarying "0"
+         PKeyIsCaseless "0"
+         SCDPurpose "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "Valhora"
+         SqlType "2"
+         Precision "4"
+         Scale "0"
+         Nullable "0"
+         KeyPosition "0"
+         DisplaySize "0"
+         Group "0"
+         SortKey "0"
+         SortType "0"
+         AllowCRLF "0"
+         LevelNo "0"
+         Occurs "0"
+         PadNulls "0"
+         SignOption "0"
+         SortingOrder "0"
+         ArrayHandling "0"
+         SyncIndicator "0"
+         PadChar ""
+         ExtendedPrecision "0"
+         TaggedSubrec "0"
+         OccursVarying "0"
+         PKeyIsCaseless "0"
+         SCDPurpose "0"
+      END DSSUBRECORD
+      MetaBag "CMetaProperty"
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "SchemaFormat"
+         Value "final_delim=end, delim=','"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "DiskWriteInc"
+         Value "1048576"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "BufFreeRun"
+         Value "50"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "MaxMemBufSize"
+         Value "3145728"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "QueueUpperSize"
+         Value "0"
+      END DSSUBRECORD
+      LeftTextPos "336"
+      TopTextPos "141"
+      LinkMinimised "0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S1"
+      OLEType "CCustomStage"
+      Readonly "0"
+      Name "Sequential_File_1"
+      NextID "2"
+      OutputPins "V0S1P1"
+      StageType "PxSequentialFile"
+      AllowColumnMapping "0"
+      NextRecordID "0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S10"
+      OLEType "CCustomStage"
+      Readonly "0"
+      Name "Filter_10"
+      NextID "3"
+      InputPins "V0S10P1"
+      OutputPins "V0S10P2"
+      StageType "PxFilter"
+      AllowColumnMapping "0"
+      Properties "CCustomProperty"
+      BEGIN DSSUBRECORD
+         Name "where"
+         Value "\(2)\(2)0\(1)\(3)where\(2)mes=#P_mes#\(2)0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "first"
+         Value " "
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "reject"
+         Value " "
+      END DSSUBRECORD
+      NextRecordID "0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S10P1"
+      OLEType "CCustomInput"
+      Readonly "0"
+      Name "DSLink8"
+      Partner "V0S6|V0S6P3"
+      LinkType "1"
+      ConditionNotMet "fail"
+      LookupFail "fail"
+      MetaBag "CMetaProperty"
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "RTColumnProp"
+         Value "0"
+      END DSSUBRECORD
+      TransactionSize "0"
+      TXNBehaviour "0"
+      EnableTxGroup "0"
+      LinkMinimised "0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S10P2"
+      OLEType "CCustomOutput"
+      Readonly "0"
+      Name "DSLink11"
+      Partner "V0S9|V0S9P2"
+      Columns "COutputColumn"
+      BEGIN DSSUBRECORD
+         Name "ssn"
+         SqlType "2"
+         Precision "4"
+         Scale "0"
+         Nullable "0"
+         KeyPosition "0"
+         DisplaySize "0"
+         Derivation "DSLink8.ssn"
+         Group "0"
+         ParsedDerivation "DSLink8.ssn"
+         SourceColumn "DSLink8.ssn"
+         SortKey "0"
+         SortType "0"
+         AllowCRLF "0"
+         LevelNo "0"
+         Occurs "0"
+         PadNulls "0"
+         SignOption "0"
+         SortingOrder "0"
+         ArrayHandling "0"
+         SyncIndicator "0"
+         PadChar ""
+         ExtendedPrecision "0"
+         TaggedSubrec "0"
+         OccursVarying "0"
+         PKeyIsCaseless "0"
+         SCDPurpose "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "nombre"
+         SqlType "12"
+         Precision "10"
+         Scale "0"
+         Nullable "0"
+         KeyPosition "0"
+         DisplaySize "0"
+         Derivation "DSLink8.nombre"
+         Group "0"
+         ParsedDerivation "DSLink8.nombre"
+         SourceColumn "DSLink8.nombre"
+         SortKey "0"
+         SortType "0"
+         AllowCRLF "0"
+         LevelNo "0"
+         Occurs "0"
+         PadNulls "0"
+         SignOption "0"
+         SortingOrder "0"
+         ArrayHandling "0"
+         SyncIndicator "0"
+         PadChar ""
+         ExtendedPrecision "0"
+         TaggedSubrec "0"
+         OccursVarying "0"
+         PKeyIsCaseless "0"
+         SCDPurpose "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "Valhora"
+         SqlType "2"
+         Precision "4"
+         Scale "0"
+         Nullable "0"
+         KeyPosition "0"
+         DisplaySize "0"
+         Derivation "DSLink8.Valhora"
+         Group "0"
+         ParsedDerivation "DSLink8.Valhora"
+         SourceColumn "DSLink8.Valhora"
+         SortKey "0"
+         SortType "0"
+         AllowCRLF "0"
+         LevelNo "0"
+         Occurs "0"
+         PadNulls "0"
+         SignOption "0"
+         SortingOrder "0"
+         ArrayHandling "0"
+         SyncIndicator "0"
+         PadChar ""
+         ExtendedPrecision "0"
+         TaggedSubrec "0"
+         OccursVarying "0"
+         PKeyIsCaseless "0"
+         SCDPurpose "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "mes"
+         SqlType "2"
+         Precision "2"
+         Scale "0"
+         Nullable "0"
+         KeyPosition "0"
+         DisplaySize "0"
+         Derivation "DSLink8.mes"
+         Group "0"
+         ParsedDerivation "DSLink8.mes"
+         SourceColumn "DSLink8.mes"
+         SortKey "0"
+         SortType "0"
+         AllowCRLF "0"
+         LevelNo "0"
+         Occurs "0"
+         PadNulls "0"
+         SignOption "0"
+         SortingOrder "0"
+         ArrayHandling "0"
+         SyncIndicator "0"
+         PadChar ""
+         ExtendedPrecision "0"
+         TaggedSubrec "0"
+         OccursVarying "0"
+         PKeyIsCaseless "0"
+         SCDPurpose "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "horas"
+         SqlType "2"
+         Precision "3"
+         Scale "0"
+         Nullable "0"
+         KeyPosition "0"
+         DisplaySize "0"
+         Derivation "DSLink8.horas"
+         Group "0"
+         ParsedDerivation "DSLink8.horas"
+         SourceColumn "DSLink8.horas"
+         SortKey "0"
+         SortType "0"
+         AllowCRLF "0"
+         LevelNo "0"
+         Occurs "0"
+         PadNulls "0"
+         SignOption "0"
+         SortingOrder "0"
+         ArrayHandling "0"
+         SyncIndicator "0"
+         PadChar ""
+         ExtendedPrecision "0"
+         TaggedSubrec "0"
+         OccursVarying "0"
+         PKeyIsCaseless "0"
+         SCDPurpose "0"
+      END DSSUBRECORD
+      MetaBag "CMetaProperty"
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "DiskWriteInc"
+         Value "1048576"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "BufFreeRun"
+         Value "50"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "MaxMemBufSize"
+         Value "3145728"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "QueueUpperSize"
+         Value "0"
+      END DSSUBRECORD
+      LeftTextPos "621"
+      TopTextPos "170"
+      LinkMinimised "0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S1P1"
+      OLEType "CCustomOutput"
+      Readonly "0"
+      Name "DSLink5"
+      Partner "V0S6|V0S6P2"
+      Properties "CCustomProperty"
+      BEGIN DSSUBRECORD
+         Name "schema"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "selection"
+         Value "file"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "keepPartitions"
+         Value " "
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "rejects"
+         Value "continue"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "reportProgress"
+         Value "yes"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "firstLineColumnNames"
+         Value "firstLineColumnNames"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "file "
+         Value "\(2)\(2)0\(1)\(3)file \(2)C:\\temp\\horas.txt\(2)0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "missingFile"
+         Value " "
+      END DSSUBRECORD
+      Columns "COutputColumn"
+      BEGIN DSSUBRECORD
+         Name "ssn"
+         SqlType "2"
+         Precision "4"
+         Scale "0"
+         Nullable "0"
+         KeyPosition "0"
+         DisplaySize "0"
+         Group "0"
+         SortKey "0"
+         SortType "0"
+         AllowCRLF "0"
+         LevelNo "0"
+         Occurs "0"
+         PadNulls "0"
+         SignOption "0"
+         SortingOrder "0"
+         ArrayHandling "0"
+         SyncIndicator "0"
+         PadChar ""
+         ExtendedPrecision "0"
+         TaggedSubrec "0"
+         OccursVarying "0"
+         PKeyIsCaseless "0"
+         SCDPurpose "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "mes"
+         SqlType "2"
+         Precision "2"
+         Scale "0"
+         Nullable "0"
+         KeyPosition "0"
+         DisplaySize "0"
+         Group "0"
+         SortKey "0"
+         SortType "0"
+         AllowCRLF "0"
+         LevelNo "0"
+         Occurs "0"
+         PadNulls "0"
+         SignOption "0"
+         SortingOrder "0"
+         ArrayHandling "0"
+         SyncIndicator "0"
+         PadChar ""
+         ExtendedPrecision "0"
+         TaggedSubrec "0"
+         OccursVarying "0"
+         PKeyIsCaseless "0"
+         SCDPurpose "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "horas"
+         SqlType "2"
+         Precision "3"
+         Scale "0"
+         Nullable "0"
+         KeyPosition "0"
+         DisplaySize "0"
+         Group "0"
+         SortKey "0"
+         SortType "0"
+         AllowCRLF "0"
+         LevelNo "0"
+         Occurs "0"
+         PadNulls "0"
+         SignOption "0"
+         SortingOrder "0"
+         ArrayHandling "0"
+         SyncIndicator "0"
+         PadChar ""
+         ExtendedPrecision "0"
+         TaggedSubrec "0"
+         OccursVarying "0"
+         PKeyIsCaseless "0"
+         SCDPurpose "0"
+      END DSSUBRECORD
+      MetaBag "CMetaProperty"
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "SchemaFormat"
+         Value "final_delim=end, delim=','"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "DiskWriteInc"
+         Value "1048576"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "BufFreeRun"
+         Value "50"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "MaxMemBufSize"
+         Value "3145728"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "QueueUpperSize"
+         Value "0"
+      END DSSUBRECORD
+      LeftTextPos "308"
+      TopTextPos "197"
+      LinkMinimised "0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S6"
+      OLEType "CCustomStage"
+      Readonly "0"
+      Name "Join_6"
+      NextID "4"
+      InputPins "V0S6P1|V0S6P2"
+      OutputPins "V0S6P3"
+      StageType "PxJoin"
+      AllowColumnMapping "0"
+      Properties "CCustomProperty"
+      BEGIN DSSUBRECORD
+         Name "operator"
+         Value "innerjoin"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "key"
+         Value "\(2)\(2)0\(1)\(3)key\(2)ssn\(2)0"
+      END DSSUBRECORD
+      NextRecordID "0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S6P1"
+      OLEType "CCustomInput"
+      Readonly "0"
+      Name "DSLink3"
+      Partner "V0S0|V0S0P1"
+      LinkType "1"
+      ConditionNotMet "fail"
+      LookupFail "fail"
+      MetaBag "CMetaProperty"
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "RTColumnProp"
+         Value "0"
+      END DSSUBRECORD
+      TransactionSize "0"
+      TXNBehaviour "0"
+      EnableTxGroup "0"
+      LinkMinimised "0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S6P2"
+      OLEType "CCustomInput"
+      Readonly "0"
+      Name "DSLink5"
+      Partner "V0S1|V0S1P1"
+      LinkType "1"
+      ConditionNotMet "fail"
+      LookupFail "fail"
+      MetaBag "CMetaProperty"
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "RTColumnProp"
+         Value "0"
+      END DSSUBRECORD
+      TransactionSize "0"
+      TXNBehaviour "0"
+      EnableTxGroup "0"
+      LinkMinimised "0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S6P3"
+      OLEType "CCustomOutput"
+      Readonly "0"
+      Name "DSLink8"
+      Partner "V0S10|V0S10P1"
+      Columns "COutputColumn"
+      BEGIN DSSUBRECORD
+         Name "ssn"
+         SqlType "2"
+         Precision "4"
+         Scale "0"
+         Nullable "0"
+         KeyPosition "0"
+         DisplaySize "0"
+         Derivation "DSLink3.ssn"
+         Group "0"
+         ParsedDerivation "DSLink3.ssn"
+         SourceColumn "DSLink3.ssn"
+         SortKey "0"
+         SortType "0"
+         AllowCRLF "0"
+         LevelNo "0"
+         Occurs "0"
+         PadNulls "0"
+         SignOption "0"
+         SortingOrder "0"
+         ArrayHandling "0"
+         SyncIndicator "0"
+         PadChar ""
+         ExtendedPrecision "0"
+         TaggedSubrec "0"
+         OccursVarying "0"
+         PKeyIsCaseless "0"
+         SCDPurpose "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "nombre"
+         SqlType "12"
+         Precision "15"
+         Scale "0"
+         Nullable "0"
+         KeyPosition "0"
+         DisplaySize "0"
+         Derivation "DSLink3.nombre"
+         Group "0"
+         ParsedDerivation "DSLink3.nombre"
+         SourceColumn "DSLink3.nombre"
+         SortKey "0"
+         SortType "0"
+         AllowCRLF "0"
+         LevelNo "0"
+         Occurs "0"
+         PadNulls "0"
+         SignOption "0"
+         SortingOrder "0"
+         ArrayHandling "0"
+         SyncIndicator "0"
+         PadChar ""
+         ExtendedPrecision "0"
+         TaggedSubrec "0"
+         OccursVarying "0"
+         PKeyIsCaseless "0"
+         SCDPurpose "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "Valhora"
+         SqlType "2"
+         Precision "4"
+         Scale "0"
+         Nullable "0"
+         KeyPosition "0"
+         DisplaySize "0"
+         Derivation "DSLink3.Valhora"
+         Group "0"
+         ParsedDerivation "DSLink3.Valhora"
+         SourceColumn "DSLink3.Valhora"
+         SortKey "0"
+         SortType "0"
+         AllowCRLF "0"
+         LevelNo "0"
+         Occurs "0"
+         PadNulls "0"
+         SignOption "0"
+         SortingOrder "0"
+         ArrayHandling "0"
+         SyncIndicator "0"
+         PadChar ""
+         ExtendedPrecision "0"
+         TaggedSubrec "0"
+         OccursVarying "0"
+         PKeyIsCaseless "0"
+         SCDPurpose "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "mes"
+         SqlType "2"
+         Precision "2"
+         Scale "0"
+         Nullable "0"
+         KeyPosition "0"
+         DisplaySize "0"
+         Derivation "DSLink5.mes"
+         Group "0"
+         ParsedDerivation "DSLink5.mes"
+         SourceColumn "DSLink5.mes"
+         SortKey "0"
+         SortType "0"
+         AllowCRLF "0"
+         LevelNo "0"
+         Occurs "0"
+         PadNulls "0"
+         SignOption "0"
+         SortingOrder "0"
+         ArrayHandling "0"
+         SyncIndicator "0"
+         PadChar ""
+         ExtendedPrecision "0"
+         TaggedSubrec "0"
+         OccursVarying "0"
+         PKeyIsCaseless "0"
+         SCDPurpose "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "horas"
+         SqlType "2"
+         Precision "3"
+         Scale "0"
+         Nullable "0"
+         KeyPosition "0"
+         DisplaySize "0"
+         Derivation "DSLink5.horas"
+         Group "0"
+         ParsedDerivation "DSLink5.horas"
+         SourceColumn "DSLink5.horas"
+         SortKey "0"
+         SortType "0"
+         AllowCRLF "0"
+         LevelNo "0"
+         Occurs "0"
+         PadNulls "0"
+         SignOption "0"
+         SortingOrder "0"
+         ArrayHandling "0"
+         SyncIndicator "0"
+         PadChar ""
+         ExtendedPrecision "0"
+         TaggedSubrec "0"
+         OccursVarying "0"
+         PKeyIsCaseless "0"
+         SCDPurpose "0"
+      END DSSUBRECORD
+      MetaBag "CMetaProperty"
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "DiskWriteInc"
+         Value "1048576"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "BufFreeRun"
+         Value "50"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "MaxMemBufSize"
+         Value "3145728"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "QueueUpperSize"
+         Value "0"
+      END DSSUBRECORD
+      LeftTextPos "486"
+      TopTextPos "179"
+      LinkMinimised "0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S9"
+      OLEType "CCustomStage"
+      Readonly "0"
+      Name "Data_Set_9"
+      NextID "3"
+      InputPins "V0S9P2"
+      StageType "PxDataSet"
+      AllowColumnMapping "0"
+      NextRecordID "0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S9P2"
+      OLEType "CCustomInput"
+      Readonly "0"
+      Name "DSLink11"
+      Partner "V0S10|V0S10P2"
+      LinkType "1"
+      ConditionNotMet "fail"
+      LookupFail "fail"
+      Properties "CCustomProperty"
+      BEGIN DSSUBRECORD
+         Name "dataset"
+         Value "C:\\temp\\dsvulnera.ds"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "datasetmode"
+         Value ">| [ds"
+      END DSSUBRECORD
+      MetaBag "CMetaProperty"
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "RTColumnProp"
+         Value "0"
+      END DSSUBRECORD
+      TransactionSize "0"
+      TXNBehaviour "0"
+      EnableTxGroup "0"
+      LinkMinimised "0"
+   END DSRECORD
+END DSJOB
+BEGIN DSJOB
+   Identifier "Job_Vulnera2"
+   DateModified "2021-05-04"
+   TimeModified "14.44.36"
+   BEGIN DSRECORD
+      Identifier "ROOT"
+      OLEType "CJobDefn"
+      Readonly "0"
+      Name "Job_Vulnera2"
+      NextID "1"
+      Container "V0"
+      JobVersion "56.0.0"
+      ControlAfterSubr "0"
+      Parameters "CParameters"
+      BEGIN DSSUBRECORD
+         Name "P_mes"
+         Prompt "P_mes"
+         Default "0"
+         ParamType "2"
+         ParamLength "0"
+         ParamScale "0"
+      END DSSUBRECORD
+      MetaBag "CMetaProperty"
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "AdvancedRuntimeOptions"
+         Value "#DSProjectARTOptions#"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "TraceMode"
+         Value "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "TraceSeq"
+         Value "1"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "TraceRecords"
+         Value "100"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "TraceSkip"
+         Value "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "TracePeriod"
+         Value "1"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "RecordJobPerformanceData"
+         Value "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "IdentList"
+         Value "Transformer_15|Sequential_File_18"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "ClientCodePage"
+         Value "1252"
+      END DSSUBRECORD
+      NULLIndicatorPosition "0"
+      OrchestrateCode =+=+=+=
+#################################################################
+#### STAGE: Data_Set_9
+## Operator
+copy
+## General options
+[ident('Data_Set_9')]
+## Inputs
+0< [ds] 'C:\\\\temp\\\\dsvulnera.ds'
+## Outputs
+0> [modify (
+  ssn:not_nullable decimal[4,0]=ssn;
+  nombre:not_nullable string[max=15]=nombre;
+  Valhora:not_nullable decimal[4,0]=Valhora;
+  mes:not_nullable decimal[2,0]=mes;
+  horas:not_nullable decimal[3,0]=horas;
+keep
+  ssn,nombre,Valhora,mes,
+  horas;
+)] 'Data_Set_9:DSLink11.v'
+;
+
+#################################################################
+#### STAGE: Transformer_15
+## Operator
+transform
+## Operator options
+-flag run
+-name 'V0S15_Job_Vulnera2_Transformer_15'
+
+## General options
+[ident('Transformer_15'); jobmon_ident('Transformer_15')]
+## Inputs
+0< [] 'Data_Set_9:DSLink11.v'
+## Outputs
+0> [] 'Transformer_15:DSLink17.v'
+;
+
+#################################################################
+#### STAGE: Sequential_File_18
+## Operator
+export
+## Operator options
+-schema record
+  {final_delim=end, delim=','}
+(
+  nombre:string[max=11];
+  Valhora:decimal[5,0];
+)
+-file 'C:\\\\temp\\\\Vulnera.txt'
+-overwrite
+-rejects continue
+
+## General options
+[ident('Sequential_File_18'); jobmon_ident('Sequential_File_18')]
+## Inputs
+0< [] 'Transformer_15:DSLink17.v'
+;
+
+
+=+=+=+=
+      IsTemplate "0"
+      NLSLocale ",,,,"
+      JobType "3"
+      Category "\\Jobs"
+      CenturyBreakYear "30"
+      NextAliasID "2"
+      ParameterFileDDName "DD00001"
+      ReservedWordCheck "1"
+      TransactionSize "0"
+      ValidationStatus "0"
+      Uploadable "0"
+      PgmCustomizationFlag "0"
+      JobReportFlag "0"
+      AllowMultipleInvocations "0"
+      Act2ActOverideDefaults "0"
+      Act2ActEnableRowBuffer "0"
+      Act2ActUseIPC "0"
+      Act2ActBufferSize "0"
+      Act2ActIPCTimeout "0"
+      ExpressionSemanticCheckFlag "0"
+      TraceOption "0"
+      EnableCacheSharing "0"
+      RuntimeColumnPropagation "0"
+      RelStagesInJobStatus "-1"
+      WebServiceEnabled "0"
+      MFProcessMetaData "0"
+      MFProcessMetaDataXMLFileExchangeMethod "0"
+      IMSProgType "0"
+      CopyLibPrefix "ARDT"
+      RecordPerformanceResults "0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0"
+      OLEType "CContainerView"
+      Readonly "0"
+      Name "Job"
+      NextID "1"
+      IsTopLevel "0"
+      StageList "V0S9|V0S15|V0S18"
+      StageXPos "48|288|528"
+      StageYPos "168|168|168"
+      StageTypes "CCustomStage|CTransformerStage|CCustomStage"
+      NextStageID "19"
+      SnapToGrid "1"
+      GridLines "0"
+      ZoomValue "100"
+      StageXSize "48|48|48"
+      StageYSize "48|48|48"
+      ContainerViewSizing "0026 0026 0738 0250 0000 0001 0000 0080"
+      StageNames "Data_Set_9|Transformer_15|Sequential_File_18"
+      StageTypeIDs "PxDataSet|CTransformerStage|PxSequentialFile"
+      LinkNames "DSLink11|DSLink17| "
+      LinkHasMetaDatas "True|True| "
+      LinkTypes "1|1| "
+      LinkNamePositionXs "157|406| "
+      LinkNamePositionYs "177|175| "
+      TargetStageIDs "V0S15|V0S18| "
+      SourceStageEffectiveExecutionModes "2|2| "
+      SourceStageRuntimeExecutionModes "2|2| "
+      TargetStageEffectiveExecutionModes "2|1| "
+      TargetStageRuntimeExecutionModes "2|1| "
+      LinkIsSingleOperatorLookup "False|False| "
+      LinkIsSortSequential "False|False| "
+      LinkSortMode "0|0| "
+      LinkPartColMode "1|1| "
+      LinkSourcePinIDs "V0S9P3|V0S15P2| "
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S15"
+      OLEType "CTransformerStage"
+      Readonly "0"
+      Name "Transformer_15"
+      NextID "3"
+      InputPins "V0S15P1"
+      OutputPins "V0S15P2"
+      MetaBag "CMetaProperty"
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "TrxGenCode"
+         Value =+=+=+=
+//
+// Generated file to implement the V0S15_Job_Vulnera2_Transformer_15 transform operator.
+//
+
+// define our input/output link names
+inputname 0 DSLink11;
+outputname 0 DSLink17;
+
+initialize {
+ // define our control variables
+ int8 RowRejected0;
+ int8 NullSetVar0;
+
+ // declare our intermediate variables for this section (1)
+ decimal InterVar0_0;
+ decimal InterVar0_1;
+
+ // initialise constant values which require conversion
+ InterVar0_0 = 4567;
+ InterVar0_1 = 10;
+}
+
+mainloop {
+
+ // initialise the rejected row variable
+ RowRejected0 = 1;
+
+ // evaluate columns (no constraints) for link: DSLink17
+ DSLink17.nombre = DSLink11.nombre;
+ if ((DSLink11.ssn == InterVar0_0)) {
+  DSLink17.Valhora = ((DSLink11.horas * DSLink11.Valhora) * InterVar0_1);
+ } else {
+  DSLink17.Valhora = (DSLink11.horas * DSLink11.Valhora);
+ }
+ //;
+ writerecord 0;
+ RowRejected0 = 0;
+}
+
+finish {
+}
+
+=+=+=+=
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "TrxGenCache"
+         Value "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "TrxGenWarnings"
+         Value =+=+=+=
+Transformer_15
+   WARNING: Error in output column derivation expression for column Valhora in link DSLink17. 
+       - potential data or precision loss converting from int32 to decimal
+
+=+=+=+=
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "TrxClassName"
+         Value "V0S15_Job_Vulnera2_Transformer_15"
+      END DSSUBRECORD
+      ValidationStatus "0"
+      StageType "CTransformerStage"
+      BlockSize "0"
+      StageVarsMinimised "0"
+      LoopVarsMaximised "0"
+      MaxLoopIterations "0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S15P1"
+      OLEType "CTrxInput"
+      Readonly "0"
+      Name "DSLink11"
+      Partner "V0S9|V0S9P3"
+      LinkType "1"
+      MetaBag "CMetaProperty"
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "RTColumnProp"
+         Value "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "Schema"
+         Value =+=+=+=
+record
+(
+  ssn:decimal[4,0];
+  nombre:string[max=15];
+  Valhora:decimal[4,0];
+  mes:decimal[2,0];
+  horas:decimal[3,0];
+)
+=+=+=+=
+      END DSSUBRECORD
+      MultiRow "0"
+      LinkMinimised "0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S15P2"
+      OLEType "CTrxOutput"
+      Readonly "0"
+      Name "DSLink17"
+      Partner "V0S18|V0S18P1"
+      Reject "0"
+      ErrorPin "0"
+      RowLimit "0"
+      Columns "COutputColumn"
+      BEGIN DSSUBRECORD
+         Name "nombre"
+         SqlType "12"
+         Precision "11"
+         Scale "0"
+         Nullable "0"
+         KeyPosition "0"
+         DisplaySize "0"
+         Derivation "DSLink11.nombre"
+         Group "0"
+         ParsedDerivation "DSLink11.nombre"
+         SourceColumn "DSLink11.nombre"
+         SortKey "0"
+         SortType "0"
+         AllowCRLF "0"
+         LevelNo "0"
+         Occurs "0"
+         PadNulls "0"
+         SignOption "0"
+         SortingOrder "0"
+         ArrayHandling "0"
+         SyncIndicator "0"
+         PadChar ""
+         ExtendedPrecision "0"
+         TaggedSubrec "0"
+         OccursVarying "0"
+         PKeyIsCaseless "0"
+         SCDPurpose "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "Valhora"
+         SqlType "2"
+         Precision "5"
+         Scale "0"
+         Nullable "0"
+         KeyPosition "0"
+         DisplaySize "0"
+         Derivation "If DSLink11.ssn = 4567 Then DSLink11.horas* DSLink11.Valhora*10 Else DSLink11.horas* DSLink11.Valhora "
+         Group "0"
+         ParsedDerivation " If DSLink11.ssn = 4567 Then DSLink11.horas * DSLink11.Valhora * 10 Else DSLink11.horas * DSLink11.Valhora"
+         SourceColumn "DSLink11.ssn;DSLink11.horas;DSLink11.Valhora"
+         SortKey "0"
+         SortType "0"
+         AllowCRLF "0"
+         LevelNo "0"
+         Occurs "0"
+         PadNulls "0"
+         SignOption "0"
+         SortingOrder "0"
+         ArrayHandling "0"
+         SyncIndicator "0"
+         PadChar ""
+         ExtendedPrecision "0"
+         TaggedSubrec "0"
+         OccursVarying "0"
+         PKeyIsCaseless "0"
+         SCDPurpose "0"
+      END DSSUBRECORD
+      MetaBag "CMetaProperty"
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "DiskWriteInc"
+         Value "1048576"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "BufFreeRun"
+         Value "50"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "MaxMemBufSize"
+         Value "3145728"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "QueueUpperSize"
+         Value "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "Schema"
+         Value =+=+=+=
+record
+(
+  nombre:string[max=11];
+  Valhora:decimal[5,0];
+)
+=+=+=+=
+      END DSSUBRECORD
+      LeftTextPos "406"
+      TopTextPos "175"
+      LinkMinimised "0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S18"
+      OLEType "CCustomStage"
+      Readonly "0"
+      Name "Sequential_File_18"
+      NextID "2"
+      InputPins "V0S18P1"
+      StageType "PxSequentialFile"
+      AllowColumnMapping "0"
+      NextRecordID "0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S18P1"
+      OLEType "CCustomInput"
+      Readonly "0"
+      Name "DSLink17"
+      Partner "V0S15|V0S15P2"
+      LinkType "1"
+      ConditionNotMet "fail"
+      LookupFail "fail"
+      Properties "CCustomProperty"
+      BEGIN DSSUBRECORD
+         Name "schema"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "file"
+         Value "\(2)\(2)0\(1)\(3)file\(2)C:\\temp\\Vulnera.txt\(2)0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "append\\overwrite"
+         Value "overwrite"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "nocleanup"
+         Value " "
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "rejects"
+         Value "continue"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "firstLineColumnNames"
+         Value " "
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "writemethod"
+         Value "\(2)\(2)0\(1)\(3)writemethod\(2) \(2)0"
+      END DSSUBRECORD
+      MetaBag "CMetaProperty"
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "RTColumnProp"
+         Value "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "SchemaFormat"
+         Value "final_delim=end, delim=','"
+      END DSSUBRECORD
+      TransactionSize "0"
+      TXNBehaviour "0"
+      EnableTxGroup "0"
+      LinkMinimised "0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S9"
+      OLEType "CCustomStage"
+      Readonly "0"
+      Name "Data_Set_9"
+      NextID "4"
+      OutputPins "V0S9P3"
+      StageType "PxDataSet"
+      AllowColumnMapping "0"
+      NextRecordID "0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S9P3"
+      OLEType "CCustomOutput"
+      Readonly "0"
+      Name "DSLink11"
+      Partner "V0S15|V0S15P1"
+      Properties "CCustomProperty"
+      BEGIN DSSUBRECORD
+         Name "dataset"
+         Value "C:\\temp\\dsvulnera.ds"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "missingcolmode"
+         Value " "
+      END DSSUBRECORD
+      Columns "COutputColumn"
+      BEGIN DSSUBRECORD
+         Name "ssn"
+         SqlType "2"
+         Precision "4"
+         Scale "0"
+         Nullable "0"
+         KeyPosition "0"
+         DisplaySize "0"
+         Group "0"
+         SortKey "0"
+         SortType "0"
+         AllowCRLF "0"
+         LevelNo "0"
+         Occurs "0"
+         PadNulls "0"
+         SignOption "0"
+         SortingOrder "0"
+         ArrayHandling "0"
+         SyncIndicator "0"
+         PadChar ""
+         ExtendedPrecision "0"
+         TaggedSubrec "0"
+         OccursVarying "0"
+         PKeyIsCaseless "0"
+         SCDPurpose "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "nombre"
+         SqlType "12"
+         Precision "15"
+         Scale "0"
+         Nullable "0"
+         KeyPosition "0"
+         DisplaySize "0"
+         Group "0"
+         SortKey "0"
+         SortType "0"
+         AllowCRLF "0"
+         LevelNo "0"
+         Occurs "0"
+         PadNulls "0"
+         SignOption "0"
+         SortingOrder "0"
+         ArrayHandling "0"
+         SyncIndicator "0"
+         PadChar ""
+         ExtendedPrecision "0"
+         TaggedSubrec "0"
+         OccursVarying "0"
+         PKeyIsCaseless "0"
+         SCDPurpose "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "Valhora"
+         SqlType "2"
+         Precision "4"
+         Scale "0"
+         Nullable "0"
+         KeyPosition "0"
+         DisplaySize "0"
+         Group "0"
+         SortKey "0"
+         SortType "0"
+         AllowCRLF "0"
+         LevelNo "0"
+         Occurs "0"
+         PadNulls "0"
+         SignOption "0"
+         SortingOrder "0"
+         ArrayHandling "0"
+         SyncIndicator "0"
+         PadChar ""
+         ExtendedPrecision "0"
+         TaggedSubrec "0"
+         OccursVarying "0"
+         PKeyIsCaseless "0"
+         SCDPurpose "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "mes"
+         SqlType "2"
+         Precision "2"
+         Scale "0"
+         Nullable "0"
+         KeyPosition "0"
+         DisplaySize "0"
+         Group "0"
+         SortKey "0"
+         SortType "0"
+         AllowCRLF "0"
+         LevelNo "0"
+         Occurs "0"
+         PadNulls "0"
+         SignOption "0"
+         SortingOrder "0"
+         ArrayHandling "0"
+         SyncIndicator "0"
+         PadChar ""
+         ExtendedPrecision "0"
+         TaggedSubrec "0"
+         OccursVarying "0"
+         PKeyIsCaseless "0"
+         SCDPurpose "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "horas"
+         SqlType "2"
+         Precision "3"
+         Scale "0"
+         Nullable "0"
+         KeyPosition "0"
+         DisplaySize "0"
+         Group "0"
+         SortKey "0"
+         SortType "0"
+         AllowCRLF "0"
+         LevelNo "0"
+         Occurs "0"
+         PadNulls "0"
+         SignOption "0"
+         SortingOrder "0"
+         ArrayHandling "0"
+         SyncIndicator "0"
+         PadChar ""
+         ExtendedPrecision "0"
+         TaggedSubrec "0"
+         OccursVarying "0"
+         PKeyIsCaseless "0"
+         SCDPurpose "0"
+      END DSSUBRECORD
+      MetaBag "CMetaProperty"
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "DiskWriteInc"
+         Value "1048576"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "BufFreeRun"
+         Value "50"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "MaxMemBufSize"
+         Value "3145728"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "QueueUpperSize"
+         Value "0"
+      END DSSUBRECORD
+      LeftTextPos "157"
+      TopTextPos "177"
+      LinkMinimised "0"
+   END DSRECORD
+END DSJOB
+BEGIN DSJOB
+   Identifier "Seq_Vulnera"
+   DateModified "2021-05-04"
+   TimeModified "14.44.45"
+   BEGIN DSRECORD
+      Identifier "ROOT"
+      OLEType "CJobDefn"
+      Readonly "0"
+      Name "Seq_Vulnera"
+      NextID "1"
+      Container "V0"
+      JobVersion "56.0.0"
+      JobControlCode =+=+=+=
+* Tokens were replaced below as follows:
+* IdV0S0%%Result2%%0 <= Job_Activity_0.$UserStatus
+* IdV0S0%%Result1%%1 <= Job_Activity_0.$JobStatus
+* IdV0S0%%Name%%2 <= Job_Activity_0.$JobName
+* IdV0S1%%Result2%%3 <= Job_Activity_1.$UserStatus
+* IdV0S1%%Result1%%4 <= Job_Activity_1.$JobStatus
+* IdV0S1%%Name%%5 <= Job_Activity_1.$JobName
+*
+*** [Generated at 2021-05-04 14:44:45 - 11.7.0.0]
+   $INCLUDE DSINCLUDE DSJ_XFUNCS.H
+   EQU Time$$ Lit "Oconv(Time(), 'MTS:'):': '"
+****************************************
+* Graphical Sequencer generated code for Job Seq_Vulnera
+****************************************
+   
+   handle$list = ""
+   id$list = ""
+   abort$list = ""
+   b$Abandoning = @False
+   summary$restarting = @False
+*** Sequence start point
+   summary$ = DSMakeMsg("DSTAGE_JSG_M_0048\\Summary of sequence run", "")
+   If summary$restarting Then
+      summary$<1,-1> = Time$$:Convert(@VM, " ", DSMakeMsg("DSTAGE_JSG_M_0049\\Sequence restarted after failure", ""))
+   End Else
+      summary$<1,-1> = Time$$:Convert(@VM, " ", DSMakeMsg("DSTAGE_JSG_M_0051\\Sequence started", ""))
+   End
+   GoTo L$V0S0$START
+L$RETURN$1:
+   GoTo L$WAITFORJOB
+**************************************************
+L$V0S0$START:
+*** Activity "Job_Activity_0": Initialize job
+   h$V0S0 = DSAttachJob("Job_Vulnera1", DSJ.ERRNONE)
+   If (Not(h$V0S0)) Then
+      msg$ = DSMakeMsg("DSTAGE_JSG_M_0001\\Error calling DSAttachJob(%1)<L>%2", "Job_Vulnera1":@FM:DSGetLastErrorMsg())
+      msg$id = "@Job_Activity_0"; GoTo L$ERROR
+   End
+   If DSGetJobInfo(h$V0S0, DSJ.JOBMULTIINVOKABLE) Then
+      jb$V0S0 = "Job_Vulnera1":'.':"Job_Activity_0"
+   End Else
+      jb$V0S0 = "Job_Vulnera1"
+   End
+   dummy$ = DSDetachJob(h$V0S0)
+   summary$<1,-1> = Time$$:Convert(@VM, " ", DSMakeMsg("DSTAGE_JSG_M_0057\\%1 (JOB %2) started", "Job_Activity_0":@FM:jb$V0S0))
+   h$V0S0 = DSAttachJob(jb$V0S0, DSJ.ERRNONE)
+   If (Not(h$V0S0)) Then
+      msg$ = DSMakeMsg("DSTAGE_JSG_M_0001\\Error calling DSAttachJob(%1)<L>%2", jb$V0S0:@FM:DSGetLastErrorMsg())
+      msg$id = "@Job_Activity_0"; GoTo L$ERROR
+   End
+   h$V0S0 = DSPrepareJob(h$V0S0)
+   If (Not(h$V0S0)) Then
+      msg$ = DSMakeMsg("DSTAGE_JSG_M_0012\\Error calling DSPrepareJob(%1)<L>%2", jb$V0S0:@FM:DSGetLastErrorMsg())
+      msg$id = "@Job_Activity_0"; GoTo L$ERROR
+   End
+L$V0S0$PREPARED:
+   p$V0S0$1 = (mes)
+   err$code = DSSetParam(h$V0S0, "P_mes", p$V0S0$1)
+   If (err$code <> DSJE.NOERROR) Then
+      msg$ = DSMakeMsg("DSTAGE_JSG_M_0002\\Error calling DSSetParam(%1), code=%2[E]", "P_mes":@FM:err$code)
+      msg$id = "@Job_Activity_0"; GoTo L$ERROR
+   End
+   err$code = DSRunJob(h$V0S0, DSJ.RUNNORMAL)
+   If (err$code <> DSJE.NOERROR) Then
+      msg$ = DSMakeMsg("DSTAGE_JSG_M_0003\\Error calling DSRunJob(%1), code=%2[E]", jb$V0S0:@FM:err$code)
+      msg$id = "@Job_Activity_0"; GoTo L$ERROR
+   End
+   handle$list<-1> = h$V0S0
+   id$list<-1> = "V0S0"
+   GoTo L$RETURN$1
+**************************************************
+L$V0S0$FINISHED:
+   job$V0S0$status = DSGetJobInfo(h$V0S0, DSJ.JOBSTATUS)
+   job$V0S0$userstatus = DSGetJobInfo(h$V0S0, DSJ.USERSTATUS)
+   summary$<1,-1> = Time$$:Convert(@VM, " ", DSMakeMsg("DSTAGE_JSG_M_0063\\%1 (JOB %2) finished, status=%3[E]", "Job_Activity_0":@FM:jb$V0S0:@FM:job$V0S0$status))
+   IdV0S0%%Result2%%0 = job$V0S0$userstatus
+   IdV0S0%%Result1%%1 = job$V0S0$status
+   IdV0S0%%Name%%2 = jb$V0S0
+   dummy$ = DSDetachJob(h$V0S0)
+   If b$Abandoning Then GoTo L$WAITFORJOB
+   GoTo L$V0S1$START
+L$V0S0$RETURN$1:
+   GoTo L$WAITFORJOB
+**************************************************
+L$V0S1$START:
+*** Activity "Job_Activity_1": Initialize job
+   h$V0S1 = DSAttachJob("Job_Vulnera2", DSJ.ERRNONE)
+   If (Not(h$V0S1)) Then
+      msg$ = DSMakeMsg("DSTAGE_JSG_M_0001\\Error calling DSAttachJob(%1)<L>%2", "Job_Vulnera2":@FM:DSGetLastErrorMsg())
+      msg$id = "@Job_Activity_1"; GoTo L$ERROR
+   End
+   If DSGetJobInfo(h$V0S1, DSJ.JOBMULTIINVOKABLE) Then
+      jb$V0S1 = "Job_Vulnera2":'.':"Job_Activity_1"
+   End Else
+      jb$V0S1 = "Job_Vulnera2"
+   End
+   dummy$ = DSDetachJob(h$V0S1)
+   summary$<1,-1> = Time$$:Convert(@VM, " ", DSMakeMsg("DSTAGE_JSG_M_0057\\%1 (JOB %2) started", "Job_Activity_1":@FM:jb$V0S1))
+   h$V0S1 = DSAttachJob(jb$V0S1, DSJ.ERRNONE)
+   If (Not(h$V0S1)) Then
+      msg$ = DSMakeMsg("DSTAGE_JSG_M_0001\\Error calling DSAttachJob(%1)<L>%2", jb$V0S1:@FM:DSGetLastErrorMsg())
+      msg$id = "@Job_Activity_1"; GoTo L$ERROR
+   End
+   err$code = DSRunJob(h$V0S1, DSJ.RUNNORMAL)
+   If (err$code <> DSJE.NOERROR) Then
+      msg$ = DSMakeMsg("DSTAGE_JSG_M_0003\\Error calling DSRunJob(%1), code=%2[E]", jb$V0S1:@FM:err$code)
+      msg$id = "@Job_Activity_1"; GoTo L$ERROR
+   End
+   handle$list<-1> = h$V0S1
+   id$list<-1> = "V0S1"
+   GoTo L$V0S0$RETURN$1
+**************************************************
+L$V0S1$FINISHED:
+   job$V0S1$status = DSGetJobInfo(h$V0S1, DSJ.JOBSTATUS)
+   job$V0S1$userstatus = DSGetJobInfo(h$V0S1, DSJ.USERSTATUS)
+   summary$<1,-1> = Time$$:Convert(@VM, " ", DSMakeMsg("DSTAGE_JSG_M_0063\\%1 (JOB %2) finished, status=%3[E]", "Job_Activity_1":@FM:jb$V0S1:@FM:job$V0S1$status))
+   IdV0S1%%Result2%%3 = job$V0S1$userstatus
+   IdV0S1%%Result1%%4 = job$V0S1$status
+   IdV0S1%%Name%%5 = jb$V0S1
+   dummy$ = DSDetachJob(h$V0S1)
+   GoTo L$WAITFORJOB
+**************************************************
+L$WAITFORJOB:
+   If handle$list = "" Then GoTo L$FINISH
+   handle$ = DSWaitForJob(handle$list)
+   If handle$ = 0 Then handle$ = handle$list<1>
+   Locate handle$ In handle$list Setting index$ Then
+      id$ = id$list<index$>
+      Del id$list<index$>; Del handle$list<index$>
+      b$Abandoning = abort$list<index$>; Del abort$list<index$>
+      Begin Case
+      Case id$ = "V0S0"
+         GoTo L$V0S0$FINISHED
+      Case id$ = "V0S1"
+         GoTo L$V0S1$FINISHED
+      End Case
+   End
+* Error if fall though
+   handle$list = ""
+   msg$ = DSMakeMsg("DSTAGE_JSG_M_0008\\Error calling DSWaitForJob(), code=%1[E]", handle$)
+   msg$id = "@Coordinator"; GoTo L$ERROR
+**************************************************
+L$ERROR:
+   Call DSLogWarn(DSMakeMsg("DSTAGE_JSG_M_0009\\Controller problem: %1", msg$), msg$id)
+   summary$<1,-1> = Time$$:Convert(@VM, " ", DSMakeMsg("DSTAGE_JSG_M_0052\\Exception raised: %1", msg$id:", ":msg$))
+   abort$list = Ifs(handle$list, Str(1:@FM, DCount(handle$list, @FM)), "")
+   b$Abandoning = @True
+   GoTo L$WAITFORJOB
+L$ABORT:
+   summary$<1,-1> = Time$$:Convert(@VM, " ", DSMakeMsg("DSTAGE_JSG_M_0056\\Sequence failed", ""))
+   x$masked$summary = summary$
+   Call DSMaskExecArgs(x$masked$summary, '')
+   Call DSLogInfo(x$masked$summary, "@Coordinator")
+   Call DSLogFatal(DSMakeMsg("DSTAGE_JSG_M_0013\\Sequence job will abort due to previous unrecoverable errors", ""), "@Coordinator")
+**************************************************
+L$FINISH:
+   If b$Abandoning Then GoTo L$ABORT
+   summary$<1,-1> = Time$$:Convert(@VM, " ", DSMakeMsg("DSTAGE_JSG_M_0054\\Sequence finished OK", ""))
+   x$masked$summary = summary$
+   Call DSMaskExecArgs(x$masked$summary, '')
+   Call DSLogInfo(x$masked$summary, "@Coordinator")
+   L$EXIT: Return To L$EXIT
+ 
+
+=+=+=+=
+      ControlAfterSubr "0"
+      Parameters "CParameters"
+      BEGIN DSSUBRECORD
+         Name "mes"
+         Prompt "mes"
+         ParamType "2"
+         ParamLength "0"
+         ParamScale "0"
+      END DSSUBRECORD
+      MetaBag "CMetaProperty"
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "AdvancedRuntimeOptions"
+         Value "#DSProjectARTOptions#"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "SequenceUseGridProperties"
+         Value "0"
+      END DSSUBRECORD
+      NULLIndicatorPosition "0"
+      Dependencies "CJobDepend"
+      BEGIN DSSUBRECORD
+         Name "Job_Vulnera1"
+         Type "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "Job_Vulnera2"
+         Type "0"
+      END DSSUBRECORD
+      IsTemplate "0"
+      NLSLocale ",,,,"
+      JobType "2"
+      Category "\\Jobs"
+      CenturyBreakYear "30"
+      NextAliasID "2"
+      ParameterFileDDName "DD00001"
+      ReservedWordCheck "1"
+      TransactionSize "0"
+      ValidationStatus "0"
+      Uploadable "0"
+      PgmCustomizationFlag "0"
+      JobReportFlag "0"
+      AllowMultipleInvocations "0"
+      Act2ActOverideDefaults "0"
+      Act2ActEnableRowBuffer "0"
+      Act2ActUseIPC "0"
+      Act2ActBufferSize "0"
+      Act2ActIPCTimeout "0"
+      ExpressionSemanticCheckFlag "0"
+      TraceOption "0"
+      EnableCacheSharing "0"
+      RuntimeColumnPropagation "0"
+      RelStagesInJobStatus "-1"
+      WebServiceEnabled "0"
+      MFProcessMetaData "0"
+      MFProcessMetaDataXMLFileExchangeMethod "0"
+      IMSProgType "0"
+      CopyLibPrefix "ARDT"
+      RecordPerformanceResults "0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0"
+      OLEType "CContainerView"
+      Readonly "0"
+      Name "Job"
+      NextID "1"
+      IsTopLevel "0"
+      StageList "V0S0|V0S1"
+      StageXPos "168|384"
+      StageYPos "96|48"
+      StageTypes "CJSJobActivity|CJSJobActivity"
+      NextStageID "3"
+      SnapToGrid "1"
+      GridLines "0"
+      ZoomValue "100"
+      StageXSize "48|48"
+      StageYSize "48|48"
+      ContainerViewSizing "0078 0078 0790 0302 0000 0001 0000 0000"
+      StageNames "Job_Activity_0|Job_Activity_1"
+      StageTypeIDs "CJobActivity|CJobActivity"
+      LinkNames "DSLink2| "
+      LinkHasMetaDatas "False| "
+      LinkTypes "1| "
+      LinkNamePositionXs "288| "
+      LinkNamePositionYs "100| "
+      TargetStageIDs "V0S1| "
+      SourceStageEffectiveExecutionModes "0| "
+      SourceStageRuntimeExecutionModes "0| "
+      TargetStageEffectiveExecutionModes "0| "
+      TargetStageRuntimeExecutionModes "0| "
+      LinkIsSingleOperatorLookup "False| "
+      LinkIsSortSequential "False| "
+      LinkSortMode "0| "
+      LinkPartColMode "0| "
+      LinkSourcePinIDs "V0S0P1| "
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S0"
+      OLEType "CJSJobActivity"
+      Readonly "0"
+      Name "Job_Activity_0"
+      NextID "2"
+      OutputPins "V0S0P1"
+      JobType "0"
+      ExecutionType "1"
+      Jobname "Job_Vulnera1"
+      ParameterValues "CParamValues"
+      BEGIN DSSUBRECORD
+         Name "P_mes"
+         Description "mes"
+         ValueType "4"
+         DisplayValue "mes"
+      END DSSUBRECORD
+      CheckPoint "0"
+      StageType "CJobActivity"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S0P1"
+      OLEType "CJSActivityOutput"
+      Readonly "0"
+      Name "DSLink2"
+      Partner "V0S1|V0S1P1"
+      ConditionType "0"
+      LeftTextPos "288"
+      TopTextPos "100"
+      SourceID "V0S0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S1"
+      OLEType "CJSJobActivity"
+      Readonly "0"
+      Name "Job_Activity_1"
+      NextID "2"
+      InputPins "V0S1P1"
+      JobType "0"
+      ExecutionType "0"
+      Jobname "Job_Vulnera2"
+      CheckPoint "0"
+      StageType "CJobActivity"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S1P1"
+      OLEType "CJSActivityInput"
+      Readonly "0"
+      Name "DSLink2"
+      Partner "V0S0|V0S0P1"
+      LinkType "1"
+   END DSRECORD
+END DSJOB

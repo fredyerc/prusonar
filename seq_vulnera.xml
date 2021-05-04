@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DSExport>
+   <Header CharacterSet="CP1252" ExportingTool="IBM InfoSphere DataStage Export" ToolVersion="8" ServerName="WIN2012-VMWARE" ToolInstanceID="dstage1" Date="2021-05-04" Time="14.53.21" ServerVersion="11.7"/>
+   <Job Identifier="Seq_Vulnera" DateModified="2021-05-04" TimeModified="14.44.45">
+      <Record Identifier="ROOT" Type="JobDefn" Readonly="0">
+         <Property Name="Name">Seq_Vulnera</Property>
+         <Property Name="NextID">1</Property>
+         <Property Name="Container">V0</Property>
+         <Property Name="JobVersion">56.0.0</Property>
+         <Property Name="JobControlCode" PreFormatted="1">* Tokens were replaced below as follows:
+* IdV0S0%%Result2%%0 &lt;= Job_Activity_0.$UserStatus
+* IdV0S0%%Result1%%1 &lt;= Job_Activity_0.$JobStatus
+* IdV0S0%%Name%%2 &lt;= Job_Activity_0.$JobName
+* IdV0S1%%Result2%%3 &lt;= Job_Activity_1.$UserStatus
+* IdV0S1%%Result1%%4 &lt;= Job_Activity_1.$JobStatus
+* IdV0S1%%Name%%5 &lt;= Job_Activity_1.$JobName
+*
+*** [Generated at 2021-05-04 14:44:45 - 11.7.0.0]
+   $INCLUDE DSINCLUDE DSJ_XFUNCS.H
+   EQU Time$$ Lit &quot;Oconv(Time(), &apos;MTS:&apos;):&apos;: &apos;&quot;
+****************************************
+* Graphical Sequencer generated code for Job Seq_Vulnera
+****************************************
+   
+   handle$list = &quot;&quot;
+   id$list = &quot;&quot;
+   abort$list = &quot;&quot;
+   b$Abandoning = @False
+   summary$restarting = @False
+*** Sequence start point
+   summary$ = DSMakeMsg(&quot;DSTAGE_JSG_M_0048\Summary of sequence run&quot;, &quot;&quot;)
+   If summary$restarting Then
+      summary$&lt;1,-1&gt; = Time$$:Convert(@VM, &quot; &quot;, DSMakeMsg(&quot;DSTAGE_JSG_M_0049\Sequence restarted after failure&quot;, &quot;&quot;))
+   End Else
+      summary$&lt;1,-1&gt; = Time$$:Convert(@VM, &quot; &quot;, DSMakeMsg(&quot;DSTAGE_JSG_M_0051\Sequence started&quot;, &quot;&quot;))
+   End
+   GoTo L$V0S0$START
+L$RETURN$1:
+   GoTo L$WAITFORJOB
+**************************************************
+L$V0S0$START:
+*** Activity &quot;Job_Activity_0&quot;: Initialize job
+   h$V0S0 = DSAttachJob(&quot;Job_Vulnera1&quot;, DSJ.ERRNONE)
+   If (Not(h$V0S0)) Then
+      msg$ = DSMakeMsg(&quot;DSTAGE_JSG_M_0001\Error calling DSAttachJob(%1)&lt;L&gt;%2&quot;, &quot;Job_Vulnera1&quot;:@FM:DSGetLastErrorMsg())
+      msg$id = &quot;@Job_Activity_0&quot;; GoTo L$ERROR
+   End
+   If DSGetJobInfo(h$V0S0, DSJ.JOBMULTIINVOKABLE) Then
+      jb$V0S0 = &quot;Job_Vulnera1&quot;:&apos;.&apos;:&quot;Job_Activity_0&quot;
+   End Else
+      jb$V0S0 = &quot;Job_Vulnera1&quot;
+   End
+   dummy$ = DSDetachJob(h$V0S0)
+   summary$&lt;1,-1&gt; = Time$$:Convert(@VM, &quot; &quot;, DSMakeMsg(&quot;DSTAGE_JSG_M_0057\%1 (JOB %2) started&quot;, &quot;Job_Activity_0&quot;:@FM:jb$V0S0))
+   h$V0S0 = DSAttachJob(jb$V0S0, DSJ.ERRNONE)
+   If (Not(h$V0S0)) Then
+      msg$ = DSMakeMsg(&quot;DSTAGE_JSG_M_0001\Error calling DSAttachJob(%1)&lt;L&gt;%2&quot;, jb$V0S0:@FM:DSGetLastErrorMsg())
+      msg$id = &quot;@Job_Activity_0&quot;; GoTo L$ERROR
+   End
+   h$V0S0 = DSPrepareJob(h$V0S0)
+   If (Not(h$V0S0)) Then
+      msg$ = DSMakeMsg(&quot;DSTAGE_JSG_M_0012\Error calling DSPrepareJob(%1)&lt;L&gt;%2&quot;, jb$V0S0:@FM:DSGetLastErrorMsg())
+      msg$id = &quot;@Job_Activity_0&quot;; GoTo L$ERROR
+   End
+L$V0S0$PREPARED:
+   p$V0S0$1 = (mes)
+   err$code = DSSetParam(h$V0S0, &quot;P_mes&quot;, p$V0S0$1)
+   If (err$code &lt;&gt; DSJE.NOERROR) Then
+      msg$ = DSMakeMsg(&quot;DSTAGE_JSG_M_0002\Error calling DSSetParam(%1), code=%2[E]&quot;, &quot;P_mes&quot;:@FM:err$code)
+      msg$id = &quot;@Job_Activity_0&quot;; GoTo L$ERROR
+   End
+   err$code = DSRunJob(h$V0S0, DSJ.RUNNORMAL)
+   If (err$code &lt;&gt; DSJE.NOERROR) Then
+      msg$ = DSMakeMsg(&quot;DSTAGE_JSG_M_0003\Error calling DSRunJob(%1), code=%2[E]&quot;, jb$V0S0:@FM:err$code)
+      msg$id = &quot;@Job_Activity_0&quot;; GoTo L$ERROR
+   End
+   handle$list&lt;-1&gt; = h$V0S0
+   id$list&lt;-1&gt; = &quot;V0S0&quot;
+   GoTo L$RETURN$1
+**************************************************
+L$V0S0$FINISHED:
+   job$V0S0$status = DSGetJobInfo(h$V0S0, DSJ.JOBSTATUS)
+   job$V0S0$userstatus = DSGetJobInfo(h$V0S0, DSJ.USERSTATUS)
+   summary$&lt;1,-1&gt; = Time$$:Convert(@VM, &quot; &quot;, DSMakeMsg(&quot;DSTAGE_JSG_M_0063\%1 (JOB %2) finished, status=%3[E]&quot;, &quot;Job_Activity_0&quot;:@FM:jb$V0S0:@FM:job$V0S0$status))
+   IdV0S0%%Result2%%0 = job$V0S0$userstatus
+   IdV0S0%%Result1%%1 = job$V0S0$status
+   IdV0S0%%Name%%2 = jb$V0S0
+   dummy$ = DSDetachJob(h$V0S0)
+   If b$Abandoning Then GoTo L$WAITFORJOB
+   GoTo L$V0S1$START
+L$V0S0$RETURN$1:
+   GoTo L$WAITFORJOB
+**************************************************
+L$V0S1$START:
+*** Activity &quot;Job_Activity_1&quot;: Initialize job
+   h$V0S1 = DSAttachJob(&quot;Job_Vulnera2&quot;, DSJ.ERRNONE)
+   If (Not(h$V0S1)) Then
+      msg$ = DSMakeMsg(&quot;DSTAGE_JSG_M_0001\Error calling DSAttachJob(%1)&lt;L&gt;%2&quot;, &quot;Job_Vulnera2&quot;:@FM:DSGetLastErrorMsg())
+      msg$id = &quot;@Job_Activity_1&quot;; GoTo L$ERROR
+   End
+   If DSGetJobInfo(h$V0S1, DSJ.JOBMULTIINVOKABLE) Then
+      jb$V0S1 = &quot;Job_Vulnera2&quot;:&apos;.&apos;:&quot;Job_Activity_1&quot;
+   End Else
+      jb$V0S1 = &quot;Job_Vulnera2&quot;
+   End
+   dummy$ = DSDetachJob(h$V0S1)
+   summary$&lt;1,-1&gt; = Time$$:Convert(@VM, &quot; &quot;, DSMakeMsg(&quot;DSTAGE_JSG_M_0057\%1 (JOB %2) started&quot;, &quot;Job_Activity_1&quot;:@FM:jb$V0S1))
+   h$V0S1 = DSAttachJob(jb$V0S1, DSJ.ERRNONE)
+   If (Not(h$V0S1)) Then
+      msg$ = DSMakeMsg(&quot;DSTAGE_JSG_M_0001\Error calling DSAttachJob(%1)&lt;L&gt;%2&quot;, jb$V0S1:@FM:DSGetLastErrorMsg())
+      msg$id = &quot;@Job_Activity_1&quot;; GoTo L$ERROR
+   End
+   err$code = DSRunJob(h$V0S1, DSJ.RUNNORMAL)
+   If (err$code &lt;&gt; DSJE.NOERROR) Then
+      msg$ = DSMakeMsg(&quot;DSTAGE_JSG_M_0003\Error calling DSRunJob(%1), code=%2[E]&quot;, jb$V0S1:@FM:err$code)
+      msg$id = &quot;@Job_Activity_1&quot;; GoTo L$ERROR
+   End
+   handle$list&lt;-1&gt; = h$V0S1
+   id$list&lt;-1&gt; = &quot;V0S1&quot;
+   GoTo L$V0S0$RETURN$1
+**************************************************
+L$V0S1$FINISHED:
+   job$V0S1$status = DSGetJobInfo(h$V0S1, DSJ.JOBSTATUS)
+   job$V0S1$userstatus = DSGetJobInfo(h$V0S1, DSJ.USERSTATUS)
+   summary$&lt;1,-1&gt; = Time$$:Convert(@VM, &quot; &quot;, DSMakeMsg(&quot;DSTAGE_JSG_M_0063\%1 (JOB %2) finished, status=%3[E]&quot;, &quot;Job_Activity_1&quot;:@FM:jb$V0S1:@FM:job$V0S1$status))
+   IdV0S1%%Result2%%3 = job$V0S1$userstatus
+   IdV0S1%%Result1%%4 = job$V0S1$status
+   IdV0S1%%Name%%5 = jb$V0S1
+   dummy$ = DSDetachJob(h$V0S1)
+   GoTo L$WAITFORJOB
+**************************************************
+L$WAITFORJOB:
+   If handle$list = &quot;&quot; Then GoTo L$FINISH
+   handle$ = DSWaitForJob(handle$list)
+   If handle$ = 0 Then handle$ = handle$list&lt;1&gt;
+   Locate handle$ In handle$list Setting index$ Then
+      id$ = id$list&lt;index$&gt;
+      Del id$list&lt;index$&gt;; Del handle$list&lt;index$&gt;
+      b$Abandoning = abort$list&lt;index$&gt;; Del abort$list&lt;index$&gt;
+      Begin Case
+      Case id$ = &quot;V0S0&quot;
+         GoTo L$V0S0$FINISHED
+      Case id$ = &quot;V0S1&quot;
+         GoTo L$V0S1$FINISHED
+      End Case
+   End
+* Error if fall though
+   handle$list = &quot;&quot;
+   msg$ = DSMakeMsg(&quot;DSTAGE_JSG_M_0008\Error calling DSWaitForJob(), code=%1[E]&quot;, handle$)
+   msg$id = &quot;@Coordinator&quot;; GoTo L$ERROR
+**************************************************
+L$ERROR:
+   Call DSLogWarn(DSMakeMsg(&quot;DSTAGE_JSG_M_0009\Controller problem: %1&quot;, msg$), msg$id)
+   summary$&lt;1,-1&gt; = Time$$:Convert(@VM, &quot; &quot;, DSMakeMsg(&quot;DSTAGE_JSG_M_0052\Exception raised: %1&quot;, msg$id:&quot;, &quot;:msg$))
+   abort$list = Ifs(handle$list, Str(1:@FM, DCount(handle$list, @FM)), &quot;&quot;)
+   b$Abandoning = @True
+   GoTo L$WAITFORJOB
+L$ABORT:
+   summary$&lt;1,-1&gt; = Time$$:Convert(@VM, &quot; &quot;, DSMakeMsg(&quot;DSTAGE_JSG_M_0056\Sequence failed&quot;, &quot;&quot;))
+   x$masked$summary = summary$
+   Call DSMaskExecArgs(x$masked$summary, &apos;&apos;)
+   Call DSLogInfo(x$masked$summary, &quot;@Coordinator&quot;)
+   Call DSLogFatal(DSMakeMsg(&quot;DSTAGE_JSG_M_0013\Sequence job will abort due to previous unrecoverable errors&quot;, &quot;&quot;), &quot;@Coordinator&quot;)
+**************************************************
+L$FINISH:
+   If b$Abandoning Then GoTo L$ABORT
+   summary$&lt;1,-1&gt; = Time$$:Convert(@VM, &quot; &quot;, DSMakeMsg(&quot;DSTAGE_JSG_M_0054\Sequence finished OK&quot;, &quot;&quot;))
+   x$masked$summary = summary$
+   Call DSMaskExecArgs(x$masked$summary, &apos;&apos;)
+   Call DSLogInfo(x$masked$summary, &quot;@Coordinator&quot;)
+   L$EXIT: Return To L$EXIT
+ 
+</Property>
+         <Property Name="ControlAfterSubr">0</Property>
+         <Collection Name="Parameters" Type="Parameters">
+            <SubRecord>
+               <Property Name="Name">mes</Property>
+               <Property Name="Prompt">mes</Property>
+               <Property Name="ParamType">2</Property>
+               <Property Name="ParamLength">0</Property>
+               <Property Name="ParamScale">0</Property>
+            </SubRecord>
+         </Collection>
+         <Collection Name="MetaBag" Type="MetaProperty">
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">AdvancedRuntimeOptions</Property>
+               <Property Name="Value">#DSProjectARTOptions#</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Owner">APT</Property>
+               <Property Name="Name">SequenceUseGridProperties</Property>
+               <Property Name="Value">0</Property>
+            </SubRecord>
+         </Collection>
+         <Property Name="NULLIndicatorPosition">0</Property>
+         <Collection Name="Dependencies" Type="JobDepend">
+            <SubRecord>
+               <Property Name="Name">Job_Vulnera1</Property>
+               <Property Name="Type">0</Property>
+            </SubRecord>
+            <SubRecord>
+               <Property Name="Name">Job_Vulnera2</Property>
+               <Property Name="Type">0</Property>
+            </SubRecord>
+         </Collection>
+         <Property Name="IsTemplate">0</Property>
+         <Property Name="NLSLocale">,,,,</Property>
+         <Property Name="JobType">2</Property>
+         <Property Name="Category">\Jobs</Property>
+         <Property Name="CenturyBreakYear">30</Property>
+         <Property Name="NextAliasID">2</Property>
+         <Property Name="ParameterFileDDName">DD00001</Property>
+         <Property Name="ReservedWordCheck">1</Property>
+         <Property Name="TransactionSize">0</Property>
+         <Property Name="ValidationStatus">0</Property>
+         <Property Name="Uploadable">0</Property>
+         <Property Name="PgmCustomizationFlag">0</Property>
+         <Property Name="JobReportFlag">0</Property>
+         <Property Name="AllowMultipleInvocations">0</Property>
+         <Property Name="Act2ActOverideDefaults">0</Property>
+         <Property Name="Act2ActEnableRowBuffer">0</Property>
+         <Property Name="Act2ActUseIPC">0</Property>
+         <Property Name="Act2ActBufferSize">0</Property>
+         <Property Name="Act2ActIPCTimeout">0</Property>
+         <Property Name="ExpressionSemanticCheckFlag">0</Property>
+         <Property Name="TraceOption">0</Property>
+         <Property Name="EnableCacheSharing">0</Property>
+         <Property Name="RuntimeColumnPropagation">0</Property>
+         <Property Name="RelStagesInJobStatus">-1</Property>
+         <Property Name="WebServiceEnabled">0</Property>
+         <Property Name="MFProcessMetaData">0</Property>
+         <Property Name="MFProcessMetaDataXMLFileExchangeMethod">0</Property>
+         <Property Name="IMSProgType">0</Property>
+         <Property Name="CopyLibPrefix">ARDT</Property>
+         <Property Name="RecordPerformanceResults">0</Property>
+      </Record>
+      <Record Identifier="V0" Type="ContainerView" Readonly="0">
+         <Property Name="Name">Job</Property>
+         <Property Name="NextID">1</Property>
+         <Property Name="IsTopLevel">0</Property>
+         <Property Name="StageList">V0S0|V0S1</Property>
+         <Property Name="StageXPos">168|384</Property>
+         <Property Name="StageYPos">96|48</Property>
+         <Property Name="StageTypes">CJSJobActivity|CJSJobActivity</Property>
+         <Property Name="NextStageID">3</Property>
+         <Property Name="SnapToGrid">1</Property>
+         <Property Name="GridLines">0</Property>
+         <Property Name="ZoomValue">100</Property>
+         <Property Name="StageXSize">48|48</Property>
+         <Property Name="StageYSize">48|48</Property>
+         <Property Name="ContainerViewSizing">0078 0078 0790 0302 0000 0001 0000 0000</Property>
+         <Property Name="StageNames">Job_Activity_0|Job_Activity_1</Property>
+         <Property Name="StageTypeIDs">CJobActivity|CJobActivity</Property>
+         <Property Name="LinkNames">DSLink2|\(20)</Property>
+         <Property Name="LinkHasMetaDatas">False|\(20)</Property>
+         <Property Name="LinkTypes">1|\(20)</Property>
+         <Property Name="LinkNamePositionXs">288|\(20)</Property>
+         <Property Name="LinkNamePositionYs">100|\(20)</Property>
+         <Property Name="TargetStageIDs">V0S1|\(20)</Property>
+         <Property Name="SourceStageEffectiveExecutionModes">0|\(20)</Property>
+         <Property Name="SourceStageRuntimeExecutionModes">0|\(20)</Property>
+         <Property Name="TargetStageEffectiveExecutionModes">0|\(20)</Property>
+         <Property Name="TargetStageRuntimeExecutionModes">0|\(20)</Property>
+         <Property Name="LinkIsSingleOperatorLookup">False|\(20)</Property>
+         <Property Name="LinkIsSortSequential">False|\(20)</Property>
+         <Property Name="LinkSortMode">0|\(20)</Property>
+         <Property Name="LinkPartColMode">0|\(20)</Property>
+         <Property Name="LinkSourcePinIDs">V0S0P1|\(20)</Property>
+      </Record>
+      <Record Identifier="V0S0" Type="JSJobActivity" Readonly="0">
+         <Property Name="Name">Job_Activity_0</Property>
+         <Property Name="NextID">2</Property>
+         <Property Name="OutputPins">V0S0P1</Property>
+         <Property Name="JobType">0</Property>
+         <Property Name="ExecutionType">1</Property>
+         <Property Name="Jobname">Job_Vulnera1</Property>
+         <Collection Name="ParameterValues" Type="ParamValues">
+            <SubRecord>
+               <Property Name="Name">P_mes</Property>
+               <Property Name="Description">mes</Property>
+               <Property Name="ValueType">4</Property>
+               <Property Name="DisplayValue">mes</Property>
+            </SubRecord>
+         </Collection>
+         <Property Name="CheckPoint">0</Property>
+         <Property Name="StageType">CJobActivity</Property>
+      </Record>
+      <Record Identifier="V0S0P1" Type="JSActivityOutput" Readonly="0">
+         <Property Name="Name">DSLink2</Property>
+         <Property Name="Partner">V0S1|V0S1P1</Property>
+         <Property Name="ConditionType">0</Property>
+         <Property Name="LeftTextPos">288</Property>
+         <Property Name="TopTextPos">100</Property>
+         <Property Name="SourceID">V0S0</Property>
+      </Record>
+      <Record Identifier="V0S1" Type="JSJobActivity" Readonly="0">
+         <Property Name="Name">Job_Activity_1</Property>
+         <Property Name="NextID">2</Property>
+         <Property Name="InputPins">V0S1P1</Property>
+         <Property Name="JobType">0</Property>
+         <Property Name="ExecutionType">0</Property>
+         <Property Name="Jobname">Job_Vulnera2</Property>
+         <Property Name="CheckPoint">0</Property>
+         <Property Name="StageType">CJobActivity</Property>
+      </Record>
+      <Record Identifier="V0S1P1" Type="JSActivityInput" Readonly="0">
+         <Property Name="Name">DSLink2</Property>
+         <Property Name="Partner">V0S0|V0S0P1</Property>
+         <Property Name="LinkType">1</Property>
+      </Record>
+   </Job>
+</DSExport>

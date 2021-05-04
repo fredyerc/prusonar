@@ -1,0 +1,339 @@
+BEGIN HEADER
+   CharacterSet "CP1252"
+   ExportingTool "IBM InfoSphere DataStage Export"
+   ToolVersion "8"
+   ServerName "WIN2012-VMWARE"
+   ToolInstanceID "dstage1"
+   MDISVersion "1.0"
+   Date "2021-05-04"
+   Time "14.56.05"
+   ServerVersion "11.7"
+END HEADER
+BEGIN DSJOB
+   Identifier "Seq_Vulnera"
+   DateModified "2021-05-04"
+   TimeModified "14.44.45"
+   BEGIN DSRECORD
+      Identifier "ROOT"
+      OLEType "CJobDefn"
+      Readonly "0"
+      Name "Seq_Vulnera"
+      NextID "1"
+      Container "V0"
+      JobVersion "56.0.0"
+      JobControlCode =+=+=+=
+* Tokens were replaced below as follows:
+* IdV0S0%%Result2%%0 <= Job_Activity_0.$UserStatus
+* IdV0S0%%Result1%%1 <= Job_Activity_0.$JobStatus
+* IdV0S0%%Name%%2 <= Job_Activity_0.$JobName
+* IdV0S1%%Result2%%3 <= Job_Activity_1.$UserStatus
+* IdV0S1%%Result1%%4 <= Job_Activity_1.$JobStatus
+* IdV0S1%%Name%%5 <= Job_Activity_1.$JobName
+*
+*** [Generated at 2021-05-04 14:44:45 - 11.7.0.0]
+   $INCLUDE DSINCLUDE DSJ_XFUNCS.H
+   EQU Time$$ Lit "Oconv(Time(), 'MTS:'):': '"
+****************************************
+* Graphical Sequencer generated code for Job Seq_Vulnera
+****************************************
+   
+   handle$list = ""
+   id$list = ""
+   abort$list = ""
+   b$Abandoning = @False
+   summary$restarting = @False
+*** Sequence start point
+   summary$ = DSMakeMsg("DSTAGE_JSG_M_0048\\Summary of sequence run", "")
+   If summary$restarting Then
+      summary$<1,-1> = Time$$:Convert(@VM, " ", DSMakeMsg("DSTAGE_JSG_M_0049\\Sequence restarted after failure", ""))
+   End Else
+      summary$<1,-1> = Time$$:Convert(@VM, " ", DSMakeMsg("DSTAGE_JSG_M_0051\\Sequence started", ""))
+   End
+   GoTo L$V0S0$START
+L$RETURN$1:
+   GoTo L$WAITFORJOB
+**************************************************
+L$V0S0$START:
+*** Activity "Job_Activity_0": Initialize job
+   h$V0S0 = DSAttachJob("Job_Vulnera1", DSJ.ERRNONE)
+   If (Not(h$V0S0)) Then
+      msg$ = DSMakeMsg("DSTAGE_JSG_M_0001\\Error calling DSAttachJob(%1)<L>%2", "Job_Vulnera1":@FM:DSGetLastErrorMsg())
+      msg$id = "@Job_Activity_0"; GoTo L$ERROR
+   End
+   If DSGetJobInfo(h$V0S0, DSJ.JOBMULTIINVOKABLE) Then
+      jb$V0S0 = "Job_Vulnera1":'.':"Job_Activity_0"
+   End Else
+      jb$V0S0 = "Job_Vulnera1"
+   End
+   dummy$ = DSDetachJob(h$V0S0)
+   summary$<1,-1> = Time$$:Convert(@VM, " ", DSMakeMsg("DSTAGE_JSG_M_0057\\%1 (JOB %2) started", "Job_Activity_0":@FM:jb$V0S0))
+   h$V0S0 = DSAttachJob(jb$V0S0, DSJ.ERRNONE)
+   If (Not(h$V0S0)) Then
+      msg$ = DSMakeMsg("DSTAGE_JSG_M_0001\\Error calling DSAttachJob(%1)<L>%2", jb$V0S0:@FM:DSGetLastErrorMsg())
+      msg$id = "@Job_Activity_0"; GoTo L$ERROR
+   End
+   h$V0S0 = DSPrepareJob(h$V0S0)
+   If (Not(h$V0S0)) Then
+      msg$ = DSMakeMsg("DSTAGE_JSG_M_0012\\Error calling DSPrepareJob(%1)<L>%2", jb$V0S0:@FM:DSGetLastErrorMsg())
+      msg$id = "@Job_Activity_0"; GoTo L$ERROR
+   End
+L$V0S0$PREPARED:
+   p$V0S0$1 = (mes)
+   err$code = DSSetParam(h$V0S0, "P_mes", p$V0S0$1)
+   If (err$code <> DSJE.NOERROR) Then
+      msg$ = DSMakeMsg("DSTAGE_JSG_M_0002\\Error calling DSSetParam(%1), code=%2[E]", "P_mes":@FM:err$code)
+      msg$id = "@Job_Activity_0"; GoTo L$ERROR
+   End
+   err$code = DSRunJob(h$V0S0, DSJ.RUNNORMAL)
+   If (err$code <> DSJE.NOERROR) Then
+      msg$ = DSMakeMsg("DSTAGE_JSG_M_0003\\Error calling DSRunJob(%1), code=%2[E]", jb$V0S0:@FM:err$code)
+      msg$id = "@Job_Activity_0"; GoTo L$ERROR
+   End
+   handle$list<-1> = h$V0S0
+   id$list<-1> = "V0S0"
+   GoTo L$RETURN$1
+**************************************************
+L$V0S0$FINISHED:
+   job$V0S0$status = DSGetJobInfo(h$V0S0, DSJ.JOBSTATUS)
+   job$V0S0$userstatus = DSGetJobInfo(h$V0S0, DSJ.USERSTATUS)
+   summary$<1,-1> = Time$$:Convert(@VM, " ", DSMakeMsg("DSTAGE_JSG_M_0063\\%1 (JOB %2) finished, status=%3[E]", "Job_Activity_0":@FM:jb$V0S0:@FM:job$V0S0$status))
+   IdV0S0%%Result2%%0 = job$V0S0$userstatus
+   IdV0S0%%Result1%%1 = job$V0S0$status
+   IdV0S0%%Name%%2 = jb$V0S0
+   dummy$ = DSDetachJob(h$V0S0)
+   If b$Abandoning Then GoTo L$WAITFORJOB
+   GoTo L$V0S1$START
+L$V0S0$RETURN$1:
+   GoTo L$WAITFORJOB
+**************************************************
+L$V0S1$START:
+*** Activity "Job_Activity_1": Initialize job
+   h$V0S1 = DSAttachJob("Job_Vulnera2", DSJ.ERRNONE)
+   If (Not(h$V0S1)) Then
+      msg$ = DSMakeMsg("DSTAGE_JSG_M_0001\\Error calling DSAttachJob(%1)<L>%2", "Job_Vulnera2":@FM:DSGetLastErrorMsg())
+      msg$id = "@Job_Activity_1"; GoTo L$ERROR
+   End
+   If DSGetJobInfo(h$V0S1, DSJ.JOBMULTIINVOKABLE) Then
+      jb$V0S1 = "Job_Vulnera2":'.':"Job_Activity_1"
+   End Else
+      jb$V0S1 = "Job_Vulnera2"
+   End
+   dummy$ = DSDetachJob(h$V0S1)
+   summary$<1,-1> = Time$$:Convert(@VM, " ", DSMakeMsg("DSTAGE_JSG_M_0057\\%1 (JOB %2) started", "Job_Activity_1":@FM:jb$V0S1))
+   h$V0S1 = DSAttachJob(jb$V0S1, DSJ.ERRNONE)
+   If (Not(h$V0S1)) Then
+      msg$ = DSMakeMsg("DSTAGE_JSG_M_0001\\Error calling DSAttachJob(%1)<L>%2", jb$V0S1:@FM:DSGetLastErrorMsg())
+      msg$id = "@Job_Activity_1"; GoTo L$ERROR
+   End
+   err$code = DSRunJob(h$V0S1, DSJ.RUNNORMAL)
+   If (err$code <> DSJE.NOERROR) Then
+      msg$ = DSMakeMsg("DSTAGE_JSG_M_0003\\Error calling DSRunJob(%1), code=%2[E]", jb$V0S1:@FM:err$code)
+      msg$id = "@Job_Activity_1"; GoTo L$ERROR
+   End
+   handle$list<-1> = h$V0S1
+   id$list<-1> = "V0S1"
+   GoTo L$V0S0$RETURN$1
+**************************************************
+L$V0S1$FINISHED:
+   job$V0S1$status = DSGetJobInfo(h$V0S1, DSJ.JOBSTATUS)
+   job$V0S1$userstatus = DSGetJobInfo(h$V0S1, DSJ.USERSTATUS)
+   summary$<1,-1> = Time$$:Convert(@VM, " ", DSMakeMsg("DSTAGE_JSG_M_0063\\%1 (JOB %2) finished, status=%3[E]", "Job_Activity_1":@FM:jb$V0S1:@FM:job$V0S1$status))
+   IdV0S1%%Result2%%3 = job$V0S1$userstatus
+   IdV0S1%%Result1%%4 = job$V0S1$status
+   IdV0S1%%Name%%5 = jb$V0S1
+   dummy$ = DSDetachJob(h$V0S1)
+   GoTo L$WAITFORJOB
+**************************************************
+L$WAITFORJOB:
+   If handle$list = "" Then GoTo L$FINISH
+   handle$ = DSWaitForJob(handle$list)
+   If handle$ = 0 Then handle$ = handle$list<1>
+   Locate handle$ In handle$list Setting index$ Then
+      id$ = id$list<index$>
+      Del id$list<index$>; Del handle$list<index$>
+      b$Abandoning = abort$list<index$>; Del abort$list<index$>
+      Begin Case
+      Case id$ = "V0S0"
+         GoTo L$V0S0$FINISHED
+      Case id$ = "V0S1"
+         GoTo L$V0S1$FINISHED
+      End Case
+   End
+* Error if fall though
+   handle$list = ""
+   msg$ = DSMakeMsg("DSTAGE_JSG_M_0008\\Error calling DSWaitForJob(), code=%1[E]", handle$)
+   msg$id = "@Coordinator"; GoTo L$ERROR
+**************************************************
+L$ERROR:
+   Call DSLogWarn(DSMakeMsg("DSTAGE_JSG_M_0009\\Controller problem: %1", msg$), msg$id)
+   summary$<1,-1> = Time$$:Convert(@VM, " ", DSMakeMsg("DSTAGE_JSG_M_0052\\Exception raised: %1", msg$id:", ":msg$))
+   abort$list = Ifs(handle$list, Str(1:@FM, DCount(handle$list, @FM)), "")
+   b$Abandoning = @True
+   GoTo L$WAITFORJOB
+L$ABORT:
+   summary$<1,-1> = Time$$:Convert(@VM, " ", DSMakeMsg("DSTAGE_JSG_M_0056\\Sequence failed", ""))
+   x$masked$summary = summary$
+   Call DSMaskExecArgs(x$masked$summary, '')
+   Call DSLogInfo(x$masked$summary, "@Coordinator")
+   Call DSLogFatal(DSMakeMsg("DSTAGE_JSG_M_0013\\Sequence job will abort due to previous unrecoverable errors", ""), "@Coordinator")
+**************************************************
+L$FINISH:
+   If b$Abandoning Then GoTo L$ABORT
+   summary$<1,-1> = Time$$:Convert(@VM, " ", DSMakeMsg("DSTAGE_JSG_M_0054\\Sequence finished OK", ""))
+   x$masked$summary = summary$
+   Call DSMaskExecArgs(x$masked$summary, '')
+   Call DSLogInfo(x$masked$summary, "@Coordinator")
+   L$EXIT: Return To L$EXIT
+ 
+
+=+=+=+=
+      ControlAfterSubr "0"
+      Parameters "CParameters"
+      BEGIN DSSUBRECORD
+         Name "mes"
+         Prompt "mes"
+         ParamType "2"
+         ParamLength "0"
+         ParamScale "0"
+      END DSSUBRECORD
+      MetaBag "CMetaProperty"
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "AdvancedRuntimeOptions"
+         Value "#DSProjectARTOptions#"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "SequenceUseGridProperties"
+         Value "0"
+      END DSSUBRECORD
+      NULLIndicatorPosition "0"
+      Dependencies "CJobDepend"
+      BEGIN DSSUBRECORD
+         Name "Job_Vulnera1"
+         Type "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "Job_Vulnera2"
+         Type "0"
+      END DSSUBRECORD
+      IsTemplate "0"
+      NLSLocale ",,,,"
+      JobType "2"
+      Category "\\Jobs"
+      CenturyBreakYear "30"
+      NextAliasID "2"
+      ParameterFileDDName "DD00001"
+      ReservedWordCheck "1"
+      TransactionSize "0"
+      ValidationStatus "0"
+      Uploadable "0"
+      PgmCustomizationFlag "0"
+      JobReportFlag "0"
+      AllowMultipleInvocations "0"
+      Act2ActOverideDefaults "0"
+      Act2ActEnableRowBuffer "0"
+      Act2ActUseIPC "0"
+      Act2ActBufferSize "0"
+      Act2ActIPCTimeout "0"
+      ExpressionSemanticCheckFlag "0"
+      TraceOption "0"
+      EnableCacheSharing "0"
+      RuntimeColumnPropagation "0"
+      RelStagesInJobStatus "-1"
+      WebServiceEnabled "0"
+      MFProcessMetaData "0"
+      MFProcessMetaDataXMLFileExchangeMethod "0"
+      IMSProgType "0"
+      CopyLibPrefix "ARDT"
+      RecordPerformanceResults "0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0"
+      OLEType "CContainerView"
+      Readonly "0"
+      Name "Job"
+      NextID "1"
+      IsTopLevel "0"
+      StageList "V0S0|V0S1"
+      StageXPos "168|384"
+      StageYPos "96|48"
+      StageTypes "CJSJobActivity|CJSJobActivity"
+      NextStageID "3"
+      SnapToGrid "1"
+      GridLines "0"
+      ZoomValue "100"
+      StageXSize "48|48"
+      StageYSize "48|48"
+      ContainerViewSizing "0078 0078 0790 0302 0000 0001 0000 0000"
+      StageNames "Job_Activity_0|Job_Activity_1"
+      StageTypeIDs "CJobActivity|CJobActivity"
+      LinkNames "DSLink2| "
+      LinkHasMetaDatas "False| "
+      LinkTypes "1| "
+      LinkNamePositionXs "288| "
+      LinkNamePositionYs "100| "
+      TargetStageIDs "V0S1| "
+      SourceStageEffectiveExecutionModes "0| "
+      SourceStageRuntimeExecutionModes "0| "
+      TargetStageEffectiveExecutionModes "0| "
+      TargetStageRuntimeExecutionModes "0| "
+      LinkIsSingleOperatorLookup "False| "
+      LinkIsSortSequential "False| "
+      LinkSortMode "0| "
+      LinkPartColMode "0| "
+      LinkSourcePinIDs "V0S0P1| "
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S0"
+      OLEType "CJSJobActivity"
+      Readonly "0"
+      Name "Job_Activity_0"
+      NextID "2"
+      OutputPins "V0S0P1"
+      JobType "0"
+      ExecutionType "1"
+      Jobname "Job_Vulnera1"
+      ParameterValues "CParamValues"
+      BEGIN DSSUBRECORD
+         Name "P_mes"
+         Description "mes"
+         ValueType "4"
+         DisplayValue "mes"
+      END DSSUBRECORD
+      CheckPoint "0"
+      StageType "CJobActivity"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S0P1"
+      OLEType "CJSActivityOutput"
+      Readonly "0"
+      Name "DSLink2"
+      Partner "V0S1|V0S1P1"
+      ConditionType "0"
+      LeftTextPos "288"
+      TopTextPos "100"
+      SourceID "V0S0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S1"
+      OLEType "CJSJobActivity"
+      Readonly "0"
+      Name "Job_Activity_1"
+      NextID "2"
+      InputPins "V0S1P1"
+      JobType "0"
+      ExecutionType "0"
+      Jobname "Job_Vulnera2"
+      CheckPoint "0"
+      StageType "CJobActivity"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S1P1"
+      OLEType "CJSActivityInput"
+      Readonly "0"
+      Name "DSLink2"
+      Partner "V0S0|V0S0P1"
+      LinkType "1"
+   END DSRECORD
+END DSJOB
